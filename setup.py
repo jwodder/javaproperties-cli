@@ -2,7 +2,7 @@ from   os.path    import dirname, join
 import re
 from   setuptools import setup
 
-with open(join(dirname(__file__), 'javaproperties', '__init__.py')) as fp:
+with open(join(dirname(__file__), 'javaproperties_cli', '__init__.py')) as fp:
     for line in fp:
         m = re.search(r'^\s*__version__\s*=\s*([\'"])([^\'"]+)\1\s*$', line)
         if m:
@@ -15,21 +15,18 @@ with open(join(dirname(__file__), 'README.rst')) as fp:
     long_desc = fp.read()
 
 setup(
-    name='javaproperties',
+    name='javaproperties-cli',
     version=version,
-    packages=['javaproperties'],
+    packages=['javaproperties_cli'],
     license='MIT',
     author='John Thorvald Wodder II',
-    author_email='javaproperties@varonathe.org',
+    author_email='javaproperties-cli@varonathe.org',
     keywords='java properties javaproperties configfile config configuration',
     description='Read & write Java .properties files',
     long_description=long_desc,
-    url='https://github.com/jwodder/javaproperties',
+    url='https://github.com/jwodder/javaproperties-cli',
 
-    install_requires=['click>=6.5,<7', 'six>=1.4.0,<2'],
-    extras_require={
-        ':python_version<"2.7"': ['ordereddict'],
-    },
+    install_requires=['click>=6.5,<7', 'javaproperties>=0.3.0,<0.5'],
 
     classifiers=[
         'Development Status :: 4 - Beta',
@@ -58,9 +55,9 @@ setup(
 
     entry_points={
         "console_scripts": [
-            'javaproperties = javaproperties.__main__:javaproperties',
-            'properties2json = javaproperties.tojson:tojson',
-            'json2properties = javaproperties.fromjson:fromjson',
+            'javaproperties = javaproperties_cli.__main__:javaproperties',
+            'properties2json = javaproperties_cli.tojson:tojson',
+            'json2properties = javaproperties_cli.fromjson:fromjson',
         ]
     },
 )

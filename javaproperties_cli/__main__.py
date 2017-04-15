@@ -238,14 +238,14 @@ Options
     ``=``
 """
 
-from   __future__ import print_function
+from   __future__     import print_function
 import re
 import click
-from   six        import iteritems
-from   .          import __version__
-from   .reading   import load, parse, unescape
-from   .writing   import dump, join_key_value, java_timestamp, to_comment
-from   .util      import infile_type, outfile_type
+from   javaproperties import load, parse, unescape, dump, join_key_value, \
+                                java_timestamp, to_comment
+from   six            import iteritems
+from   .              import __version__
+from   .util          import infile_type, outfile_type
 
 @click.group(context_settings={"help_option_names": ["-h", "--help"]})
 @click.version_option(__version__, '-V', '--version',

@@ -22,11 +22,6 @@ Also included are three command-line programs for basic manipulation of
 .. toctree::
     :maxdepth: 2
 
-    plain
-    xmlprops
-    propclass
-    propfile
-    util
     cli
 
 Indices and tables

@@ -74,12 +74,12 @@ OPTIONS
     ``=``
 """
 
-from   decimal  import Decimal
+from   decimal        import Decimal
 import json
 import click
-from   .        import __version__
-from   .util    import strify_dict, outfile_type
-from   .writing import dump
+from   javaproperties import dump
+from   .              import __version__
+from   .util          import strify_dict, outfile_type
 
 @click.command(context_settings={"help_option_names": ["-h", "--help"]})
 @click.option('-E', '--encoding', default='iso-8859-1', show_default=True,

@@ -44,9 +44,9 @@ OPTIONS
 
 import json
 import click
-from   .        import __version__
-from   .reading import load
-from   .util    import infile_type
+from   javaproperties import load
+from   .              import __version__
+from   .util          import infile_type
 
 @click.command(context_settings={"help_option_names": ["-h", "--help"]})
 @click.option('-E', '--encoding', default='iso-8859-1', show_default=True,

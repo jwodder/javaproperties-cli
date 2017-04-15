@@ -16,34 +16,8 @@ Visit <https://github.com/jwodder/javaproperties> or
 <http://javaproperties.rtfd.io> for more information.
 """
 
-from .propclass import Properties
-from .propfile  import PropertiesFile
-from .reading   import load, loads, parse, unescape
-from .writing   import dump, dumps, java_timestamp, join_key_value, escape, \
-                        to_comment
-from .xmlprops  import load_xml, loads_xml, dump_xml, dumps_xml
-
 __version__      = '0.4.0.dev1'
 __author__       = 'John Thorvald Wodder II'
-__author_email__ = 'javaproperties@varonathe.org'
+__author_email__ = 'javaproperties-cli@varonathe.org'
 __license__      = 'MIT'
-__url__          = 'https://github.com/jwodder/javaproperties'
-
-__all__ = [
-    'Properties',
-    'PropertiesFile',
-    'dump',
-    'dump_xml',
-    'dumps',
-    'dumps_xml',
-    'escape',
-    'java_timestamp',
-    'join_key_value',
-    'load',
-    'load_xml',
-    'loads',
-    'loads_xml',
-    'parse',
-    'to_comment',
-    'unescape',
-]
+__url__          = 'https://github.com/jwodder/javaproperties-cli'

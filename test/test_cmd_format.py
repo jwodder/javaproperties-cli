@@ -1,8 +1,8 @@
 import time
-from   click.testing           import CliRunner
-from   freezegun               import freeze_time
+from   click.testing               import CliRunner
+from   freezegun                   import freeze_time
 import pytest
-from   javaproperties.__main__ import javaproperties
+from   javaproperties_cli.__main__ import javaproperties
 
 @pytest.fixture(autouse=True)
 def set_timezone(monkeypatch):

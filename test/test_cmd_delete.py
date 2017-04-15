@@ -1,5 +1,5 @@
-from   click.testing           import CliRunner
-from   javaproperties.__main__ import javaproperties
+from   click.testing               import CliRunner
+from   javaproperties_cli.__main__ import javaproperties
 
 INPUT = b'''\
 foo: bar
