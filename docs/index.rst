@@ -1,8 +1,8 @@
-.. module:: javaproperties
+.. module:: javaproperties_cli
 
-==============================================================
-javaproperties — Read & write Java .properties files in Python
-==============================================================
+==================================================================================
+javaproperties-cli — Command-line programs for manipulating Java .properties files
+==================================================================================
 
 `javaproperties` provides support for reading & writing Java |properties|_
 files (both the simple line-oriented format and XML) with a simple API based on

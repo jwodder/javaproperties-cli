@@ -21,13 +21,6 @@ SYNOPSIS
     javaproperties delete [<OPTIONS>] <file> <key> ...
     javaproperties format [<OPTIONS>] [<file>]
 
-.. note::
-
-    If the `javaproperties` package was installed but the
-    :program:`javaproperties` script is not present, this command can still be
-    run by replacing ``javaproperties`` with ``python -m javaproperties`` on
-    the command line.
-
 
 :command:`get`
 ^^^^^^^^^^^^^^
@@ -63,7 +56,7 @@ Options
 
     Parse the keys and default value specified on the command line for
     ``.properties``-style escape sequences (specifically, those supported by
-    `~javaproperties.unescape`)
+    `javaproperties.unescape`)
 
 .. option:: -E <encoding>, --encoding <encoding>
 
@@ -107,7 +100,7 @@ Options
 
     Parse the keys and default value specified on the command line for
     ``.properties``-style escape sequences (specifically, those supported by
-    `~javaproperties.unescape`)
+    `javaproperties.unescape`)
 
 .. option:: -E <encoding>, --encoding <encoding>
 
@@ -143,7 +136,7 @@ Options
 .. option:: -e, --escaped
 
     Parse ``<key>`` and ``<value>`` for ``.properties``-style escape sequences
-    (specifically, those supported by `~javaproperties.unescape`)
+    (specifically, those supported by `javaproperties.unescape`)
 
 .. option:: -E <encoding>, --encoding <encoding>
 
@@ -186,7 +179,7 @@ Options
 
     Parse the keys specified on the command line for ``.properties``-style
     escape sequences (specifically, those supported by
-    `~javaproperties.unescape`)
+    `javaproperties.unescape`)
 
 .. option:: -E <encoding>, --encoding <encoding>
 
@@ -216,7 +209,7 @@ Options
 Normalize the formatting of the given ``.properties`` file (or standard input
 if no file is given) and output the results.  All comments, excess whitespace,
 invalid escapes, and duplicate keys are removed, and the entries are sorted and
-converted to ASCII with `~javaproperties.escape`.
+converted to ASCII with `javaproperties.escape`.
 
 Options
 '''''''

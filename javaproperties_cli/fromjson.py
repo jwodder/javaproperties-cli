@@ -16,13 +16,6 @@ SYNOPSIS
 
     json2properties [<OPTIONS>] [<infile> [<outfile>]]
 
-.. note::
-
-    If the `javaproperties` package was installed but the
-    :program:`json2properties` script is not present, this command can still be
-    run by replacing ``json2properties`` with ``python -m
-    javaproperties.fromjson`` on the command line.
-
 DESCRIPTION
 ^^^^^^^^^^^
 
@@ -64,7 +57,7 @@ OPTIONS
 
     Use ``<encoding>`` as the output encoding; default value: ``iso-8859-1``
     (a.k.a. Latin-1).  (As all output is *currently* always pure ASCII, this
-    option is not very useful.)
+    option is not very useful, but there are plans to make it useful.)
 
 .. option:: -s <sep>, --separator <sep>
 

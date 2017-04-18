@@ -15,13 +15,6 @@ SYNOPSIS
 
     properties2json [<OPTIONS>] [<infile> [<outfile>]]
 
-.. note::
-
-    If the `javaproperties` package was installed but the
-    :program:`properties2json` script is not present, this command can still be
-    run by replacing ``properties2json`` with ``python -m
-    javaproperties.tojson`` on the command line.
-
 DESCRIPTION
 ^^^^^^^^^^^
 
