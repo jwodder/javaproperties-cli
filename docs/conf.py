@@ -1,11 +1,7 @@
-from   __future__ import unicode_literals
-import os.path
-import sys
+from __future__         import unicode_literals
+from javaproperties_cli import __version__
 
-sys.path.insert(0, os.path.abspath('..'))
-from   javaproperties import __version__
-
-project   = 'javaproperties'
+project   = 'javaproperties-cli'
 author    = 'John T. Wodder II'
 copyright = '2016-2017 John T. Wodder II'
 
@@ -17,11 +13,10 @@ extensions = [
 ]
 
 autodoc_default_flags = ['members', 'undoc-members']
-# NOTE: Do not set 'inherited-members', as it will cause all of the
-# MutableMapping methods to be listed under `Properties`.
 
 intersphinx_mapping = {
     "python": ("https://docs.python.org/3", None),
+    "javaproperties": ("http://javaproperties.readthedocs.io/en/latest", None),
 }
 
 exclude_patterns = ['_build']
@@ -34,14 +29,6 @@ today_fmt = '%Y %b %d'
 default_role = 'py:obj'
 pygments_style = 'sphinx'
 todo_include_todos = True
-
-rst_epilog = '''
-.. |py2str| replace:: `!str`
-.. _py2str: https://docs.python.org/2/library/functions.html#str
-
-.. |unicode| replace:: `unicode`
-.. _unicode: https://docs.python.org/2/library/functions.html#unicode
-'''
 
 html_theme = 'sphinx_rtd_theme'
 html_last_updated_fmt = '%Y %b %d'

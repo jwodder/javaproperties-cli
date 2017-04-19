@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Command-line programs for manipulating Java .properties files
+Command-line manipulation of Java .properties files
 
 ``javaproperties-cli`` is a wrapper around the ``javaproperties`` package (from
 which it was split off) that provides programs for basic command-line

@@ -22,7 +22,7 @@ setup(
     author='John Thorvald Wodder II',
     author_email='javaproperties-cli@varonathe.org',
     keywords='java properties javaproperties configfile config configuration',
-    description='Command-line programs for manipulating Java .properties files',
+    description='Command-line manipulation of Java .properties files',
     long_description=long_desc,
     url='https://github.com/jwodder/javaproperties-cli',
 

@@ -1,36 +1,30 @@
 .. module:: javaproperties_cli
 
-==================================================================================
-javaproperties-cli — Command-line programs for manipulating Java .properties files
-==================================================================================
+========================================================================
+javaproperties-cli — Command-line manipulation of Java .properties files
+========================================================================
 
-`javaproperties` provides support for reading & writing Java |properties|_
-files (both the simple line-oriented format and XML) with a simple API based on
-the `json` module — though, for recovering Java addicts, it also includes a
-`Properties` class intended to match the behavior of |java8properties|_ as much
-as is Pythonically possible.
+`!javaproperties-cli` is a wrapper around the `javaproperties` package (from
+which it was split off) that provides programs for basic command-line
+manipulation of |properties|_, including getting, setting, & deleting values
+and converting to & from JSON.
 
-Also included are three command-line programs for basic manipulation of
-``.properties`` files (getting & setting values, etc.) as well as converting to
-& from the much more widely-supported JSON format.
-
-.. note::
-
-    Throughout the following, "text string" means a Unicode character string —
-    |unicode|_ in Python 2, `str` in Python 3.
+Currently, the programs only support ``.properties`` files in the simple
+line-oriented format, not the XML variant.
 
 .. toctree::
-    :maxdepth: 2
+    :caption: Commands
+    :maxdepth: 1
 
-    cli
+    javaproperties
+    json2properties
+    properties2json
+
 
 Indices and tables
 ==================
 * :ref:`genindex`
 * :ref:`search`
 
-.. |properties| replace:: ``.properties``
+.. |properties| replace:: Java ``.properties`` files
 .. _properties: https://en.wikipedia.org/wiki/.properties
-
-.. |java8properties| replace:: Java 8's ``java.net.Properties``
-.. _java8properties: https://docs.oracle.com/javase/8/docs/api/java/util/Properties.html

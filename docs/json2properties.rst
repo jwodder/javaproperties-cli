@@ -1,3 +1,3 @@
 .. index:: json2properties (command)
-.. automodule:: javaproperties.fromjson
+.. automodule:: javaproperties_cli.fromjson
     :no-members:

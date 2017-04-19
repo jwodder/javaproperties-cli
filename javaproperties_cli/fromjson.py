@@ -19,9 +19,9 @@ SYNOPSIS
 DESCRIPTION
 ^^^^^^^^^^^
 
-Convert a JSON file :option:`infile` to a ``.properties`` file and write the
-results to :option:`outfile`.  If not specified, :option:`infile` and
-:option:`outfile` default to `sys.stdin` and `sys.stdout`, respectively.
+Convert a JSON file ``infile`` to a ``.properties`` file and write the results
+to ``outfile``.  If not specified, ``infile`` and ``outfile`` default to
+`sys.stdin` and `sys.stdout`, respectively.
 
 The JSON document must be an object with scalar (i.e., string, numeric,
 boolean, and/or null) values; anything else will result in an error.

@@ -1,3 +1,3 @@
 .. index:: properties2json (command)
-.. automodule:: javaproperties.tojson
+.. automodule:: javaproperties_cli.tojson
     :no-members:

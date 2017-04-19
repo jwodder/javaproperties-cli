@@ -1,3 +1,3 @@
 .. index:: javaproperties (command)
-.. automodule:: javaproperties.__main__
+.. automodule:: javaproperties_cli.__main__
     :no-members:
