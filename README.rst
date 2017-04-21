@@ -39,6 +39,53 @@ that the `ordereddict <https://pypi.python.org/pypi/ordereddict>`_ package is
 installed as well: ``pip install ordereddict``
 
 
+Quickstart
+==========
+
+::
+
+    javaproperties get    <file> <key> ...
+
+Output the values of the given keys in the given ``.properties`` file
+
+::
+
+    javaproperties select <file> <key> ...
+
+Output the key-value pairs for the given keys in the given ``.properties`` file
+
+::
+
+    javaproperties set    <file> <key> <value>
+
+Set ``<key>`` in ``<file>`` to ``<value>`` and output the result
+
+::
+
+    javaproperties delete <file> <key> ...
+
+Output the given ``.properties`` file with the given keys deleted
+
+::
+
+    javaproperties format [<file>]
+
+Reformat the given ``.properties`` file, removing comments & extraneous
+whitespace and putting keys in sorted order
+
+::
+
+    json2properties [<infile> [<outfile>]]
+
+Convert a JSON object to a ``.properties`` file
+
+::
+
+    properties2json [<infile> [<outfile>]]
+
+Convert a ``.properties`` file to a JSON object
+
+
 .. |properties| replace:: ``.properties``
 .. _properties: https://en.wikipedia.org/wiki/.properties
 

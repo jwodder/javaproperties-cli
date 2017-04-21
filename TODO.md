@@ -1,4 +1,3 @@
-- Add new examples to the README
 - Write tests
     - Handle the fact that `output_bytes` will contain CR LF line endings (I
       think) on Windows
