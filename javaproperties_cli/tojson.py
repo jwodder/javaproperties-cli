@@ -29,8 +29,6 @@ OPTIONS
 
 .. option:: -E <encoding>, --encoding <encoding>
 
-    .. versionadded:: 0.2.0
-
     Specifies the encoding of the input file; default value: ``iso-8859-1``
     (a.k.a. Latin-1)
 """

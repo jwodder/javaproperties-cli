@@ -53,15 +53,11 @@ OPTIONS
 
 .. option:: -E <encoding>, --encoding <encoding>
 
-    .. versionadded:: 0.2.0
-
     Use ``<encoding>`` as the output encoding; default value: ``iso-8859-1``
     (a.k.a. Latin-1).  (As all output is *currently* always pure ASCII, this
     option is not very useful, but there are plans to make it useful.)
 
 .. option:: -s <sep>, --separator <sep>
-
-    .. versionadded:: 0.2.0
 
     Use ``<sep>`` as the key-value separator in the output; default value:
     ``=``
