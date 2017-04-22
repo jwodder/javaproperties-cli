@@ -18,7 +18,7 @@
 
 `GitHub <https://github.com/jwodder/javaproperties-cli>`_
 | `PyPI <https://pypi.python.org/pypi/javaproperties-cli>`_
-| `Documentation <https://javaproperties-cli.readthedocs.io/en/latest>`_
+| `Documentation <https://javaproperties-cli.readthedocs.io/en/v0.4.0>`_
 | `Issues <https://github.com/jwodder/javaproperties-cli/issues>`_
 
 ``javaproperties-cli`` is a wrapper around the |javaproperties|_ package (from
