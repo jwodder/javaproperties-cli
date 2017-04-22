@@ -35,7 +35,7 @@ def test_cmd_select_not_exists():
     assert r.exit_code == 1
     assert r.output_bytes == b'''\
 #Mon Nov 07 15:29:40 EST 2016
-javaproperties: nonexistent: key not found
+javaproperties select: nonexistent: key not found
 '''
 
 @freeze_time('2016-11-07 20:29:40')
@@ -47,7 +47,7 @@ def test_cmd_select_some_exist():
     assert r.output_bytes == b'''\
 #Mon Nov 07 15:29:40 EST 2016
 key=value
-javaproperties: nonexistent: key not found
+javaproperties select: nonexistent: key not found
 '''
 
 @freeze_time('2016-11-07 20:29:40')
@@ -69,7 +69,7 @@ def test_cmd_select_escaped_not_exists():
     assert r.exit_code == 1
     assert r.output_bytes == b'''\
 #Mon Nov 07 15:29:40 EST 2016
-javaproperties: x\xC3\xB0: key not found
+javaproperties select: x\xC3\xB0: key not found
 '''
 
 @freeze_time('2016-11-07 20:29:40')
@@ -91,7 +91,7 @@ def test_cmd_select_not_escaped_not_exists():
     assert r.exit_code == 1
     assert r.output_bytes == b'''\
 #Mon Nov 07 15:29:40 EST 2016
-javaproperties: x\\u00f0: key not found
+javaproperties select: x\\u00f0: key not found
 '''
 
 @freeze_time('2016-11-07 20:29:40')
@@ -113,7 +113,7 @@ def test_cmd_select_utf8_not_exists():
     assert r.exit_code == 1
     assert r.output_bytes == b'''\
 #Mon Nov 07 15:29:40 EST 2016
-javaproperties: x\xC3\xB0: key not found
+javaproperties select: x\xC3\xB0: key not found
 '''
 
 @freeze_time('2016-11-07 20:29:40')
