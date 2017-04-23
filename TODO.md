@@ -28,4 +28,7 @@
       extension (or other means?) ?
     - Support by just adding `properties2xml` and `xml2properties` commands?
 
-- Add a command for merging two (or more?) properties files?
+- Add a command for merging two (or more?) properties files (or, equivalently,
+  updating one properties file based on another)
+- Give `properties2json` and `json2properties` options for preserving the order
+  of the input keys?
