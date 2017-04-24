@@ -235,12 +235,9 @@ import click
 from   javaproperties import load, parse, unescape, dump, join_key_value, \
                                 java_timestamp, to_comment
 from   six            import iteritems
-from   .              import __version__
-from   .util          import infile_type, outfile_type
+from   .util          import command, encoding_option, infile_type, outfile_type
 
-@click.group(context_settings={"help_option_names": ["-h", "--help"]})
-@click.version_option(__version__, '-V', '--version',
-                      message='%(prog)s %(version)s')
+@command(group=True)
 def javaproperties():
     """ Basic manipulation of Java .properties files """
     pass
@@ -252,8 +249,7 @@ def javaproperties():
               help='.properties file of default values')
 @click.option('-e', '--escaped', is_flag=True,
               help='Parse command-line keys & values for escapes')
-@click.option('-E', '--encoding', default='iso-8859-1', show_default=True,
-              help='Encoding of the .properties files')
+@encoding_option
 @click.argument('file', type=infile_type)
 @click.argument('key', nargs=-1, required=True)
 @click.pass_context
@@ -276,8 +272,7 @@ def get(ctx, default_value, defaults, escaped, file, key, encoding):
               help='.properties file of default values')
 @click.option('-e', '--escaped', is_flag=True,
               help='Parse command-line keys & values for escapes')
-@click.option('-E', '--encoding', default='iso-8859-1', show_default=True,
-              help='Encoding of the .properties files')
+@encoding_option
 @click.option('-o', '--outfile', type=outfile_type, default='-',
               help='Write output to this file')
 @click.option('-s', '--separator', default='=', show_default=True,
@@ -304,8 +299,7 @@ def select(ctx, default_value, defaults, escaped, separator, file, key,
 @javaproperties.command('set')
 @click.option('-e', '--escaped', is_flag=True,
               help='Parse command-line keys & values for escapes')
-@click.option('-E', '--encoding', default='iso-8859-1', show_default=True,
-              help='Encoding of the .properties file')
+@encoding_option
 @click.option('-s', '--separator', default='=', show_default=True,
               help='Key-value separator to use in output')
 @click.option('-o', '--outfile', type=outfile_type, default='-',
@@ -329,8 +323,7 @@ def setprop(escaped, separator, outfile, preserve_timestamp, file, key, value,
 @javaproperties.command()
 @click.option('-e', '--escaped', is_flag=True,
               help='Parse command-line keys & values for escapes')
-@click.option('-E', '--encoding', default='iso-8859-1', show_default=True,
-              help='Encoding of the .properties file')
+@encoding_option
 @click.option('-o', '--outfile', type=outfile_type, default='-',
               help='Write output to this file')
 @click.option('-T', '--preserve-timestamp', is_flag=True,
@@ -346,8 +339,7 @@ def delete(escaped, outfile, preserve_timestamp, file, key, encoding):
             setproperties(fpin, fpout, dict.fromkeys(key), preserve_timestamp)
 
 @javaproperties.command()
-@click.option('-E', '--encoding', default='iso-8859-1', show_default=True,
-              help='Encoding of the .properties file')
+@encoding_option
 @click.option('-o', '--outfile', type=outfile_type, default='-',
               help='Write output to this file')
 @click.option('-s', '--separator', default='=', show_default=True,

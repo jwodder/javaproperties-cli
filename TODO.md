@@ -8,7 +8,6 @@
 - Add docstrings for the private functions
 - Restrict `TIMESTAMP_RGX` to only match C locale timestamps?
 - Restrict `TIMESTAMP_RGX` to only consider `[ \t\f]` as whitespace?
-- Include `javaproperties` version in `--version` output?
 
 - `javaproperties` command:
     - Give `set`, `delete`, and `format` (and `select`?) `--in-place` options

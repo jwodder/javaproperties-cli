@@ -67,18 +67,15 @@ from   decimal        import Decimal
 import json
 import click
 from   javaproperties import dump
-from   .              import __version__
-from   .util          import strify_dict, outfile_type
+from   six            import string_types, iteritems
+from   .util          import command, encoding_option, outfile_type
 
-@click.command(context_settings={"help_option_names": ["-h", "--help"]})
-@click.option('-E', '--encoding', default='iso-8859-1', show_default=True,
-              help='Encoding of the .properties file')
+@command()
+@encoding_option
 @click.option('-s', '--separator', default='=', show_default=True,
               help='Key-value separator to use in output')
 @click.argument('infile', type=click.File('r'), default='-')
 @click.argument('outfile', type=outfile_type, default='-')
-@click.version_option(__version__, '-V', '--version',
-                      message='%(prog)s %(version)s')
 @click.pass_context
 def fromjson(ctx, infile, outfile, separator, encoding):
     """Convert a JSON object to a Java .properties file"""
@@ -88,6 +85,20 @@ def fromjson(ctx, infile, outfile, separator, encoding):
         ctx.fail('Only dicts can be converted to .properties')
     with click.open_file(outfile, 'w', encoding=encoding) as fp:
         dump(sorted(strify_dict(props).items()), fp, separator=separator)
+
+def strify_dict(d):
+    strdict = {}
+    for k,v in iteritems(d):
+        assert isinstance(k, string_types)
+        if isinstance(v, (list, dict)):
+            raise TypeError('Cannot convert list/dict to .properties value')
+        elif isinstance(v, string_types):
+            strdict[k] = v
+        elif isinstance(v, Decimal):
+            strdict[k] = str(v)
+        else:
+            strdict[k] = json.dumps(v)
+    return strdict
 
 if __name__ == '__main__':
     fromjson()

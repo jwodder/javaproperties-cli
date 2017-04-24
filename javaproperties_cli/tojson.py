@@ -36,16 +36,12 @@ OPTIONS
 import json
 import click
 from   javaproperties import load
-from   .              import __version__
-from   .util          import infile_type, outfile_type
+from   .util          import command, encoding_option, infile_type, outfile_type
 
-@click.command(context_settings={"help_option_names": ["-h", "--help"]})
-@click.option('-E', '--encoding', default='iso-8859-1', show_default=True,
-              help='Encoding of the .properties file')
+@command()
+@encoding_option
 @click.argument('infile', type=infile_type, default='-')
 @click.argument('outfile', type=outfile_type, default='-')
-@click.version_option(__version__, '-V', '--version',
-                      message='%(prog)s %(version)s')
 def tojson(infile, outfile, encoding):
     """Convert a Java .properties file to JSON"""
     with click.open_file(infile, encoding=encoding) as fp:
