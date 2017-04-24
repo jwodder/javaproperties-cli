@@ -8,6 +8,7 @@
 - Add docstrings for the private functions
 - Restrict `TIMESTAMP_RGX` to only match C locale timestamps?
 - Restrict `TIMESTAMP_RGX` to only consider `[ \t\f]` as whitespace?
+- Include `javaproperties` version in `--version` output?
 
 - `javaproperties` command:
     - Give `set`, `delete`, and `format` (and `select`?) `--in-place` options
@@ -19,6 +20,7 @@
     - Give `select` an option for preserving formatting? (Preserve by default?)
     - `select`: Don't output a timestamp if none of the given keys are defined?
     - Give `get` an option for escaping output values?
+    - Give `format` an option for setting the comment in the output?
 
 - Support XML properties files:
     - Support converting between JSON and XML properties
@@ -31,4 +33,4 @@
 - Add a command for merging two (or more?) properties files (or, equivalently,
   updating one properties file based on another)
 - Give `properties2json` and `json2properties` options for preserving the order
-  of the input keys?
+  of the input keys
