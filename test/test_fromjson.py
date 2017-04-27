@@ -8,6 +8,12 @@ Usage: json2properties [OPTIONS] [INFILE] [OUTFILE]
 Error: Only dicts can be converted to .properties
 '''
 
+BADVAL_ERRMSG = b'''\
+Usage: json2properties [OPTIONS] [INFILE] [OUTFILE]
+
+Error: Dictionary values must be scalars, not lists or dicts
+'''
+
 @freeze_time('2016-11-07 20:29:40')
 def test_json2properties_empty():
     r = CliRunner().invoke(json2properties, input=b'{}')
@@ -94,8 +100,22 @@ def test_json2properties_toplevel_null():
     assert r.exit_code != 0
     assert r.output_bytes == TOPLEVEL_ERRMSG
 
-# arrays
-# dicts
+def test_json2properties_array_val():
+    r = CliRunner().invoke(json2properties, input=b'''{
+        "list": [1, 2, 3],
+        "foo": "bar"
+    }''')
+    assert r.exit_code != 0
+    assert r.output_bytes == BADVAL_ERRMSG
+
+def test_json2properties_dict_val():
+    r = CliRunner().invoke(json2properties, input=b'''{
+        "map": {"bar": "foo"},
+        "foo": "bar"
+    }''')
+    assert r.exit_code != 0
+    assert r.output_bytes == BADVAL_ERRMSG
+
 # non-ASCII characters (escaped & unescaped in input)
 # --separator
 # invalid JSON

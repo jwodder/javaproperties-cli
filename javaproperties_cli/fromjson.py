@@ -83,22 +83,20 @@ def json2properties(ctx, infile, outfile, separator, encoding):
         props = json.load(infile, parse_float=Decimal)
     if not isinstance(props, dict):
         ctx.fail('Only dicts can be converted to .properties')
-    with click.open_file(outfile, 'w', encoding=encoding) as fp:
-        dump(sorted(strify_dict(props).items()), fp, separator=separator)
-
-def strify_dict(d):
-    strdict = {}
-    for k,v in iteritems(d):
+    strprops = []
+    for k,v in iteritems(props):
         assert isinstance(k, string_types)
         if isinstance(v, (list, dict)):
-            raise TypeError('Cannot convert list/dict to .properties value')
+            ctx.fail('Dictionary values must be scalars, not lists or dicts')
         elif isinstance(v, string_types):
-            strdict[k] = v
+            strprops.append((k,v))
         elif isinstance(v, Decimal):
-            strdict[k] = str(v)
+            strprops.append((k, str(v)))
         else:
-            strdict[k] = json.dumps(v)
-    return strdict
+            strprops.append((k, json.dumps(v)))
+    strprops.sort()
+    with click.open_file(outfile, 'w', encoding=encoding) as fp:
+        dump(strprops, fp, separator=separator)
 
 if __name__ == '__main__':
     json2properties()
