@@ -60,8 +60,8 @@ setup(
     entry_points={
         "console_scripts": [
             'javaproperties = javaproperties_cli.__main__:javaproperties',
-            'properties2json = javaproperties_cli.tojson:tojson',
-            'json2properties = javaproperties_cli.fromjson:fromjson',
+            'properties2json = javaproperties_cli.tojson:properties2json',
+            'json2properties = javaproperties_cli.fromjson:json2properties',
         ]
     },
 )

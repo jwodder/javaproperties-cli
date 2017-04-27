@@ -1,16 +1,22 @@
 from   click.testing               import CliRunner
 from   freezegun                   import freeze_time
-from   javaproperties_cli.fromjson import fromjson
+from   javaproperties_cli.fromjson import json2properties
+
+TOPLEVEL_ERRMSG = b'''\
+Usage: json2properties [OPTIONS] [INFILE] [OUTFILE]
+
+Error: Only dicts can be converted to .properties
+'''
 
 @freeze_time('2016-11-07 20:29:40')
-def test_fromjson_empty():
-    r = CliRunner().invoke(fromjson, input=b'{}')
+def test_json2properties_empty():
+    r = CliRunner().invoke(json2properties, input=b'{}')
     assert r.exit_code == 0
     assert r.output_bytes == b'#Mon Nov 07 15:29:40 EST 2016\n'
 
 @freeze_time('2016-11-07 20:29:40')
-def test_fromjson_simple():
-    r = CliRunner().invoke(fromjson, input=b'''{
+def test_json2properties_simple():
+    r = CliRunner().invoke(json2properties, input=b'''{
         "key": "value",
         "foo": "bar",
         "zebra": "apple"
@@ -24,8 +30,8 @@ zebra=apple
 '''
 
 @freeze_time('2016-11-07 20:29:40')
-def test_fromjson_truthy():
-    r = CliRunner().invoke(fromjson, input=b'''{
+def test_json2properties_nonstring():
+    r = CliRunner().invoke(json2properties, input=b'''{
         "yes": true,
         "no": false,
         "nothing": null,
@@ -41,8 +47,8 @@ yes=true
 '''
 
 @freeze_time('2016-11-07 20:29:40')
-def test_fromjson_float():
-    r = CliRunner().invoke(fromjson, input=b'''{
+def test_json2properties_float():
+    r = CliRunner().invoke(json2properties, input=b'''{
         "pi": 3.14159265358979323846264338327950288419716939937510582097494459
     }''')
     assert r.exit_code == 0
@@ -51,8 +57,45 @@ def test_fromjson_float():
 pi=3.14159265358979323846264338327950288419716939937510582097494459
 '''
 
+def test_json2properties_toplevel_array():
+    r = CliRunner().invoke(json2properties, input=b'''[{
+        "key": "value",
+        "foo": "bar",
+        "zebra": "apple"
+    }]''')
+    assert r.exit_code != 0
+    assert r.output_bytes == TOPLEVEL_ERRMSG
+
+def test_json2properties_toplevel_string():
+    r = CliRunner().invoke(
+        json2properties,
+        input=br'"{\"key\": \"value\", \"foo\": \"bar\", \"zebra\": \"apple\"}"'
+    )
+    assert r.exit_code != 0
+    assert r.output_bytes == TOPLEVEL_ERRMSG
+
+def test_json2properties_toplevel_int():
+    r = CliRunner().invoke(json2properties, input=b'42\n')
+    assert r.exit_code != 0
+    assert r.output_bytes == TOPLEVEL_ERRMSG
+
+def test_json2properties_toplevel_float():
+    r = CliRunner().invoke(json2properties, input=b'3.14\n')
+    assert r.exit_code != 0
+    assert r.output_bytes == TOPLEVEL_ERRMSG
+
+def test_json2properties_toplevel_true():
+    r = CliRunner().invoke(json2properties, input=b'true\n')
+    assert r.exit_code != 0
+    assert r.output_bytes == TOPLEVEL_ERRMSG
+
+def test_json2properties_toplevel_null():
+    r = CliRunner().invoke(json2properties, input=b'null\n')
+    assert r.exit_code != 0
+    assert r.output_bytes == TOPLEVEL_ERRMSG
+
 # arrays
 # dicts
-# non-dict top level
 # non-ASCII characters (escaped & unescaped in input)
 # --separator
+# invalid JSON

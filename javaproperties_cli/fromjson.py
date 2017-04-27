@@ -77,7 +77,7 @@ from   .util          import command, encoding_option, outfile_type
 @click.argument('infile', type=click.File('r'), default='-')
 @click.argument('outfile', type=outfile_type, default='-')
 @click.pass_context
-def fromjson(ctx, infile, outfile, separator, encoding):
+def json2properties(ctx, infile, outfile, separator, encoding):
     """Convert a JSON object to a Java .properties file"""
     with infile:
         props = json.load(infile, parse_float=Decimal)
@@ -101,4 +101,4 @@ def strify_dict(d):
     return strdict
 
 if __name__ == '__main__':
-    fromjson()
+    json2properties()

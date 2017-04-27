@@ -42,7 +42,7 @@ from   .util          import command, encoding_option, infile_type, outfile_type
 @encoding_option
 @click.argument('infile', type=infile_type, default='-')
 @click.argument('outfile', type=outfile_type, default='-')
-def tojson(infile, outfile, encoding):
+def properties2json(infile, outfile, encoding):
     """Convert a Java .properties file to JSON"""
     with click.open_file(infile, encoding=encoding) as fp:
         props = load(fp)
@@ -51,4 +51,4 @@ def tojson(infile, outfile, encoding):
         fp.write('\n')
 
 if __name__ == '__main__':
-    tojson()
+    properties2json()

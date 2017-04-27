@@ -1,18 +1,18 @@
 from   click.testing             import CliRunner
-from   javaproperties_cli.tojson import tojson
+from   javaproperties_cli.tojson import properties2json
 
-def test_tojson_empty():
-    r = CliRunner().invoke(tojson, input=b'')
+def test_properties2json_empty():
+    r = CliRunner().invoke(properties2json, input=b'')
     assert r.exit_code == 0
     assert r.output_bytes == b'{}\n'
 
-def test_tojson_comment_only():
-    r = CliRunner().invoke(tojson, input=b'#This is a comment.\n')
+def test_properties2json_comment_only():
+    r = CliRunner().invoke(properties2json, input=b'#This is a comment.\n')
     assert r.exit_code == 0
     assert r.output_bytes == b'{}\n'
 
-def test_tojson_simple():
-    r = CliRunner().invoke(tojson, input=b'''
+def test_properties2json_simple():
+    r = CliRunner().invoke(properties2json, input=b'''
 #Mon Nov 07 15:29:40 EST 2016
 key = value
 foo: bar
@@ -26,8 +26,8 @@ zebra apple
 }
 '''
 
-def test_tojson_scalarlike():
-    r = CliRunner().invoke(tojson, input=b'''
+def test_properties2json_scalarlike():
+    r = CliRunner().invoke(properties2json, input=b'''
 #Mon Nov 07 15:29:40 EST 2016
 key = 42
 foo: 3.14
@@ -43,8 +43,8 @@ true=false
 }
 '''
 
-def test_tojson_empty_value():
-    r = CliRunner().invoke(tojson, input=b'''
+def test_properties2json_empty_value():
+    r = CliRunner().invoke(properties2json, input=b'''
 #Mon Nov 07 15:29:40 EST 2016
 empty=
 missing
