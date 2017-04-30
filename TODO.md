@@ -33,3 +33,4 @@
   updating one properties file based on another)
 - Give `properties2json` and `json2properties` options for preserving the order
   of the input keys
+- Give `json2properties` an option for setting the comment?

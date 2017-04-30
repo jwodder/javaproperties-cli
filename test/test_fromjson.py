@@ -116,6 +116,51 @@ def test_json2properties_dict_val():
     assert r.exit_code != 0
     assert r.output_bytes == BADVAL_ERRMSG
 
-# non-ASCII characters (escaped & unescaped in input)
+@freeze_time('2016-11-07 20:29:40')
+def test_json2properties_escaped_nonascii_input():
+    r = CliRunner().invoke(json2properties, input=b'''{
+        "edh": "\\u00F0",
+        "snowman": "\\u2603",
+        "goat": "\\uD83D\\uDC10",
+        "taog": "\\uDC10\\uD83D",
+        "\\u00F0": "edh",
+        "\\u2603": "snowman",
+        "\\uD83D\\uDC10": "goat",
+        "\\uDC10\\uD83D": "taog"
+    }''')
+    assert r.exit_code == 0
+    assert r.output_bytes == b'''\
+#Mon Nov 07 15:29:40 EST 2016
+edh=\\u00f0
+goat=\\ud83d\\udc10
+snowman=\\u2603
+taog=\\udc10\\ud83d
+\\u00f0=edh
+\\u2603=snowman
+\\udc10\\ud83d=taog
+\\ud83d\\udc10=goat
+'''
+
+@freeze_time('2016-11-07 20:29:40')
+def test_json2properties_utf8_input():
+    r = CliRunner().invoke(json2properties, input=b'''{
+        "edh": "\xC3\xB0",
+        "snowman": "\xE2\x98\x83",
+        "goat": "\xF0\x9F\x90\x90",
+        "\xC3\xB0": "edh",
+        "\xE2\x98\x83": "snowman",
+        "\xF0\x9F\x90\x90": "goat"
+    }''')
+    assert r.exit_code == 0
+    assert r.output_bytes == b'''\
+#Mon Nov 07 15:29:40 EST 2016
+edh=\\u00f0
+goat=\\ud83d\\udc10
+snowman=\\u2603
+\\u00f0=edh
+\\u2603=snowman
+\\ud83d\\udc10=goat
+'''
+
 # --separator
 # invalid JSON
