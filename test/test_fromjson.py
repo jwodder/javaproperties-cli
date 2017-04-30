@@ -122,11 +122,9 @@ def test_json2properties_escaped_nonascii_input():
         "edh": "\\u00F0",
         "snowman": "\\u2603",
         "goat": "\\uD83D\\uDC10",
-        "taog": "\\uDC10\\uD83D",
         "\\u00F0": "edh",
         "\\u2603": "snowman",
-        "\\uD83D\\uDC10": "goat",
-        "\\uDC10\\uD83D": "taog"
+        "\\uD83D\\uDC10": "goat"
     }''')
     assert r.exit_code == 0
     assert r.output_bytes == b'''\
@@ -134,10 +132,8 @@ def test_json2properties_escaped_nonascii_input():
 edh=\\u00f0
 goat=\\ud83d\\udc10
 snowman=\\u2603
-taog=\\udc10\\ud83d
 \\u00f0=edh
 \\u2603=snowman
-\\udc10\\ud83d=taog
 \\ud83d\\udc10=goat
 '''
 
@@ -163,4 +159,5 @@ snowman=\\u2603
 '''
 
 # --separator
-# invalid JSON
+# invalid JSON (This includes invalid surrogate pairs in Python 2.6 but not in
+# other versions)
