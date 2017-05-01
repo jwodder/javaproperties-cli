@@ -158,6 +158,20 @@ snowman=\\u2603
 \\ud83d\\udc10=goat
 '''
 
-# --separator
+@freeze_time('2016-11-07 20:29:40')
+def test_json2properties_separator():
+    r = CliRunner().invoke(json2properties, ['-s\t:  '], input=b'''{
+        "key": "value",
+        "foo": "bar",
+        "zebra": "apple"
+    }''')
+    assert r.exit_code == 0
+    assert r.output_bytes == b'''\
+#Mon Nov 07 15:29:40 EST 2016
+foo\t:  bar
+key\t:  value
+zebra\t:  apple
+'''
+
 # invalid JSON (This includes invalid surrogate pairs in Python 2.6 but not in
 # other versions)
