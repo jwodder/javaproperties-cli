@@ -162,3 +162,4 @@ bad-surrogate=\\udc10\\ud83d
 # reading from a file
 # key in source with a non-escaped Latin-1 character
 # key with non-BMP character
+# invalid \u escape

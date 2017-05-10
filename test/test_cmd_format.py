@@ -81,3 +81,4 @@ def test_cmd_format_file():
 # reading from -
 # key in source with a non-escaped Latin-1 character
 # key with non-BMP character
+# invalid \u escape

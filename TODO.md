@@ -20,6 +20,8 @@
     - `select`: Don't output a timestamp if none of the given keys are defined?
     - Give `get` an option for escaping output values?
     - Give `format` an option for setting the comment in the output?
+    - `set` and `delete`: Try to only modify the timestamp if an actual change
+      is made
 
 - Support XML properties files:
     - Support converting between JSON and XML properties

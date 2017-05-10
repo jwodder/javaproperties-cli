@@ -175,3 +175,6 @@ zebra\t:  apple
 
 # invalid JSON (This includes invalid surrogate pairs in Python 2.6 but not in
 # other versions)
+# "double-escaped" input?
+# UTF-16 input
+# Latin-1 input? (treated as invalid UTF-8 by `json.load`?)

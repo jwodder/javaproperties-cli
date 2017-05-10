@@ -142,3 +142,4 @@ def test_cmd_delete_utf8_not_exists():
 # reading from a file
 # key in source with a non-escaped Latin-1 character
 # key with non-BMP character
+# invalid \u escape

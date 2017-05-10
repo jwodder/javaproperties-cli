@@ -166,3 +166,5 @@ x\\u00f0=\\u00a1new\\!
 # key with non-BMP character
 # setting to a non-BMP character
 # setting to a bad surrogate pair?
+# invalid \u escape
+# setting to the value that the field already has

@@ -118,3 +118,4 @@ def test_cmd_get_bad_surrogate_output_py3():
 # reading from a file
 # key in source with a non-escaped Latin-1 character
 # key with non-BMP character
+# invalid \u escape
