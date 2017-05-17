@@ -28,7 +28,7 @@ setup(
 
     install_requires=[
         'click>=6.5,<7',
-        'javaproperties>=0.3.0,<0.5',
+        'javaproperties>=0.4.0,<0.5',
         'six>=1.1,<2',
     ],
 
