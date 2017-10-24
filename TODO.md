@@ -22,6 +22,9 @@
     - Give `format` an option for setting the comment in the output?
     - `set` and `delete`: Try to only modify the timestamp if an actual change
       is made
+        - This will require eliminating the whole "streaming editing" thing and
+          just using `PropertiesFile` instead (which might be a good idea
+          regardless)
 
 - Support XML properties files:
     - Support converting between JSON and XML properties

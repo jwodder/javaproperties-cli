@@ -1,5 +1,4 @@
 from   click.testing               import CliRunner
-from   freezegun                   import freeze_time
 from   javaproperties_cli.fromjson import json2properties
 
 TOPLEVEL_ERRMSG = b'''\
@@ -14,13 +13,11 @@ Usage: json2properties [OPTIONS] [INFILE] [OUTFILE]
 Error: Dictionary values must be scalars, not lists or dicts
 '''
 
-@freeze_time('2016-11-07 20:29:40')
 def test_json2properties_empty():
     r = CliRunner().invoke(json2properties, input=b'{}')
     assert r.exit_code == 0
     assert r.output_bytes == b'#Mon Nov 07 15:29:40 EST 2016\n'
 
-@freeze_time('2016-11-07 20:29:40')
 def test_json2properties_simple():
     r = CliRunner().invoke(json2properties, input=b'''{
         "key": "value",
@@ -35,7 +32,6 @@ key=value
 zebra=apple
 '''
 
-@freeze_time('2016-11-07 20:29:40')
 def test_json2properties_nonstring():
     r = CliRunner().invoke(json2properties, input=b'''{
         "yes": true,
@@ -52,7 +48,6 @@ nothing=null
 yes=true
 '''
 
-@freeze_time('2016-11-07 20:29:40')
 def test_json2properties_float():
     r = CliRunner().invoke(json2properties, input=b'''{
         "pi": 3.14159265358979323846264338327950288419716939937510582097494459
@@ -116,7 +111,6 @@ def test_json2properties_dict_val():
     assert r.exit_code != 0
     assert r.output_bytes == BADVAL_ERRMSG
 
-@freeze_time('2016-11-07 20:29:40')
 def test_json2properties_escaped_nonascii_input():
     r = CliRunner().invoke(json2properties, input=b'''{
         "edh": "\\u00F0",
@@ -137,7 +131,6 @@ snowman=\\u2603
 \\ud83d\\udc10=goat
 '''
 
-@freeze_time('2016-11-07 20:29:40')
 def test_json2properties_utf8_input():
     r = CliRunner().invoke(json2properties, input=b'''{
         "edh": "\xC3\xB0",
@@ -158,7 +151,6 @@ snowman=\\u2603
 \\ud83d\\udc10=goat
 '''
 
-@freeze_time('2016-11-07 20:29:40')
 def test_json2properties_separator():
     r = CliRunner().invoke(json2properties, ['-s\t:  '], input=b'''{
         "key": "value",
@@ -175,6 +167,5 @@ zebra\t:  apple
 
 # invalid JSON (This includes invalid surrogate pairs in Python 2.6 but not in
 # other versions)
-# "double-escaped" input?
 # UTF-16 input
 # Latin-1 input? (treated as invalid UTF-8 by `json.load`?)

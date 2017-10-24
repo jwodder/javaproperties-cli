@@ -140,5 +140,20 @@ goat: \U0001F410
 }
 '''
 
-# repeated keys?
+def test_properties2json_repeated_key():
+    r = CliRunner().invoke(properties2json, input=b'''
+#Mon Nov 07 15:29:40 EST 2016
+key = value
+foo: bar
+zebra apple
+key=lock
+''')
+    assert r.exit_code == 0
+    assert r.output_bytes == b'''{
+    "foo": "bar",
+    "key": "lock",
+    "zebra": "apple"
+}
+'''
+
 # invalid \u escape

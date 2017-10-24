@@ -1,5 +1,4 @@
 from   click.testing               import CliRunner
-from   freezegun                   import freeze_time
 from   javaproperties_cli.__main__ import javaproperties
 
 INPUT = b'''\
@@ -59,13 +58,11 @@ test=
 xyzzy=\\u00c3\\u00a9
 '''
 
-@freeze_time('2016-11-07 20:29:40')
 def test_cmd_format_stdin():
     r = CliRunner().invoke(javaproperties, ['format'], input=INPUT)
     assert r.exit_code == 0
     assert r.output_bytes == OUTPUT
 
-@freeze_time('2016-11-07 20:29:40')
 def test_cmd_format_file():
     runner = CliRunner()
     with runner.isolated_filesystem():
