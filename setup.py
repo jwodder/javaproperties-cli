@@ -37,12 +37,8 @@ setup(
         #'Development Status :: 5 - Production/Stable',
 
         'Programming Language :: Python :: 2',
-        'Programming Language :: Python :: 2.6',
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
-        # Python 3.2 doesn't support \uXXXX escapes in regular expressions, so
-        # I'm not supporting it.
-        'Programming Language :: Python :: 3.3',
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
