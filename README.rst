@@ -6,8 +6,8 @@
 .. image:: https://travis-ci.org/jwodder/javaproperties-cli.svg?branch=master
     :target: https://travis-ci.org/jwodder/javaproperties-cli
 
-.. image:: https://coveralls.io/repos/github/jwodder/javaproperties-cli/badge.svg?branch=master
-    :target: https://coveralls.io/github/jwodder/javaproperties-cli?branch=master
+.. image:: https://codecov.io/gh/jwodder/javaproperties-cli/branch/master/graph/badge.svg
+    :target: https://codecov.io/gh/jwodder/javaproperties-cli
 
 .. image:: https://img.shields.io/pypi/pyversions/javaproperties-cli.svg
     :target: https://pypi.python.org/pypi/javaproperties-cli
