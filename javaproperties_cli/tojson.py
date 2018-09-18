@@ -3,10 +3,12 @@
 :program:`properties2json`
 --------------------------
 
-NAME
-^^^^
+.. only:: not man
 
-:program:`properties2json` — Convert a Java ``.properties`` file to JSON
+    NAME
+    ^^^^
+
+    :program:`properties2json` — Convert a Java ``.properties`` file to JSON
 
 SYNOPSIS
 ^^^^^^^^

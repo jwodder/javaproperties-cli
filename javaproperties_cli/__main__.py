@@ -3,10 +3,12 @@
 :program:`javaproperties`
 -------------------------
 
-NAME
-^^^^
+.. only:: not man
 
-:program:`javaproperties` — Basic manipulation of Java ``.properties`` files
+    NAME
+    ^^^^
+
+    :program:`javaproperties` — Basic manipulation of Java ``.properties`` files
 
 SYNOPSIS
 ^^^^^^^^

@@ -1,9 +1,8 @@
-from __future__         import unicode_literals
 from javaproperties_cli import __version__
 
 project   = 'javaproperties-cli'
 author    = 'John T. Wodder II'
-copyright = '2016-2017 John T. Wodder II'
+copyright = '2016-2018 John T. Wodder II'
 
 extensions = [
     'sphinx.ext.autodoc',
@@ -12,7 +11,10 @@ extensions = [
     'sphinx.ext.viewcode',
 ]
 
-autodoc_default_flags = ['members', 'undoc-members']
+autodoc_default_options = {
+    'members': True,
+    'undoc-members': True,
+}
 
 intersphinx_mapping = {
     "python": ("https://docs.python.org/3", None),
@@ -38,3 +40,10 @@ html_last_updated_fmt = '%Y %b %d'
 html_show_sourcelink = True
 html_show_sphinx = True
 html_show_copyright = True
+
+man_pages = [
+    ('javaproperties',  'javaproperties',  'Basic manipulation of Java ``.properties`` files', [author], 1),
+    ('properties2json', 'properties2json', 'Convert a Java ``.properties`` file to JSON', [author], 1),
+    ('json2properties', 'json2properties', 'Convert a JSON object to a Java ``.properties`` file', [author], 1),
+]
+man_show_urls = False

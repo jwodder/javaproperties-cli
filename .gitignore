@@ -7,5 +7,6 @@
 __pycache__/
 build/
 dist/
+docs/.doctrees/
 docs/_build/
 venv/
