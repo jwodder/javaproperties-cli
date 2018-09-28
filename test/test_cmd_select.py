@@ -16,14 +16,14 @@ bad-surrogate = \\uDC10\\uD83D
 def test_cmd_select_exists():
     r = CliRunner().invoke(javaproperties, ['select', '-', 'key'], input=INPUT)
     assert r.exit_code == 0
-    assert r.output_bytes == b'#Mon Nov 07 15:29:40 EST 2016\nkey=value\n'
+    assert r.stdout_bytes == b'#Mon Nov 07 15:29:40 EST 2016\nkey=value\n'
 
 def test_cmd_select_not_exists():
     r = CliRunner().invoke(javaproperties, [
         'select', '-', 'nonexistent'
     ], input=INPUT)
     assert r.exit_code == 1
-    assert r.output_bytes == b'''\
+    assert r.stdout_bytes == b'''\
 #Mon Nov 07 15:29:40 EST 2016
 javaproperties select: nonexistent: key not found
 '''
@@ -33,7 +33,7 @@ def test_cmd_select_some_exist():
         'select', '-', 'key', 'nonexistent'
     ], input=INPUT)
     assert r.exit_code == 1
-    assert r.output_bytes == b'''\
+    assert r.stdout_bytes == b'''\
 #Mon Nov 07 15:29:40 EST 2016
 key=value
 javaproperties select: nonexistent: key not found
@@ -44,7 +44,7 @@ def test_cmd_select_escaped():
         'select', '--escaped', '-', 'e\\u00F0'
     ], input=INPUT)
     assert r.exit_code == 0
-    assert r.output_bytes == b'''\
+    assert r.stdout_bytes == b'''\
 #Mon Nov 07 15:29:40 EST 2016
 e\\u00f0=escaped
 '''
@@ -54,7 +54,7 @@ def test_cmd_select_escaped_not_exists():
         'select', '--escaped', '-', 'x\\u00F0'
     ], input=INPUT)
     assert r.exit_code == 1
-    assert r.output_bytes == b'''\
+    assert r.stdout_bytes == b'''\
 #Mon Nov 07 15:29:40 EST 2016
 javaproperties select: x\xC3\xB0: key not found
 '''
@@ -64,7 +64,7 @@ def test_cmd_select_not_escaped():
         'select', '-', 'e\\u00f0'
     ], input=INPUT)
     assert r.exit_code == 0
-    assert r.output_bytes == b'''\
+    assert r.stdout_bytes == b'''\
 #Mon Nov 07 15:29:40 EST 2016
 e\\\\u00f0=not escaped
 '''
@@ -74,7 +74,7 @@ def test_cmd_select_not_escaped_not_exists():
         'select', '-', 'x\\u00f0'
     ], input=INPUT)
     assert r.exit_code == 1
-    assert r.output_bytes == b'''\
+    assert r.stdout_bytes == b'''\
 #Mon Nov 07 15:29:40 EST 2016
 javaproperties select: x\\u00f0: key not found
 '''
@@ -84,7 +84,7 @@ def test_cmd_select_utf8():
         'select', '-', b'e\xC3\xB0'  # 'e\u00f0'
     ], input=INPUT)
     assert r.exit_code == 0
-    assert r.output_bytes == b'''\
+    assert r.stdout_bytes == b'''\
 #Mon Nov 07 15:29:40 EST 2016
 e\\u00f0=escaped
 '''
@@ -94,7 +94,7 @@ def test_cmd_select_utf8_not_exists():
         'select', '-', b'x\xC3\xB0'
     ], input=INPUT)
     assert r.exit_code == 1
-    assert r.output_bytes == b'''\
+    assert r.stdout_bytes == b'''\
 #Mon Nov 07 15:29:40 EST 2016
 javaproperties select: x\xC3\xB0: key not found
 '''
@@ -104,7 +104,7 @@ def test_cmd_select_latin1_output():
         'select', '-', 'latin-1'
     ], input=INPUT)
     assert r.exit_code == 0
-    assert r.output_bytes == b'''\
+    assert r.stdout_bytes == b'''\
 #Mon Nov 07 15:29:40 EST 2016
 latin-1=\\u00f0
 '''
@@ -112,7 +112,7 @@ latin-1=\\u00f0
 def test_cmd_select_bmp_output():
     r = CliRunner().invoke(javaproperties, ['select', '-', 'bmp'], input=INPUT)
     assert r.exit_code == 0
-    assert r.output_bytes == b'''\
+    assert r.stdout_bytes == b'''\
 #Mon Nov 07 15:29:40 EST 2016
 bmp=\\u2603
 '''
@@ -122,7 +122,7 @@ def test_cmd_select_astral_output():
         'select', '-', 'astral'
     ], input=INPUT)
     assert r.exit_code == 0
-    assert r.output_bytes == b'''\
+    assert r.stdout_bytes == b'''\
 #Mon Nov 07 15:29:40 EST 2016
 astral=\\ud83d\\udc10
 '''
@@ -132,7 +132,7 @@ def test_cmd_select_bad_surrogate_output():
         'select', '-', 'bad-surrogate'
     ], input=INPUT)
     assert r.exit_code == 0
-    assert r.output_bytes == b'''\
+    assert r.stdout_bytes == b'''\
 #Mon Nov 07 15:29:40 EST 2016
 bad-surrogate=\\udc10\\ud83d
 '''

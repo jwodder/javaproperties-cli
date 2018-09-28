@@ -18,78 +18,78 @@ bad-surrogate = \\uDC10\\uD83D
 def test_cmd_get_exists():
     r = CliRunner().invoke(javaproperties, ['get', '-', 'key'], input=INPUT)
     assert r.exit_code == 0
-    assert r.output_bytes == b'value\n'
+    assert r.stdout_bytes == b'value\n'
 
 def test_cmd_get_not_exists():
     r = CliRunner().invoke(javaproperties, [
         'get', '-', 'nonexistent'
     ], input=INPUT)
     assert r.exit_code == 1
-    assert r.output_bytes == b'javaproperties get: nonexistent: key not found\n'
+    assert r.stdout_bytes == b'javaproperties get: nonexistent: key not found\n'
 
 def test_cmd_get_some_exist():
     r = CliRunner().invoke(javaproperties, [
         'get', '-', 'key', 'nonexistent'
     ], input=INPUT)
     assert r.exit_code == 1
-    assert r.output_bytes == b'value\njavaproperties get: nonexistent: key not found\n'
+    assert r.stdout_bytes == b'value\njavaproperties get: nonexistent: key not found\n'
 
 def test_cmd_get_escaped():
     r = CliRunner().invoke(javaproperties, [
         'get', '--escaped', '-', 'e\\u00F0'
     ], input=INPUT)
     assert r.exit_code == 0
-    assert r.output_bytes == b'escaped\n'
+    assert r.stdout_bytes == b'escaped\n'
 
 def test_cmd_get_escaped_not_exists():
     r = CliRunner().invoke(javaproperties, [
         'get', '--escaped', '-', 'x\\u00F0'
     ], input=INPUT)
     assert r.exit_code == 1
-    assert r.output_bytes == b'javaproperties get: x\xC3\xB0: key not found\n'
+    assert r.stdout_bytes == b'javaproperties get: x\xC3\xB0: key not found\n'
 
 def test_cmd_get_not_escaped():
     r = CliRunner().invoke(javaproperties, [
         'get', '-', 'e\\u00f0'
     ], input=INPUT)
     assert r.exit_code == 0
-    assert r.output_bytes == b'not escaped\n'
+    assert r.stdout_bytes == b'not escaped\n'
 
 def test_cmd_get_not_escaped_not_exists():
     r = CliRunner().invoke(javaproperties, [
         'get', '-', 'x\\u00f0'
     ], input=INPUT)
     assert r.exit_code == 1
-    assert r.output_bytes == b'javaproperties get: x\\u00f0: key not found\n'
+    assert r.stdout_bytes == b'javaproperties get: x\\u00f0: key not found\n'
 
 def test_cmd_get_utf8():
     r = CliRunner().invoke(javaproperties, [
         'get', '-', b'e\xC3\xB0'  # 'e\u00f0'
     ], input=INPUT)
     assert r.exit_code == 0
-    assert r.output_bytes == b'escaped\n'
+    assert r.stdout_bytes == b'escaped\n'
 
 def test_cmd_get_utf8_not_exists():
     r = CliRunner().invoke(javaproperties, [
         'get', '-', b'x\xC3\xB0'
     ], input=INPUT)
     assert r.exit_code == 1
-    assert r.output_bytes == b'javaproperties get: x\xC3\xB0: key not found\n'
+    assert r.stdout_bytes == b'javaproperties get: x\xC3\xB0: key not found\n'
 
 def test_cmd_get_latin1_output():
     r = CliRunner().invoke(javaproperties, ['get', '-', 'latin-1'], input=INPUT)
     assert r.exit_code == 0
-    assert r.output_bytes == b'\xC3\xB0\n'
+    assert r.stdout_bytes == b'\xC3\xB0\n'
 
 def test_cmd_get_bmp_output():
     r = CliRunner().invoke(javaproperties, ['get', '-', 'bmp'], input=INPUT)
     assert r.exit_code == 0
-    assert r.output_bytes == b'\xE2\x98\x83\n'
+    assert r.stdout_bytes == b'\xE2\x98\x83\n'
 
 def test_cmd_get_astral_output():
     r = CliRunner().invoke(javaproperties, ['get', '-', 'astral'], input=INPUT)
     assert r.exit_code == 0
-    assert r.output_bytes == b'\xF0\x9F\x90\x90\n'
+    assert r.stdout_bytes == b'\xF0\x9F\x90\x90\n'
 
 @pytest.mark.skipif(sys.version_info[0] > 2, reason='Python 2 only')
 def test_cmd_get_bad_surrogate_output_py2():
@@ -97,7 +97,7 @@ def test_cmd_get_bad_surrogate_output_py2():
         'get', '-', 'bad-surrogate'
     ], input=INPUT)
     assert r.exit_code == 0
-    assert r.output_bytes == b'\xED\xB0\x90\xED\xA0\xBD\n'
+    assert r.stdout_bytes == b'\xED\xB0\x90\xED\xA0\xBD\n'
 
 @pytest.mark.xfail(reason='https://github.com/pallets/click/issues/705')
 @pytest.mark.skipif(sys.version_info[0] < 3, reason='Python 3 only')
@@ -106,7 +106,7 @@ def test_cmd_get_bad_surrogate_output_py3():
         'get', '-', 'bad-surrogate'
     ], input=INPUT)
     assert r.exit_code == 0
-    assert r.output_bytes == b'??\n'
+    assert r.stdout_bytes == b'??\n'
 
 
 # --encoding

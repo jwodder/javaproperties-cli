@@ -3,12 +3,14 @@ from   javaproperties_cli.fromjson import json2properties
 
 TOPLEVEL_ERRMSG = b'''\
 Usage: json2properties [OPTIONS] [INFILE] [OUTFILE]
+Try "json2properties -h" for help.
 
 Error: Only dicts can be converted to .properties
 '''
 
 BADVAL_ERRMSG = b'''\
 Usage: json2properties [OPTIONS] [INFILE] [OUTFILE]
+Try "json2properties -h" for help.
 
 Error: Dictionary values must be scalars, not lists or dicts
 '''
@@ -16,7 +18,7 @@ Error: Dictionary values must be scalars, not lists or dicts
 def test_json2properties_empty():
     r = CliRunner().invoke(json2properties, input=b'{}')
     assert r.exit_code == 0
-    assert r.output_bytes == b'#Mon Nov 07 15:29:40 EST 2016\n'
+    assert r.stdout_bytes == b'#Mon Nov 07 15:29:40 EST 2016\n'
 
 def test_json2properties_simple():
     r = CliRunner().invoke(json2properties, input=b'''{
@@ -25,7 +27,7 @@ def test_json2properties_simple():
         "zebra": "apple"
     }''')
     assert r.exit_code == 0
-    assert r.output_bytes == b'''\
+    assert r.stdout_bytes == b'''\
 #Mon Nov 07 15:29:40 EST 2016
 foo=bar
 key=value
@@ -40,7 +42,7 @@ def test_json2properties_nonstring():
         "answer": 42
     }''')
     assert r.exit_code == 0
-    assert r.output_bytes == b'''\
+    assert r.stdout_bytes == b'''\
 #Mon Nov 07 15:29:40 EST 2016
 answer=42
 no=false
@@ -53,7 +55,7 @@ def test_json2properties_float():
         "pi": 3.14159265358979323846264338327950288419716939937510582097494459
     }''')
     assert r.exit_code == 0
-    assert r.output_bytes == b'''\
+    assert r.stdout_bytes == b'''\
 #Mon Nov 07 15:29:40 EST 2016
 pi=3.14159265358979323846264338327950288419716939937510582097494459
 '''
@@ -65,7 +67,7 @@ def test_json2properties_toplevel_array():
         "zebra": "apple"
     }]''')
     assert r.exit_code != 0
-    assert r.output_bytes == TOPLEVEL_ERRMSG
+    assert r.stdout_bytes == TOPLEVEL_ERRMSG
 
 def test_json2properties_toplevel_string():
     r = CliRunner().invoke(
@@ -73,27 +75,27 @@ def test_json2properties_toplevel_string():
         input=br'"{\"key\": \"value\", \"foo\": \"bar\", \"zebra\": \"apple\"}"'
     )
     assert r.exit_code != 0
-    assert r.output_bytes == TOPLEVEL_ERRMSG
+    assert r.stdout_bytes == TOPLEVEL_ERRMSG
 
 def test_json2properties_toplevel_int():
     r = CliRunner().invoke(json2properties, input=b'42\n')
     assert r.exit_code != 0
-    assert r.output_bytes == TOPLEVEL_ERRMSG
+    assert r.stdout_bytes == TOPLEVEL_ERRMSG
 
 def test_json2properties_toplevel_float():
     r = CliRunner().invoke(json2properties, input=b'3.14\n')
     assert r.exit_code != 0
-    assert r.output_bytes == TOPLEVEL_ERRMSG
+    assert r.stdout_bytes == TOPLEVEL_ERRMSG
 
 def test_json2properties_toplevel_true():
     r = CliRunner().invoke(json2properties, input=b'true\n')
     assert r.exit_code != 0
-    assert r.output_bytes == TOPLEVEL_ERRMSG
+    assert r.stdout_bytes == TOPLEVEL_ERRMSG
 
 def test_json2properties_toplevel_null():
     r = CliRunner().invoke(json2properties, input=b'null\n')
     assert r.exit_code != 0
-    assert r.output_bytes == TOPLEVEL_ERRMSG
+    assert r.stdout_bytes == TOPLEVEL_ERRMSG
 
 def test_json2properties_array_val():
     r = CliRunner().invoke(json2properties, input=b'''{
@@ -101,7 +103,7 @@ def test_json2properties_array_val():
         "foo": "bar"
     }''')
     assert r.exit_code != 0
-    assert r.output_bytes == BADVAL_ERRMSG
+    assert r.stdout_bytes == BADVAL_ERRMSG
 
 def test_json2properties_dict_val():
     r = CliRunner().invoke(json2properties, input=b'''{
@@ -109,7 +111,7 @@ def test_json2properties_dict_val():
         "foo": "bar"
     }''')
     assert r.exit_code != 0
-    assert r.output_bytes == BADVAL_ERRMSG
+    assert r.stdout_bytes == BADVAL_ERRMSG
 
 def test_json2properties_escaped_nonascii_input():
     r = CliRunner().invoke(json2properties, input=b'''{
@@ -121,7 +123,7 @@ def test_json2properties_escaped_nonascii_input():
         "\\uD83D\\uDC10": "goat"
     }''')
     assert r.exit_code == 0
-    assert r.output_bytes == b'''\
+    assert r.stdout_bytes == b'''\
 #Mon Nov 07 15:29:40 EST 2016
 edh=\\u00f0
 goat=\\ud83d\\udc10
@@ -141,7 +143,7 @@ def test_json2properties_utf8_input():
         "\xF0\x9F\x90\x90": "goat"
     }''')
     assert r.exit_code == 0
-    assert r.output_bytes == b'''\
+    assert r.stdout_bytes == b'''\
 #Mon Nov 07 15:29:40 EST 2016
 edh=\\u00f0
 goat=\\ud83d\\udc10
@@ -158,7 +160,7 @@ def test_json2properties_separator():
         "zebra": "apple"
     }''')
     assert r.exit_code == 0
-    assert r.output_bytes == b'''\
+    assert r.stdout_bytes == b'''\
 #Mon Nov 07 15:29:40 EST 2016
 foo\t:  bar
 key\t:  value

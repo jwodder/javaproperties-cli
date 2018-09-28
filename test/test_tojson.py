@@ -4,12 +4,12 @@ from   javaproperties_cli.tojson import properties2json
 def test_properties2json_empty():
     r = CliRunner().invoke(properties2json, input=b'')
     assert r.exit_code == 0
-    assert r.output_bytes == b'{}\n'
+    assert r.stdout_bytes == b'{}\n'
 
 def test_properties2json_comment_only():
     r = CliRunner().invoke(properties2json, input=b'#This is a comment.\n')
     assert r.exit_code == 0
-    assert r.output_bytes == b'{}\n'
+    assert r.stdout_bytes == b'{}\n'
 
 def test_properties2json_simple():
     r = CliRunner().invoke(properties2json, input=b'''
@@ -19,7 +19,7 @@ foo: bar
 zebra apple
 ''')
     assert r.exit_code == 0
-    assert r.output_bytes == b'''{
+    assert r.stdout_bytes == b'''{
     "foo": "bar",
     "key": "value",
     "zebra": "apple"
@@ -35,7 +35,7 @@ zebra null
 true=false
 ''')
     assert r.exit_code == 0
-    assert r.output_bytes == b'''{
+    assert r.stdout_bytes == b'''{
     "foo": "3.14",
     "key": "42",
     "true": "false",
@@ -50,7 +50,7 @@ empty=
 missing
 ''')
     assert r.exit_code == 0
-    assert r.output_bytes == b'''{
+    assert r.stdout_bytes == b'''{
     "empty": "",
     "missing": ""
 }
@@ -67,7 +67,7 @@ goat: \\uD83D\\uDC10
 \\u2603: snowman
 ''')
     assert r.exit_code == 0
-    assert r.output_bytes == b'''{
+    assert r.stdout_bytes == b'''{
     "edh": "\\u00f0",
     "goat": "\\ud83d\\udc10",
     "snowman": "\\u2603",
@@ -88,7 +88,7 @@ goat: \xF0\x9F\x90\x90
 \xE2\x98\x83: snowman
 ''')
     assert r.exit_code == 0
-    assert r.output_bytes == b'''{
+    assert r.stdout_bytes == b'''{
     "edh": "\\u00c3\\u00b0",
     "goat": "\\u00f0\\u009f\\u0090\\u0090",
     "snowman": "\\u00e2\\u0098\\u0083",
@@ -109,7 +109,7 @@ goat: \xF0\x9F\x90\x90
 \xE2\x98\x83: snowman
 ''')
     assert r.exit_code == 0
-    assert r.output_bytes == b'''{
+    assert r.stdout_bytes == b'''{
     "edh": "\\u00f0",
     "goat": "\\ud83d\\udc10",
     "snowman": "\\u2603",
@@ -130,7 +130,7 @@ goat: \U0001F410
 \u2603: snowman
 '''.encode('UTF-16BE'))
     assert r.exit_code == 0
-    assert r.output_bytes == b'''{
+    assert r.stdout_bytes == b'''{
     "edh": "\\u00f0",
     "goat": "\\ud83d\\udc10",
     "snowman": "\\u2603",
@@ -149,7 +149,7 @@ zebra apple
 key=lock
 ''')
     assert r.exit_code == 0
-    assert r.output_bytes == b'''{
+    assert r.stdout_bytes == b'''{
     "foo": "bar",
     "key": "lock",
     "zebra": "apple"

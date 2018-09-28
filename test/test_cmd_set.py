@@ -18,7 +18,7 @@ def test_cmd_set_exists():
         'set', '--preserve-timestamp', '-', 'key', 'other value'
     ], input=INPUT)
     assert r.exit_code == 0
-    assert r.output_bytes == b'''\
+    assert r.stdout_bytes == b'''\
 foo: bar
 key=other value
 zebra apple
@@ -35,7 +35,7 @@ def test_cmd_set_not_exists():
         'set', '--preserve-timestamp', '-', 'nonexistent', 'mu'
     ], input=INPUT)
     assert r.exit_code == 0
-    assert r.output_bytes == b'''\
+    assert r.stdout_bytes == b'''\
 foo: bar
 key = value
 zebra apple
@@ -53,7 +53,7 @@ def test_cmd_set_escaped_exists():
         'set', '--preserve-timestamp', '--escaped', '-', 'e\\u00F0', '\\u00A1new!'
     ], input=INPUT)
     assert r.exit_code == 0
-    assert r.output_bytes == b'''\
+    assert r.stdout_bytes == b'''\
 foo: bar
 key = value
 zebra apple
@@ -70,7 +70,7 @@ def test_cmd_set_escaped_not_exists():
         'set', '--preserve-timestamp', '--escaped', '-', 'x\\u00F0', '\\u00A1new!'
     ], input=INPUT)
     assert r.exit_code == 0
-    assert r.output_bytes == b'''\
+    assert r.stdout_bytes == b'''\
 foo: bar
 key = value
 zebra apple
@@ -88,7 +88,7 @@ def test_cmd_set_not_escaped_exists():
         'set', '--preserve-timestamp', '-', 'e\\u00f0', '\\u00A1new!'
     ], input=INPUT)
     assert r.exit_code == 0
-    assert r.output_bytes == b'''\
+    assert r.stdout_bytes == b'''\
 foo: bar
 key = value
 zebra apple
@@ -105,7 +105,7 @@ def test_cmd_set_not_escaped_not_exists():
         'set', '--preserve-timestamp', '-', 'x\\u00F0', '\\u00A1new!'
     ], input=INPUT)
     assert r.exit_code == 0
-    assert r.output_bytes == b'''\
+    assert r.stdout_bytes == b'''\
 foo: bar
 key = value
 zebra apple
@@ -123,7 +123,7 @@ def test_cmd_set_utf8_exists():
         'set', '--preserve-timestamp', '-', b'e\xC3\xB0', b'\xC2\xA1new!'
     ], input=INPUT)
     assert r.exit_code == 0
-    assert r.output_bytes == b'''\
+    assert r.stdout_bytes == b'''\
 foo: bar
 key = value
 zebra apple
@@ -140,7 +140,7 @@ def test_cmd_set_utf8_not_exists():
         'set', '--preserve-timestamp', '-', b'x\xC3\xB0', b'\xC2\xA1new!'
     ], input=INPUT)
     assert r.exit_code == 0
-    assert r.output_bytes == b'''\
+    assert r.stdout_bytes == b'''\
 foo: bar
 key = value
 zebra apple

@@ -11,7 +11,7 @@ Visit <https://github.com/jwodder/javaproperties-cli> or
 <http://javaproperties-cli.rtfd.io> for more information.
 """
 
-__version__      = '0.4.1'
+__version__      = '0.5.0.dev1'
 __author__       = 'John Thorvald Wodder II'
 __author_email__ = 'javaproperties-cli@varonathe.org'
 __license__      = 'MIT'

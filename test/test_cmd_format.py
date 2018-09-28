@@ -61,7 +61,7 @@ xyzzy=\\u00c3\\u00a9
 def test_cmd_format_stdin():
     r = CliRunner().invoke(javaproperties, ['format'], input=INPUT)
     assert r.exit_code == 0
-    assert r.output_bytes == OUTPUT
+    assert r.stdout_bytes == OUTPUT
 
 def test_cmd_format_file():
     runner = CliRunner()
@@ -70,7 +70,7 @@ def test_cmd_format_file():
             fp.write(INPUT)
         r = CliRunner().invoke(javaproperties, ['format', 'test.properties'])
         assert r.exit_code == 0
-        assert r.output_bytes == OUTPUT
+        assert r.stdout_bytes == OUTPUT
 
 # encoding
 # separator
