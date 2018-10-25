@@ -10,14 +10,17 @@
     :target: https://codecov.io/gh/jwodder/javaproperties-cli
 
 .. image:: https://img.shields.io/pypi/pyversions/javaproperties-cli.svg
-    :target: https://pypi.python.org/pypi/javaproperties-cli
+    :target: https://pypi.org/project/javaproperties-cli
 
 .. image:: https://img.shields.io/github/license/jwodder/javaproperties-cli.svg?maxAge=2592000
     :target: https://opensource.org/licenses/MIT
     :alt: MIT License
 
+.. image:: https://img.shields.io/badge/Say%20Thanks-!-1EAEDB.svg
+    :target: https://saythanks.io/to/jwodder
+
 `GitHub <https://github.com/jwodder/javaproperties-cli>`_
-| `PyPI <https://pypi.python.org/pypi/javaproperties-cli>`_
+| `PyPI <https://pypi.org/project/javaproperties-cli>`_
 | `Documentation <https://javaproperties-cli.readthedocs.io>`_
 | `Issues <https://github.com/jwodder/javaproperties-cli/issues>`_
 
