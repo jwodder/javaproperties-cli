@@ -1,5 +1,6 @@
 v0.5.0 (in development)
 -----------------------
+- Include installation instructions and GitHub links in the Read the Docs site
 
 v0.4.1 (2018-09-18)
 -------------------
