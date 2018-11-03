@@ -167,6 +167,22 @@ key\t:  value
 zebra\t:  apple
 '''
 
+def test_json2properties_comment():
+    r = CliRunner().invoke(json2properties, ['-c', 'This is a comment.'],
+                           input=b'''{
+        "key": "value",
+        "foo": "bar",
+        "zebra": "apple"
+    }''')
+    assert r.exit_code == 0
+    assert r.stdout_bytes == b'''\
+#This is a comment.
+#Mon Nov 07 15:29:40 EST 2016
+foo=bar
+key=value
+zebra=apple
+'''
+
 # invalid JSON (This includes invalid surrogate pairs in Python 2.6 but not in
 # other versions)
 # UTF-16 input

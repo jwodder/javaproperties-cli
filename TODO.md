@@ -1,5 +1,5 @@
 - Write tests
-    - Handle the fact that `output_bytes` will contain CR LF line endings (I
+    - Handle the fact that `stdout_bytes` will contain CR LF line endings (I
       think) on Windows
     - Test the programs' nontrivial components (e.g., `setproperties`) in
       isolation?
@@ -21,7 +21,8 @@
     - Give `select` an option for preserving formatting? (Preserve by default?)
     - `select`: Don't output a timestamp if none of the given keys are defined?
     - Give `get` an option for escaping output values?
-    - Give `format` an option for setting the comment in the output?
+    - Give `format` (and `set`? `select`? `delete`?) an option for setting the
+      comment in the output?
     - `set` and `delete`: Try to only modify the timestamp if an actual change
       is made
         - This will require eliminating the whole "streaming editing" thing and
@@ -40,4 +41,4 @@
   updating one properties file based on another)
 - Give `properties2json` and `json2properties` options for preserving the order
   of the input keys
-- Give `json2properties` an option for setting the comment?
+- Change `json2properties` to preserve the input order of the keys instead?

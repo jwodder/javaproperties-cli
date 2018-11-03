@@ -51,6 +51,12 @@ OPTIONS
 
 .. program:: json2properties
 
+.. option:: -c <comment>, --comment <comment>
+
+    .. versionadded:: 0.5.0
+
+    Show the given string as a comment at the top of the output
+
 .. option:: -E <encoding>, --encoding <encoding>
 
     Use ``<encoding>`` as the output encoding; default value: ``iso-8859-1``
@@ -71,13 +77,14 @@ from   six            import string_types, iteritems
 from   .util          import command, encoding_option, outfile_type
 
 @command()
+@click.option('-c', '--comment', help='Set comment in output')
 @encoding_option
 @click.option('-s', '--separator', default='=', show_default=True,
               help='Key-value separator to use in output')
 @click.argument('infile', type=click.File('r'), default='-')
 @click.argument('outfile', type=outfile_type, default='-')
 @click.pass_context
-def json2properties(ctx, infile, outfile, separator, encoding):
+def json2properties(ctx, infile, outfile, separator, encoding, comment):
     """Convert a JSON object to a Java .properties file"""
     with infile:
         props = json.load(infile, parse_float=Decimal)
@@ -96,7 +103,7 @@ def json2properties(ctx, infile, outfile, separator, encoding):
             strprops.append((k, json.dumps(v)))
     strprops.sort()
     with click.open_file(outfile, 'w', encoding=encoding) as fp:
-        dump(strprops, fp, separator=separator)
+        dump(strprops, fp, separator=separator, comments=comment)
 
 if __name__ == '__main__':
     json2properties()
