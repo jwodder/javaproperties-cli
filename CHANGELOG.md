@@ -1,6 +1,7 @@
 v0.5.0 (in development)
 -----------------------
-- Include installation instructions and GitHub links in the Read the Docs site
+- Include installation instructions, GitHub links, and changelog in the Read
+  the Docs site
 - Gave `json2properties` a `--comment <comment>` option
 
 v0.4.1 (2018-09-18)

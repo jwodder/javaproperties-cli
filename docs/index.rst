@@ -24,6 +24,7 @@ line-oriented format, not the XML variant.
     javaproperties
     json2properties
     properties2json
+    changelog
 
 
 Installation
