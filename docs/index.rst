@@ -8,6 +8,7 @@ javaproperties-cli — Command-line manipulation of Java .properties files
 | `PyPI <https://pypi.org/project/javaproperties-cli>`_
 | `Documentation <https://javaproperties-cli.readthedocs.io>`_
 | `Issues <https://github.com/jwodder/javaproperties-cli/issues>`_
+| :doc:`Changelog <changelog>`
 
 `!javaproperties-cli` is a wrapper around the `javaproperties` package (from
 which it was split off) that provides programs for basic command-line

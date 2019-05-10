@@ -23,6 +23,7 @@
 | `PyPI <https://pypi.org/project/javaproperties-cli>`_
 | `Documentation <https://javaproperties-cli.readthedocs.io>`_
 | `Issues <https://github.com/jwodder/javaproperties-cli/issues>`_
+| `Changelog <https://github.com/jwodder/javaproperties-cli/blob/master/CHANGELOG.md>`_
 
 ``javaproperties-cli`` is a wrapper around the |javaproperties|_ package (from
 which it was split off) that provides programs for basic command-line
