@@ -3,6 +3,7 @@ v0.5.0 (in development)
 - Include installation instructions, GitHub links, and changelog in the Read
   the Docs site
 - Gave `json2properties` a `--comment <comment>` option
+- Support Python 3.8
 
 v0.4.1 (2018-09-18)
 -------------------
