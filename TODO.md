@@ -41,4 +41,5 @@
   updating one properties file based on another)
 - Give `properties2json` and `json2properties` options for preserving the order
   of the input keys
-- Change `json2properties` to preserve the input order of the keys instead?
+    - Make them do this by default, with `--sort-keys` options added for the
+      old behavior?

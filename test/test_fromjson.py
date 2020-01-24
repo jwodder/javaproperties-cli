@@ -187,3 +187,4 @@ zebra=apple
 # other versions)
 # UTF-16 input
 # Latin-1 input? (treated as invalid UTF-8 by `json.load`?)
+# Test with actual files as infile & outfile

@@ -157,3 +157,4 @@ key=lock
 '''
 
 # invalid \u escape
+# Test with actual files as infile & outfile
