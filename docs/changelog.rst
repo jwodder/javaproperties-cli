@@ -1,7 +1,7 @@
 Changelog
 =========
 
-v0.5.0 (in development)
+v0.5.0 (2020-01-24)
 -----------------------
 - Include installation instructions, GitHub links, and changelog in the Read
   the Docs site
