@@ -381,7 +381,12 @@ def getselect(file, key, defaults, default_value, encoding, escaped):
             v = defaults[k]
         yield (k,v)
 
-TIMESTAMP_RGX = r'^\s*[#!]\s*\w+ \w+ [ \d]?\d \d\d:\d\d:\d\d \w* \d{4,}\s*$'
+TIMESTAMP_RGX = re.compile(
+    r'^\s*[#!]\s*\w+ \w+ [ \d]?\d \d\d:\d\d:\d\d \w* \d{4,}\s*$',
+    flags=re.U,
+)
+
+CONTINUED_RGX = re.compile(r'(?<!\\)((?:\\\\)*)\\$')
 
 def setproperties(fpin, fpout, newprops, preserve_timestamp=False,
                   separator='='):
@@ -399,7 +404,7 @@ def setproperties(fpin, fpout, newprops, preserve_timestamp=False,
                     if preserve_timestamp:
                         print(prevsrc, end='', file=fpout)
                     else:
-                        if not re.match(TIMESTAMP_RGX, prevsrc, flags=re.U):
+                        if not TIMESTAMP_RGX.match(prevsrc):
                             print(prevsrc, end='', file=fpout)
                         print(to_comment(java_timestamp()), file=fpout)
                 elif not preserve_timestamp:
@@ -413,7 +418,7 @@ def setproperties(fpin, fpout, newprops, preserve_timestamp=False,
         else:
             # In case the last line of the file ends with a trailing line
             # continuation:
-            src = re.sub(r'(?<!\\)((?:\\\\)*)\\$', r'\1', src)
+            src = CONTINUED_RGX.sub(r'\1', src)
             print(src.rstrip('\r\n'), file=fpout)
     for key, value in iteritems(newprops):
         if value is not None:
