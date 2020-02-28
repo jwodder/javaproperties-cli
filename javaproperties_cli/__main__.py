@@ -83,8 +83,9 @@ Options
 
 .. option:: -A, --ascii
 
-    Escape all non-ASCII characters in entries with `javaproperties.escape`.
-    This overrides :option:`--unicode`.  This is the default behavior.
+    Escape all non-ASCII characters in the output with ``\\uXXXX`` escape
+    sequences.  This overrides :option:`--unicode`.  This is the default
+    behavior.
 
 .. option:: -d <value>, --default-value <value>
 
@@ -121,9 +122,9 @@ Options
 
 .. option:: -U, --unicode
 
-    Output all non-ASCII characters in entries as-is, except for characters
-    that are not supported by the output encoding, which are escaped with
-    `javaproperties.escape` instead.  This overrides :option:`--ascii`.
+    Output non-ASCII characters literally, except for characters that are not
+    supported by the output encoding, which are escaped with ``\\uXXXX`` escape
+    sequences.  This overrides :option:`--ascii`.
 
 
 :command:`set`
@@ -227,8 +228,9 @@ Options
 
 .. option:: -A, --ascii
 
-    Escape all non-ASCII characters in entries with `javaproperties.escape`.
-    This overrides :option:`--unicode`.  This is the default behavior.
+    Escape all non-ASCII characters in the output with ``\\uXXXX`` escape
+    sequences.  This overrides :option:`--unicode`.  This is the default
+    behavior.
 
 .. option:: -E <encoding>, --encoding <encoding>
 
@@ -246,9 +248,9 @@ Options
 
 .. option:: -U, --unicode
 
-    Output all non-ASCII characters in entries as-is, except for characters
-    that are not supported by the output encoding, which are escaped with
-    `javaproperties.escape` instead.  This overrides :option:`--ascii`.
+    Output non-ASCII characters literally, except for characters that are not
+    supported by the output encoding, which are escaped with ``\\uXXXX`` escape
+    sequences.  This overrides :option:`--ascii`.
 """
 
 from   __future__     import print_function
