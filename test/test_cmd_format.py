@@ -1,62 +1,62 @@
 from   click.testing               import CliRunner
 from   javaproperties_cli.__main__ import javaproperties
 
-INPUT = b'''\
-foo = bar 
-test 
- baz = glarch \\
-    quux \\
-    # comment
-xyzzy
+INPUT = (
+    b'foo = bar \n'
+    b'test \n'
+    b' baz = glarch \\\n'
+    b'    quux \\\n'
+    b'    # comment\n'
+    b'xyzzy\n'
+    b'\n'
+    b'plugh = plo\\\n'
+    b'    ver \\\n'
+    b'        \\\n'
+    b'    stuff \\\n'
+    b'\n'
+    b'    dwarf\n'
+    b'\n'
+    b'  \\\n'
+    b'   quux\n'
+    b'\n'
+    b'xyzzy = \xC3\xA9\n'
+    b'\n'
+    b'  \\\n'
+    b'#: after hash\n'
+    b'# = bar\n'
+    b'\n'
+    b'horizontal\\ttab = eight spaces\n'
+    b'line\\nfeed = go down one\n'
+    b'carriage\\rreturn = go to start of line\n'
+    b'goat = \\uD83D\\uDC10\n'
+    b'taog = \\uDC10\\uD83D\n'
+    b'space = \\ \\ \\ \n'
+    b'newline = \\n\n'
+    b'latin1 = \\u00e9\n'
+    b'\n'
+    b'a=b\\\n'
+)
 
-plugh = plo\\
-    ver \\
-        \\
-    stuff \\
-
-    dwarf
-
-  \\
-   quux
-
-xyzzy = \xC3\xA9
-
-  \\
-#: after hash
-# = bar
-
-horizontal\\ttab = eight spaces
-line\\nfeed = go down one
-carriage\\rreturn = go to start of line
-goat = \\uD83D\\uDC10
-taog = \\uDC10\\uD83D
-space = \\ \\ \\ 
-newline = \\n
-latin1 = \\u00e9
-
-a=b\\
-'''
-
-OUTPUT = b'''\
-#Mon Nov 07 15:29:40 EST 2016
-\\#=after hash
-a=b
-baz=glarch quux \\# comment
-carriage\\rreturn=go to start of line
-dwarf=
-foo=bar 
-goat=\\ud83d\\udc10
-horizontal\\ttab=eight spaces
-latin1=\\u00e9
-line\\nfeed=go down one
-newline=\\n
-plugh=plover stuff 
-quux=
-space=\\   
-taog=\\udc10\\ud83d
-test=
-xyzzy=\\u00c3\\u00a9
-'''
+OUTPUT = (
+    b'#Mon Nov 07 15:29:40 EST 2016\n'
+    b'\\#=after hash\n'
+    b'a=b\n'
+    b'baz=glarch quux \\# comment\n'
+    b'carriage\\rreturn=go to start of line\n'
+    b'dwarf=\n'
+    b'foo=bar \n'
+    b'goat=\\ud83d\\udc10\n'
+    b'horizontal\\ttab=eight spaces\n'
+    b'latin1=\\u00e9\n'
+    b'line\\nfeed=go down one\n'
+    b'newline=\\n\n'
+    b'plugh=plover stuff \n'
+    b'quux=\n'
+    b'space=\\   \n'
+    b'taog=\\udc10\\ud83d\n'
+    b'test=\n'
+    b'xyzzy=\\u00c3\\u00a9\n'
+)
 
 def test_cmd_format_stdin():
     r = CliRunner().invoke(javaproperties, ['format'], input=INPUT)
