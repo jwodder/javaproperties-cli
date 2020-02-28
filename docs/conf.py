@@ -12,7 +12,10 @@ extensions = [
     'sphinx.ext.viewcode',
 ]
 
-autodoc_default_flags = ['members', 'undoc-members']
+autodoc_default_options = {
+    'members': True,
+    'undoc-members': True,
+}
 
 intersphinx_mapping = {
     "python": ("https://docs.python.org/3", None),
