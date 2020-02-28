@@ -5,8 +5,9 @@ v0.6.0 (in development)
 -----------------------
 - Require ``javaproperties`` 0.6.\*
 - Use ``'javapropertiesreplace'`` error handler when opening output files
-- Gave :program:`javaproperties format` ``--ascii`` and ``--unicode`` options
-  for controlling the escaping of non-ASCII characters in output
+- Gave :program:`javaproperties`' :program:`format` and :program:`select`
+  subcommands ``--ascii`` and ``--unicode`` options for controlling the
+  escaping of non-ASCII characters in output
 
 v0.5.0 (2020-01-24)
 -----------------------

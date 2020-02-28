@@ -81,6 +81,11 @@ Options
 
 .. program:: javaproperties select
 
+.. option:: -A, --ascii
+
+    Escape all non-ASCII characters in entries with `javaproperties.escape`.
+    This overrides :option:`--unicode`.  This is the default behavior.
+
 .. option:: -d <value>, --default-value <value>
 
     Default value for undefined keys.  If this option is not specified, keys
@@ -113,6 +118,12 @@ Options
 
     Use ``<sep>`` as the key-value separator in the output; default value:
     ``=``
+
+.. option:: -U, --unicode
+
+    Output all non-ASCII characters in entries as-is, except for characters
+    that are not supported by the output encoding, which are escaped with
+    `javaproperties.escape` instead.  This overrides :option:`--ascii`.
 
 
 :command:`set`
@@ -277,6 +288,8 @@ def get(ctx, default_value, defaults, escaped, file, key, encoding):
     ctx.exit(0 if ok else 1)
 
 @javaproperties.command()
+@click.option('-A/-U', '--ascii/--unicode', 'ensure_ascii', default=True,
+              help='Whether to escape non-ASCII characters or output raw')
 @click.option('-d', '--default-value', metavar='VALUE',
               help='Default value for undefined keys')
 @click.option('-D', '--defaults', metavar='FILE', type=infile_type,
@@ -292,7 +305,7 @@ def get(ctx, default_value, defaults, escaped, file, key, encoding):
 @click.argument('key', nargs=-1, required=True)
 @click.pass_context
 def select(ctx, default_value, defaults, escaped, separator, file, key,
-           encoding, outfile):
+           encoding, outfile, ensure_ascii):
     """ Extract key-value pairs from a Java .properties file """
     ok = True
     with click.open_file(
@@ -306,7 +319,8 @@ def select(ctx, default_value, defaults, escaped, separator, file, key,
                            .format(ctx.command_path, k), err=True)
                 ok = False
             else:
-                print(join_key_value(k, v, separator=separator), file=fpout)
+                print(join_key_value(k, v, separator=separator,
+                                     ensure_ascii=ensure_ascii), file=fpout)
     ctx.exit(0 if ok else 1)
 
 @javaproperties.command('set')
