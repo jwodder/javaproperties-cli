@@ -102,7 +102,9 @@ def json2properties(ctx, infile, outfile, separator, encoding, comment):
         else:
             strprops.append((k, json.dumps(v)))
     strprops.sort()
-    with click.open_file(outfile, 'w', encoding=encoding) as fp:
+    with click.open_file(
+        outfile, 'w', encoding=encoding, errors='javapropertiesreplace',
+    ) as fp:
         dump(strprops, fp, separator=separator, comments=comment)
 
 if __name__ == '__main__':

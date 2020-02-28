@@ -284,7 +284,9 @@ def select(ctx, default_value, defaults, escaped, separator, file, key,
            encoding, outfile):
     """ Extract key-value pairs from a Java .properties file """
     ok = True
-    with click.open_file(outfile, 'w', encoding=encoding) as fpout:
+    with click.open_file(
+        outfile, 'w', encoding=encoding, errors='javapropertiesreplace',
+    ) as fpout:
         print(to_comment(java_timestamp()), file=fpout)
         for k,v in getselect(file, key, defaults, default_value, encoding,
                              escaped):
@@ -316,7 +318,9 @@ def setprop(escaped, separator, outfile, preserve_timestamp, file, key, value,
         key = unescape(key)
         value = unescape(value)
     with click.open_file(file, encoding=encoding) as fpin:
-        with click.open_file(outfile, 'w', encoding=encoding) as fpout:
+        with click.open_file(
+            outfile, 'w', encoding=encoding, errors='javapropertiesreplace',
+        ) as fpout:
             setproperties(fpin, fpout, {key: value}, preserve_timestamp,
                           separator)
 
@@ -335,7 +339,9 @@ def delete(escaped, outfile, preserve_timestamp, file, key, encoding):
     if escaped:
         key = list(map(unescape, key))
     with click.open_file(file, encoding=encoding) as fpin:
-        with click.open_file(outfile, 'w', encoding=encoding) as fpout:
+        with click.open_file(
+            outfile, 'w', encoding=encoding, errors='javapropertiesreplace',
+        ) as fpout:
             setproperties(fpin, fpout, dict.fromkeys(key), preserve_timestamp)
 
 @javaproperties.command()
@@ -348,7 +354,9 @@ def delete(escaped, outfile, preserve_timestamp, file, key, encoding):
 def format(outfile, separator, file, encoding):
     """ Format/"canonicalize" a Java .properties file """
     with click.open_file(file, encoding=encoding) as fpin:
-        with click.open_file(outfile, 'w', encoding=encoding) as fpout:
+        with click.open_file(
+            outfile, 'w', encoding=encoding, errors='javapropertiesreplace',
+        ) as fpout:
             dump(load(fpin), fpout, sort_keys=True, separator=separator)
 
 def getproperties(fp, keys):

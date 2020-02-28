@@ -4,6 +4,7 @@ Changelog
 v0.6.0 (in development)
 -----------------------
 - Require ``javaproperties`` 0.6.\*
+- Use ``'javapropertiesreplace'`` error handler when opening output files
 
 v0.5.0 (2020-01-24)
 -----------------------
