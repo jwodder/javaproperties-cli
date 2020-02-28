@@ -1,6 +1,10 @@
 Changelog
 =========
 
+v0.6.0 (in development)
+-----------------------
+- Require ``javaproperties`` 0.6.\*
+
 v0.5.0 (2020-01-24)
 -----------------------
 - Include installation instructions, GitHub links, and changelog in the Read
