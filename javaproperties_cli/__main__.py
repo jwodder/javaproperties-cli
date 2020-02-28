@@ -206,13 +206,18 @@ Options
 
 Normalize the formatting of the given ``.properties`` file (or standard input
 if no file is given) and output the results.  All comments, excess whitespace,
-invalid escapes, and duplicate keys are removed, and the entries are sorted and
-converted to ASCII with `javaproperties.escape`.
+invalid escapes, and duplicate keys are removed, and the entries are sorted
+lexicographically.
 
 Options
 '''''''
 
 .. program:: javaproperties format
+
+.. option:: -A, --ascii
+
+    Escape all non-ASCII characters in entries with `javaproperties.escape`.
+    This overrides :option:`--unicode`.  This is the default behavior.
 
 .. option:: -E <encoding>, --encoding <encoding>
 
@@ -227,6 +232,12 @@ Options
 
     Use ``<sep>`` as the key-value separator in the output; default value:
     ``=``
+
+.. option:: -U, --unicode
+
+    Output all non-ASCII characters in entries as-is, except for characters
+    that are not supported by the output encoding, which are escaped with
+    `javaproperties.escape` instead.  This overrides :option:`--ascii`.
 """
 
 from   __future__     import print_function
@@ -345,19 +356,22 @@ def delete(escaped, outfile, preserve_timestamp, file, key, encoding):
             setproperties(fpin, fpout, dict.fromkeys(key), preserve_timestamp)
 
 @javaproperties.command()
+@click.option('-A/-U', '--ascii/--unicode', 'ensure_ascii', default=True,
+              help='Whether to escape non-ASCII characters or output raw')
 @encoding_option
 @click.option('-o', '--outfile', type=outfile_type, default='-',
               help='Write output to this file')
 @click.option('-s', '--separator', default='=', show_default=True,
               help='Key-value separator to use in output')
 @click.argument('file', type=infile_type, default='-')
-def format(outfile, separator, file, encoding):
+def format(outfile, separator, file, encoding, ensure_ascii):
     """ Format/"canonicalize" a Java .properties file """
     with click.open_file(file, encoding=encoding) as fpin:
         with click.open_file(
             outfile, 'w', encoding=encoding, errors='javapropertiesreplace',
         ) as fpout:
-            dump(load(fpin), fpout, sort_keys=True, separator=separator)
+            dump(load(fpin), fpout, sort_keys=True, separator=separator,
+                 ensure_ascii=ensure_ascii)
 
 def getproperties(fp, keys):
     keys = set(keys)

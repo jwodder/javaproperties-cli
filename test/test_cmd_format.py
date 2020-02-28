@@ -1,4 +1,5 @@
 from   click.testing               import CliRunner
+from   six                         import PY3
 from   javaproperties_cli.__main__ import javaproperties
 
 INPUT = (
@@ -71,6 +72,63 @@ def test_cmd_format_file():
         r = CliRunner().invoke(javaproperties, ['format', 'test.properties'])
         assert r.exit_code == 0
         assert r.stdout_bytes == OUTPUT
+
+def test_cmd_format_ascii():
+    r = CliRunner().invoke(javaproperties, ['format', '--ascii'], input=INPUT)
+    assert r.exit_code == 0
+    assert r.stdout_bytes == OUTPUT
+
+def test_cmd_format_unicode_latin1():
+    r = CliRunner().invoke(javaproperties, ['format', '--unicode'], input=INPUT)
+    assert r.exit_code == 0
+    assert r.stdout_bytes == (
+        b'#Mon Nov 07 15:29:40 EST 2016\n'
+        b'\\#=after hash\n'
+        b'a=b\n'
+        b'baz=glarch quux \\# comment\n'
+        b'carriage\\rreturn=go to start of line\n'
+        b'dwarf=\n'
+        b'foo=bar \n'
+        b'goat=\\ud83d\\udc10\n'
+        b'horizontal\\ttab=eight spaces\n'
+        b'latin1=\xE9\n'
+        b'line\\nfeed=go down one\n'
+        b'newline=\\n\n'
+        b'plugh=plover stuff \n'
+        b'quux=\n'
+        b'space=\\   \n'
+        b'taog=\\udc10\\ud83d\n'
+        b'test=\n'
+        b'xyzzy=\xC3\xA9\n'
+    )
+
+def test_cmd_format_unicode_utf8():
+    r = CliRunner().invoke(
+        javaproperties,
+        ['format', '--unicode', '--encoding=UTF-8'],
+        input=INPUT,
+    )
+    assert r.exit_code == 0
+    assert r.stdout_bytes == (
+        b'#Mon Nov 07 15:29:40 EST 2016\n'
+        b'\\#=after hash\n'
+        b'a=b\n'
+        b'baz=glarch quux \\# comment\n'
+        b'carriage\\rreturn=go to start of line\n'
+        b'dwarf=\n'
+        b'foo=bar \n'
+        b'goat=\xF0\x9F\x90\x90\n'
+        b'horizontal\\ttab=eight spaces\n'
+        b'latin1=\xC3\xA9\n'
+        b'line\\nfeed=go down one\n'
+        b'newline=\\n\n'
+        b'plugh=plover stuff \n'
+        b'quux=\n'
+        b'space=\\   \n'
+        b'taog=' + (b'\\udc10\\ud83d' if PY3 else b'\xED\xB0\x90\xEd\xA0\xBD') + b'\n'
+        b'test=\n'
+        b'xyzzy=\xC3\xA9\n'
+    )
 
 # encoding
 # separator

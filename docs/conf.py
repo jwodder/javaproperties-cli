@@ -16,7 +16,7 @@ autodoc_default_flags = ['members', 'undoc-members']
 
 intersphinx_mapping = {
     "python": ("https://docs.python.org/3", None),
-    "javaproperties": ("https://javaproperties.readthedocs.io/en/latest", None),
+    "javaproperties": ("https://javaproperties.readthedocs.io/en/stable", None),
 }
 
 exclude_patterns = ['_build']
