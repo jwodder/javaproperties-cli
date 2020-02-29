@@ -112,6 +112,25 @@ from   javaproperties_cli.tojson import properties2json
         b'}\n',
     ),
     (
+        ['--encoding', 'utf-8', '--unicode'],
+        b'#Mon Nov 07 15:29:40 EST 2016\n'
+        b'edh: \xC3\xB0\n'
+        b'snowman: \xE2\x98\x83\n'
+        b'goat: \xF0\x9F\x90\x90\n'
+        b'\xC3\xB0: edh\n'
+        b'\xF0\x9F\x90\x90: goat\n'
+        b'\xE2\x98\x83: snowman\n',
+        True,
+        b'{\n'
+        b'    "edh": "\xC3\xB0",\n'
+        b'    "goat": "\xF0\x9F\x90\x90",\n'
+        b'    "snowman": "\xE2\x98\x83",\n'
+        b'    "\xC3\xB0": "edh",\n'
+        b'    "\xE2\x98\x83": "snowman",\n'
+        b'    "\xF0\x9F\x90\x90": "goat"\n'
+        b'}\n',
+    ),
+    (
         ['--encoding', 'utf-16BE'],
         u'#Mon Nov 07 15:29:40 EST 2016\n'
         u'edh: \u00F0\n'
@@ -155,3 +174,4 @@ def test_properties2json(args, inp, success, output):
 
 # invalid \u escape
 # Test with actual files as infile & outfile
+# Test --unicode with insufficient output encoding invokes javapropertiesreplace

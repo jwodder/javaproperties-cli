@@ -5,6 +5,8 @@ v0.6.0 (in development)
 - Gave `javaproperties`' `format` and `select` subcommands `--ascii` and
   `--unicode` options for controlling the escaping of non-ASCII characters in
   output
+- Gave `properties2json` `--ascii` and `--unicode` options for controlling the
+  escaping of non-ASCII characters in output
 
 v0.5.0 (2020-01-24)
 -------------------
