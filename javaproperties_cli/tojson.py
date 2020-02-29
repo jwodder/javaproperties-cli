@@ -20,7 +20,7 @@ DESCRIPTION
 
 Convert a ``.properties`` file ``infile`` to a JSON object and write the
 results to ``outfile``.  If not specified, ``infile`` and ``outfile`` default
-to `sys.stdin` and `sys.stdout`, respectively.
+to `sys.stdin` and `sys.stdout`, respectively.  The output is encoded in UTF-8.
 
 OPTIONS
 ^^^^^^^
@@ -40,9 +40,7 @@ OPTIONS
 
 .. option:: -U, --unicode
 
-    Output non-ASCII characters literally, except for characters that are not
-    supported by the output encoding, which are escaped with ``\\uXXXX`` escape
-    sequences.  This overrides :option:`--ascii`.
+    Output non-ASCII characters literally.  This overrides :option:`--ascii`.
 """
 
 import json
@@ -60,7 +58,7 @@ def properties2json(infile, outfile, encoding, ensure_ascii):
     """Convert a Java .properties file to JSON"""
     with click.open_file(infile, encoding=encoding) as fp:
         props = load(fp)
-    with click.open_file(outfile, 'w', errors='javapropertiesreplace') as fp:
+    with click.open_file(outfile, 'w', encoding='utf-8') as fp:
         json.dump(props, fp, sort_keys=True, indent=4, separators=(',', ': '),
                   ensure_ascii=ensure_ascii)
         fp.write('\n')

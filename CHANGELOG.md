@@ -7,6 +7,7 @@ v0.6.0 (in development)
   output
 - Gave `properties2json` `--ascii` and `--unicode` options for controlling the
   escaping of non-ASCII characters in output
+- `properties2json` now always outputs UTF-8
 
 v0.5.0 (2020-01-24)
 -------------------

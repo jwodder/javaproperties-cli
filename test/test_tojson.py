@@ -174,4 +174,4 @@ def test_properties2json(args, inp, success, output):
 
 # invalid \u escape
 # Test with actual files as infile & outfile
-# Test --unicode with insufficient output encoding invokes javapropertiesreplace
+# Test that UTF-8 is still emitted when LC_ALL is not a UTF-8 locale
