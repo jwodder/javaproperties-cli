@@ -22,12 +22,18 @@ Convert a ``.properties`` file ``infile`` to a JSON object and write the
 results to ``outfile``.  If not specified, ``infile`` and ``outfile`` default
 to `sys.stdin` and `sys.stdout`, respectively.  The output is encoded in UTF-8.
 
+.. versionchanged:: 0.6.0
+    Output encoding is now always UTF-8 instead of being determined by the
+    locale.
+
 OPTIONS
 ^^^^^^^
 
 .. program:: properties2json
 
 .. option:: -A, --ascii
+
+    .. versionadded:: 0.6.0
 
     Escape all non-ASCII characters in the output with ``\\uXXXX`` escape
     sequences.  This overrides :option:`--unicode`.  This is the default
@@ -39,6 +45,8 @@ OPTIONS
     (a.k.a. Latin-1)
 
 .. option:: -U, --unicode
+
+    .. versionadded:: 0.6.0
 
     Output non-ASCII characters literally.  This overrides :option:`--ascii`.
 """

@@ -83,6 +83,8 @@ Options
 
 .. option:: -A, --ascii
 
+    .. versionadded:: 0.6.0
+
     Escape all non-ASCII characters in the output with ``\\uXXXX`` escape
     sequences.  This overrides :option:`--unicode`.  This is the default
     behavior.
@@ -121,6 +123,8 @@ Options
     ``=``
 
 .. option:: -U, --unicode
+
+    .. versionadded:: 0.6.0
 
     Output non-ASCII characters literally, except for characters that are not
     supported by the output encoding, which are escaped with ``\\uXXXX`` escape
@@ -228,6 +232,8 @@ Options
 
 .. option:: -A, --ascii
 
+    .. versionadded:: 0.6.0
+
     Escape all non-ASCII characters in the output with ``\\uXXXX`` escape
     sequences.  This overrides :option:`--unicode`.  This is the default
     behavior.
@@ -247,6 +253,8 @@ Options
     ``=``
 
 .. option:: -U, --unicode
+
+    .. versionadded:: 0.6.0
 
     Output non-ASCII characters literally, except for characters that are not
     supported by the output encoding, which are escaped with ``\\uXXXX`` escape
