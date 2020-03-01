@@ -2,9 +2,9 @@ v0.6.0 (in development)
 -----------------------
 - Require `javaproperties` 0.6.\*
 - Use `'javapropertiesreplace'` error handler when opening output files
-- Gave `javaproperties`' `format` and `select` subcommands `--ascii` and
-  `--unicode` options for controlling the escaping of non-ASCII characters in
-  output
+- Gave `javaproperties`' `format`, `select`, and `set` subcommands `--ascii`
+  and `--unicode` options for controlling the escaping of non-ASCII characters
+  in output
 - Gave `properties2json` `--ascii` and `--unicode` options for controlling the
   escaping of non-ASCII characters in output
 - `properties2json` now always outputs UTF-8

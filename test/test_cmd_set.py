@@ -8,7 +8,7 @@ INPUT = (
     b'zebra apple\n'
     b'e\\u00f0=escaped\n'
     b'e\\\\u00f0=not escaped\n'
-    b'latin-1 = \xF0\n'
+    b'latin-1 = \xC3\xB0\n'
     b'bmp = \\u2603\n'
     b'astral = \\uD83D\\uDC10\n'
     b'bad-surrogate = \\uDC10\\uD83D\n'
@@ -23,7 +23,7 @@ INPUT = (
         b'zebra apple\n'
         b'e\\u00f0=escaped\n'
         b'e\\\\u00f0=not escaped\n'
-        b'latin-1 = \xF0\n'
+        b'latin-1 = \xC3\xB0\n'
         b'bmp = \\u2603\n'
         b'astral = \\uD83D\\uDC10\n'
         b'bad-surrogate = \\uDC10\\uD83D\n',
@@ -36,7 +36,7 @@ INPUT = (
         b'zebra apple\n'
         b'e\\u00f0=escaped\n'
         b'e\\\\u00f0=not escaped\n'
-        b'latin-1 = \xF0\n'
+        b'latin-1 = \xC3\xB0\n'
         b'bmp = \\u2603\n'
         b'astral = \\uD83D\\uDC10\n'
         b'bad-surrogate = \\uDC10\\uD83D\n'
@@ -53,7 +53,39 @@ INPUT = (
         b'zebra apple\n'
         b'e\\u00f0=\\u00a1new\\!\n'
         b'e\\\\u00f0=not escaped\n'
-        b'latin-1 = \xF0\n'
+        b'latin-1 = \xC3\xB0\n'
+        b'bmp = \\u2603\n'
+        b'astral = \\uD83D\\uDC10\n'
+        b'bad-surrogate = \\uDC10\\uD83D\n',
+    ),
+    (
+        [
+            'set', '--preserve-timestamp', '--escaped', '--unicode', '-',
+            'e\\u00F0', '\\u00A1new!',
+        ],
+        0,
+        b'foo: bar\n'
+        b'key = value\n'
+        b'zebra apple\n'
+        b'e\xF0=\xA1new\\!\n'
+        b'e\\\\u00f0=not escaped\n'
+        b'latin-1 = \xC3\xB0\n'
+        b'bmp = \\u2603\n'
+        b'astral = \\uD83D\\uDC10\n'
+        b'bad-surrogate = \\uDC10\\uD83D\n',
+    ),
+    (
+        [
+            'set', '--preserve-timestamp', '--escaped', '--unicode', '-EUTF-8',
+            '-', 'e\\u00F0', '\\u00A1new!',
+        ],
+        0,
+        b'foo: bar\n'
+        b'key = value\n'
+        b'zebra apple\n'
+        b'e\xC3\xB0=\xC2\xA1new\\!\n'
+        b'e\\\\u00f0=not escaped\n'
+        b'latin-1 = \xC3\xB0\n'
         b'bmp = \\u2603\n'
         b'astral = \\uD83D\\uDC10\n'
         b'bad-surrogate = \\uDC10\\uD83D\n',
@@ -69,7 +101,7 @@ INPUT = (
         b'zebra apple\n'
         b'e\\u00f0=escaped\n'
         b'e\\\\u00f0=not escaped\n'
-        b'latin-1 = \xF0\n'
+        b'latin-1 = \xC3\xB0\n'
         b'bmp = \\u2603\n'
         b'astral = \\uD83D\\uDC10\n'
         b'bad-surrogate = \\uDC10\\uD83D\n'
@@ -83,7 +115,7 @@ INPUT = (
         b'zebra apple\n'
         b'e\\u00f0=escaped\n'
         b'e\\\\u00f0=\\\\u00A1new\\!\n'
-        b'latin-1 = \xF0\n'
+        b'latin-1 = \xC3\xB0\n'
         b'bmp = \\u2603\n'
         b'astral = \\uD83D\\uDC10\n'
         b'bad-surrogate = \\uDC10\\uD83D\n',
@@ -96,7 +128,7 @@ INPUT = (
         b'zebra apple\n'
         b'e\\u00f0=escaped\n'
         b'e\\\\u00f0=not escaped\n'
-        b'latin-1 = \xF0\n'
+        b'latin-1 = \xC3\xB0\n'
         b'bmp = \\u2603\n'
         b'astral = \\uD83D\\uDC10\n'
         b'bad-surrogate = \\uDC10\\uD83D\n'
@@ -110,7 +142,7 @@ INPUT = (
         b'zebra apple\n'
         b'e\\u00f0=\\u00a1new\\!\n'
         b'e\\\\u00f0=not escaped\n'
-        b'latin-1 = \xF0\n'
+        b'latin-1 = \xC3\xB0\n'
         b'bmp = \\u2603\n'
         b'astral = \\uD83D\\uDC10\n'
         b'bad-surrogate = \\uDC10\\uD83D\n',
@@ -123,11 +155,45 @@ INPUT = (
         b'zebra apple\n'
         b'e\\u00f0=escaped\n'
         b'e\\\\u00f0=not escaped\n'
-        b'latin-1 = \xF0\n'
+        b'latin-1 = \xC3\xB0\n'
         b'bmp = \\u2603\n'
         b'astral = \\uD83D\\uDC10\n'
         b'bad-surrogate = \\uDC10\\uD83D\n'
         b'x\\u00f0=\\u00a1new\\!\n',
+    ),
+    (
+        [
+            'set', '--preserve-timestamp', '--escaped', '--unicode',
+            '-', 'k\\u00EBy', '\\u94A5',
+        ],
+        0,
+        b'foo: bar\n'
+        b'key = value\n'
+        b'zebra apple\n'
+        b'e\\u00f0=escaped\n'
+        b'e\\\\u00f0=not escaped\n'
+        b'latin-1 = \xC3\xB0\n'
+        b'bmp = \\u2603\n'
+        b'astral = \\uD83D\\uDC10\n'
+        b'bad-surrogate = \\uDC10\\uD83D\n'
+        b'k\xEBy=\\u94a5\n'
+    ),
+    (
+        [
+            'set', '--preserve-timestamp', '--escaped', '--unicode', '-EUTF-8',
+            '-', 'k\\u00EBy', '\\u94A5',
+        ],
+        0,
+        b'foo: bar\n'
+        b'key = value\n'
+        b'zebra apple\n'
+        b'e\\u00f0=escaped\n'
+        b'e\\\\u00f0=not escaped\n'
+        b'latin-1 = \xC3\xB0\n'
+        b'bmp = \\u2603\n'
+        b'astral = \\uD83D\\uDC10\n'
+        b'bad-surrogate = \\uDC10\\uD83D\n'
+        b'k\xC3\xABy=\xE9\x92\xA5\n'
     ),
 ])
 def test_cmd_set(args, rc, output):

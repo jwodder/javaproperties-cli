@@ -112,6 +112,11 @@ INPUT = (
         b'bmp=\\u2603\n',
     ),
     (
+        ['select', '--unicode', '-', 'bmp'],
+        0,
+        b'bmp=\\u2603\n',
+    ),
+    (
         ['select', '--unicode', '-EUTF-8', '-', 'bmp'],
         0,
         b'bmp=\xE2\x98\x83\n',

@@ -147,6 +147,14 @@ Options
 
 .. program:: javaproperties set
 
+.. option:: -A, --ascii
+
+    .. versionadded:: 0.6.0
+
+    Escape all non-ASCII characters in the new key & value with ``\\uXXXX``
+    escape sequences on output.  This overrides :option:`--unicode`.  This is
+    the default behavior.
+
 .. option:: -e, --escaped
 
     Parse ``<key>`` and ``<value>`` for ``.properties``-style escape sequences
@@ -171,6 +179,14 @@ Options
     Do not modify the timestamp in the ``.properties`` file.  By default, if a
     timestamp is found, it is updated to the current time, even if the rest of
     the file is unchanged.
+
+.. option:: -U, --unicode
+
+    .. versionadded:: 0.6.0
+
+    Output non-ASCII characters in the new key & value literally, except for
+    characters that are not supported by the output encoding, which are escaped
+    with ``\\uXXXX`` escape sequences.  This overrides :option:`--ascii`.
 
 
 :command:`delete`
@@ -334,6 +350,8 @@ def select(ctx, default_value, defaults, escaped, separator, file, key,
     ctx.exit(0 if ok else 1)
 
 @javaproperties.command('set')
+@click.option('-A/-U', '--ascii/--unicode', 'ensure_ascii', default=True,
+              help='Whether to escape non-ASCII characters or output raw')
 @click.option('-e', '--escaped', is_flag=True,
               help='Parse command-line keys & values for escapes')
 @encoding_option
@@ -347,7 +365,7 @@ def select(ctx, default_value, defaults, escaped, separator, file, key,
 @click.argument('key')
 @click.argument('value')
 def setprop(escaped, separator, outfile, preserve_timestamp, file, key, value,
-            encoding):
+            encoding, ensure_ascii):
     """ Set values in a Java .properties file """
     if escaped:
         key = unescape(key)
@@ -357,7 +375,7 @@ def setprop(escaped, separator, outfile, preserve_timestamp, file, key, value,
             outfile, 'w', encoding=encoding, errors='javapropertiesreplace',
         ) as fpout:
             setproperties(fpin, fpout, {key: value}, preserve_timestamp,
-                          separator)
+                          separator, ensure_ascii)
 
 @javaproperties.command()
 @click.option('-e', '--escaped', is_flag=True,
@@ -435,7 +453,7 @@ TIMESTAMP_RGX = re.compile(
 CONTINUED_RGX = re.compile(r'(?<!\\)((?:\\\\)*)\\$')
 
 def setproperties(fpin, fpout, newprops, preserve_timestamp=False,
-                  separator='='):
+                  separator='=', ensure_ascii=True):
     in_header = True
     prevsrc = None
     for k, _, src in parse(fpin):
@@ -458,8 +476,8 @@ def setproperties(fpin, fpout, newprops, preserve_timestamp=False,
                 in_header = False
         if k in newprops:
             if newprops[k] is not None:
-                print(join_key_value(k, newprops[k], separator=separator),
-                      file=fpout)
+                print(join_key_value(k, newprops[k], separator=separator,
+                                     ensure_ascii=ensure_ascii), file=fpout)
                 newprops[k] = None
         else:
             # In case the last line of the file ends with a trailing line
@@ -468,7 +486,8 @@ def setproperties(fpin, fpout, newprops, preserve_timestamp=False,
             print(src.rstrip('\r\n'), file=fpout)
     for key, value in iteritems(newprops):
         if value is not None:
-            print(join_key_value(key, value, separator=separator), file=fpout)
+            print(join_key_value(key, value, separator=separator,
+                                 ensure_ascii=ensure_ascii), file=fpout)
 
 if __name__ == '__main__':
     javaproperties()
