@@ -278,10 +278,9 @@ Options
 """
 
 from   __future__     import print_function
-import re
 import click
-from   javaproperties import load, parse, unescape, dump, join_key_value, \
-                                java_timestamp, to_comment
+from   javaproperties import KeyValue, load, parse, unescape, dump, \
+                                join_key_value, java_timestamp, to_comment
 from   six            import iteritems
 from   .util          import command, encoding_option, infile_type, outfile_type
 
@@ -445,45 +444,44 @@ def getselect(file, key, defaults, default_value, encoding, escaped):
             v = defaults[k]
         yield (k,v)
 
-TIMESTAMP_RGX = re.compile(
-    r'^\s*[#!]\s*\w+ \w+ [ \d]?\d \d\d:\d\d:\d\d \w* \d{4,}\s*$',
-    flags=re.U,
-)
-
-CONTINUED_RGX = re.compile(r'(?<!\\)((?:\\\\)*)\\$')
-
 def setproperties(fpin, fpout, newprops, preserve_timestamp=False,
                   separator='=', ensure_ascii=True):
     in_header = True
-    prevsrc = None
-    for k, _, src in parse(fpin):
+    prev = None
+    for kv in parse(fpin):
         if in_header:
-            if k is None:
-                if prevsrc is not None:
-                    print(prevsrc, end='', file=fpout)
-                prevsrc = src
+            if not isinstance(kv, KeyValue):
+                if prev is not None:
+                    print(prev.source, end='', file=fpout)
+                prev = kv
                 continue
             else:
-                if prevsrc is not None:
+                if prev is not None:
                     if preserve_timestamp:
-                        print(prevsrc, end='', file=fpout)
+                        print(prev.source, end='', file=fpout)
                     else:
-                        if not TIMESTAMP_RGX.match(prevsrc):
-                            print(prevsrc, end='', file=fpout)
+                        if not prev.is_timestamp():
+                            print(prev.source, end='', file=fpout)
                         print(to_comment(java_timestamp()), file=fpout)
                 elif not preserve_timestamp:
                     print(to_comment(java_timestamp()), file=fpout)
                 in_header = False
-        if k in newprops:
-            if newprops[k] is not None:
-                print(join_key_value(k, newprops[k], separator=separator,
-                                     ensure_ascii=ensure_ascii), file=fpout)
-                newprops[k] = None
+        if kv.key in newprops:
+            if newprops[kv.key] is not None:
+                print(
+                    join_key_value(
+                        kv.key,
+                        newprops[kv.key],
+                        separator=separator,
+                        ensure_ascii=ensure_ascii,
+                    ),
+                    file=fpout,
+                )
+                newprops[kv.key] = None
         else:
-            # In case the last line of the file ends with a trailing line
-            # continuation:
-            src = CONTINUED_RGX.sub(r'\1', src)
-            print(src.rstrip('\r\n'), file=fpout)
+            # Use `source_stripped` in case the last line of the file ends with
+            # a trailing line continuation:
+            print(kv.source_stripped, file=fpout)
     for key, value in iteritems(newprops):
         if value is not None:
             print(join_key_value(key, value, separator=separator,

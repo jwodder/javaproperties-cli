@@ -5,8 +5,6 @@
       isolation?
     - Test on Windows with Appveyor?
 - Add docstrings for the private functions
-- Restrict `TIMESTAMP_RGX` to only match C locale/ASCII timestamps?
-- Restrict `TIMESTAMP_RGX` to only consider `[ \t\f]` as whitespace?
 - Add a test environment that installs the latest development version of
   `javaproperties`
 - (Re)document how the commands can be invoked with Python's `-m` option
