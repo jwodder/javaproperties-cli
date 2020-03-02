@@ -5,9 +5,11 @@ v0.6.0 (in development)
 - Gave `javaproperties`' `format`, `select`, and `set` subcommands `--ascii`
   and `--unicode` options for controlling the escaping of non-ASCII characters
   in output
-- Gave `properties2json` `--ascii` and `--unicode` options for controlling the
-  escaping of non-ASCII characters in output
+- Gave `properties2json` and `json2properties` `--ascii` and `--unicode`
+  options for controlling the escaping of non-ASCII characters in output
 - `properties2json` now always outputs UTF-8
+- By default, comments output by `json2properties` now have all non-ASCII
+  characters escaped rather than all non-Latin-1 characters
 
 v0.5.0 (2020-01-24)
 -------------------

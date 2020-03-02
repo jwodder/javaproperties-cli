@@ -103,6 +103,81 @@ from   javaproperties_cli.fromjson import json2properties
         b'key=value\n'
         b'zebra=apple\n',
     ),
+    (
+        b'{\n'
+        b'    "edh": "\\u00F0",\n'
+        b'    "snowman": "\\u2603",\n'
+        b'    "goat": "\\uD83D\\uDC10",\n'
+        b'    "\\u00F0": "edh",\n'
+        b'    "\\u2603": "snowman",\n'
+        b'    "\\uD83D\\uDC10": "goat"\n'
+        b'}\n',
+        ["--unicode"],
+        b'#Mon Nov 07 15:29:40 EST 2016\n'
+        b'edh=\xF0\n'
+        b'goat=\\ud83d\\udc10\n'
+        b'snowman=\\u2603\n'
+        b'\xF0=edh\n'
+        b'\\u2603=snowman\n'
+        b'\\ud83d\\udc10=goat\n',
+    ),
+    (
+        b'{\n'
+        b'    "edh": "\\u00F0",\n'
+        b'    "snowman": "\\u2603",\n'
+        b'    "goat": "\\uD83D\\uDC10",\n'
+        b'    "\\u00F0": "edh",\n'
+        b'    "\\u2603": "snowman",\n'
+        b'    "\\uD83D\\uDC10": "goat"\n'
+        b'}\n',
+        ["--unicode", "--encoding", "utf-8"],
+        b'#Mon Nov 07 15:29:40 EST 2016\n'
+        b'edh=\xC3\xB0\n'
+        b'goat=\xF0\x9F\x90\x90\n'
+        b'snowman=\xE2\x98\x83\n'
+        b'\xC3\xB0=edh\n'
+        b'\xE2\x98\x83=snowman\n'
+        b'\xF0\x9F\x90\x90=goat\n'
+    ),
+    (
+        b'{\n'
+        b'    "key": "value",\n'
+        b'    "foo": "bar",\n'
+        b'    "zebra": "apple"\n'
+        b'}\n',
+        ['-c', b'Latin-1: \xC3\xB0, Unicode: \xE2\x98\x83'],
+        b'#Latin-1: \\u00f0, Unicode: \\u2603\n'
+        b'#Mon Nov 07 15:29:40 EST 2016\n'
+        b'foo=bar\n'
+        b'key=value\n'
+        b'zebra=apple\n',
+    ),
+    (
+        b'{\n'
+        b'    "key": "value",\n'
+        b'    "foo": "bar",\n'
+        b'    "zebra": "apple"\n'
+        b'}\n',
+        ['-c', b'Latin-1: \xC3\xB0, Unicode: \xE2\x98\x83', '--unicode'],
+        b'#Latin-1: \xF0, Unicode: \\u2603\n'
+        b'#Mon Nov 07 15:29:40 EST 2016\n'
+        b'foo=bar\n'
+        b'key=value\n'
+        b'zebra=apple\n',
+    ),
+    (
+        b'{\n'
+        b'    "key": "value",\n'
+        b'    "foo": "bar",\n'
+        b'    "zebra": "apple"\n'
+        b'}\n',
+        ['-c', b'Latin-1: \xC3\xB0, Unicode: \xE2\x98\x83', '-U', '-Eutf-8'],
+        b'#Latin-1: \xC3\xB0, Unicode: \xE2\x98\x83\n'
+        b'#Mon Nov 07 15:29:40 EST 2016\n'
+        b'foo=bar\n'
+        b'key=value\n'
+        b'zebra=apple\n',
+    ),
 ])
 def test_json2properties(args, inp, output):
     r = CliRunner().invoke(json2properties, args, input=inp)
@@ -158,6 +233,4 @@ Error: Dictionary values must be scalars, not lists or dicts
 '''
 
 # invalid JSON
-# UTF-16 input
-# Latin-1 input? (treated as invalid UTF-8 by `json.load`?)
 # Test with actual files as infile & outfile

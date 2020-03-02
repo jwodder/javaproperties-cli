@@ -51,6 +51,14 @@ OPTIONS
 
 .. program:: json2properties
 
+.. option:: -A, --ascii
+
+    .. versionadded:: 0.6.0
+
+    Escape all non-ASCII characters in the output with ``\\uXXXX`` escape
+    sequences.  This overrides :option:`--unicode`.  This is the default
+    behavior.
+
 .. option:: -c <comment>, --comment <comment>
 
     .. versionadded:: 0.5.0
@@ -60,13 +68,20 @@ OPTIONS
 .. option:: -E <encoding>, --encoding <encoding>
 
     Use ``<encoding>`` as the output encoding; default value: ``iso-8859-1``
-    (a.k.a. Latin-1).  (As all output is *currently* always pure ASCII, this
-    option is not very useful, but there are plans to make it useful.)
+    (a.k.a. Latin-1)
 
 .. option:: -s <sep>, --separator <sep>
 
     Use ``<sep>`` as the key-value separator in the output; default value:
     ``=``
+
+.. option:: -U, --unicode
+
+    .. versionadded:: 0.6.0
+
+    Output non-ASCII characters literally, except for characters that are not
+    supported by the output encoding, which are escaped with ``\\uXXXX`` escape
+    sequences.  This overrides :option:`--ascii`.
 """
 
 from   decimal        import Decimal
@@ -77,6 +92,8 @@ from   six            import string_types, iteritems
 from   .util          import command, encoding_option, outfile_type
 
 @command()
+@click.option('-A/-U', '--ascii/--unicode', 'ensure_ascii', default=True,
+              help='Whether to escape non-ASCII characters or output raw')
 @click.option('-c', '--comment', help='Set comment in output')
 @encoding_option
 @click.option('-s', '--separator', default='=', show_default=True,
@@ -84,7 +101,8 @@ from   .util          import command, encoding_option, outfile_type
 @click.argument('infile', type=click.File('r'), default='-')
 @click.argument('outfile', type=outfile_type, default='-')
 @click.pass_context
-def json2properties(ctx, infile, outfile, separator, encoding, comment):
+def json2properties(ctx, infile, outfile, separator, encoding, comment,
+                    ensure_ascii):
     """Convert a JSON object to a Java .properties file"""
     with infile:
         props = json.load(infile, parse_float=Decimal)
@@ -105,7 +123,8 @@ def json2properties(ctx, infile, outfile, separator, encoding, comment):
     with click.open_file(
         outfile, 'w', encoding=encoding, errors='javapropertiesreplace',
     ) as fp:
-        dump(strprops, fp, separator=separator, comments=comment)
+        dump(strprops, fp, separator=separator, comments=comment,
+             ensure_ascii=ensure_ascii, ensure_ascii_comments=ensure_ascii)
 
 if __name__ == '__main__':
     json2properties()
