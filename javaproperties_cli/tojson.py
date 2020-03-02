@@ -20,7 +20,8 @@ DESCRIPTION
 
 Convert a ``.properties`` file ``infile`` to a JSON object and write the
 results to ``outfile``.  If not specified, ``infile`` and ``outfile`` default
-to `sys.stdin` and `sys.stdout`, respectively.  The output is encoded in UTF-8.
+to standard input and standard output, respectively.  The output is encoded in
+UTF-8.
 
 .. versionchanged:: 0.6.0
     Output encoding is now always UTF-8 instead of being determined by the

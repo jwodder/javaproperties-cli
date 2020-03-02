@@ -21,7 +21,7 @@ DESCRIPTION
 
 Convert a JSON file ``infile`` to a ``.properties`` file and write the results
 to ``outfile``.  If not specified, ``infile`` and ``outfile`` default to
-`sys.stdin` and `sys.stdout`, respectively.
+standard input and standard output, respectively.
 
 The JSON document must be an object with scalar (i.e., string, numeric,
 boolean, and/or null) values; anything else will result in an error.
