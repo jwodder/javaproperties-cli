@@ -3,43 +3,70 @@
       think) on Windows
     - Test the programs' nontrivial components (e.g., `setproperties`) in
       isolation?
-    - Test `properties2json` and `json2properties`
     - Test on Windows with Appveyor?
 - Add docstrings for the private functions
-- Restrict `TIMESTAMP_RGX` to only match C locale timestamps?
+- Restrict `TIMESTAMP_RGX` to only match C locale/ASCII timestamps?
 - Restrict `TIMESTAMP_RGX` to only consider `[ \t\f]` as whitespace?
 - Add a test environment that installs the latest development version of
   `javaproperties`
+- (Re)document how the commands can be invoked with Python's `-m` option
+- Show a more human-friendly error message (At the very least, omit the
+  traceback) on an `InvalidUEscapeError`
+- Rename the `javaproperties` command to something shorter?
+- Rename the `javaproperties_cli` module to something shorter?
 
 - `javaproperties` command:
     - Give `set`, `delete`, and `format` (and `select`?) `--in-place` options
       (with optional `--backup <file>`) as an alternative to `--outfile`
         - `--backup` implies `--in-place`
     - Give `set` and `delete` a `--format` option for also reformatting
+        - `set`: When `--format` is given, `--ascii` and `--unicode` affect all
+          entries
+        - `delete`: Add `--ascii` and `--unicode` options for controlling what
+          characters to escape when reformatting
+            - Passing `-A`/-U` to `delete` without `--format` is either an
+              error or a no-op
     - Give `format` and `select` `--preserve-timestamp` options
     - Add options for completely suppressing the timestamp
     - Give `select` an option for preserving formatting? (Preserve by default?)
-    - `select`: Don't output a timestamp if none of the given keys are defined?
-    - Give `get` an option for escaping output values?
     - Give `format` (and `set`? `select`? `delete`?) an option for setting the
-      comment in the output?
+      comment in the output
+    - Give `format` an option for preserving the header comment/all comments ?
     - `set` and `delete`: Try to only modify the timestamp if an actual change
       is made
         - This will require eliminating the whole "streaming editing" thing and
           just using `PropertiesFile` instead (which might be a good idea
           regardless)
+    - `get` and `select`: Add an option (`--quiet`?) for not warning & failing
+      when a given key doesn't exist yet `--default-value` is unspecified
+    - `set`: Add options for whether to replace the first or last occurrence of
+      the key?
+    - Give `format` an option for using a different output encoding than input
+      encoding?
 
 - Support XML properties files:
+    - Add `javaproperties fromxml` and `javaproperties toxml` commands for
+      converting between XML format and simple line-oriented format
+        - Be sure to preserve (leading) comments!
+    - `javaproperties {get,set,select,delete,format}`: support XML properties
+      files
+        - Autodetect whether a properties file is XML based on file extension?
+        - Add an option for forcing arguments to be treated as XML files?
     - Support converting between JSON and XML properties
-    - Add a command for converting between XML format and simple line-oriented
-      format
-    - Support autodetecting whether a properties file is in XML based on file
-      extension (or other means?) ?
-    - Support by just adding `properties2xml` and `xml2properties` commands?
 
-- Add a command for merging two (or more?) properties files (or, equivalently,
-  updating one properties file based on another)
+- Add a `javaproperties merge` command for merging two (or more?) properties
+  files (or, equivalently, updating one properties file based on another)
+    - Note that just concatenating the two files (optionally followed by
+      reformatting to eliminate duplicates) will not work 100% of the time due
+      to the possibility of the first file ending with a line continuation
 - Give `properties2json` and `json2properties` options for preserving the order
   of the input keys
     - Make them do this by default, with `--sort-keys` options added for the
       old behavior?
+- Make `json2properties` and `properties2json` into subcommands of
+  `javaproperties` named `fromjson` and `tojson`?
+- Give `propertes2json` options for preserving the comment & timestamp in
+  `__comment__` and `__timestamp__` keys?
+- `json2properties`: Better handle input encoding
+    - `json.load()` only started accepting bytes in Python 3.6
+- `json2properties`: Add an option for suppressing the timestamp
