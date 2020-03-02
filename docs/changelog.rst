@@ -1,8 +1,8 @@
 Changelog
 =========
 
-v0.6.0 (in development)
------------------------
+v0.6.0 (2020-03-02)
+-------------------
 - Require ``javaproperties`` 0.6.\*
 - Use ``'javapropertiesreplace'`` error handler when opening output files
 - Gave :program:`javaproperties`' :program:`format`, :program:`select`, and
