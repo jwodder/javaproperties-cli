@@ -27,9 +27,39 @@ INPUT = (
         b'javaproperties select: nonexistent: key not found\n',
     ),
     (
+        ['select', '--separator=:', '-', 'key'],
+        0,
+        b'key:value\n',
+    ),
+    (
+        ['select', '--default-value', '42', '-', 'key'],
+        0,
+        b'key=value\n',
+    ),
+    (
+        ['select', '--default-value', '42', '-', 'nonexistent'],
+        0,
+        b'nonexistent=42\n',
+    ),
+    (
         ['select', '-', 'key', 'nonexistent'],
         1,
         b'key=value\njavaproperties select: nonexistent: key not found\n',
+    ),
+    (
+        ['select', '-', 'key', 'key'],
+        0,
+        b'key=value\nkey=value\n',
+    ),
+    (
+        ['select', '-', 'foo', 'zebra'],
+        0,
+        b'foo=bar\nzebra=apple\n',
+    ),
+    (
+        ['select', '-', 'zebra', 'foo'],
+        0,
+        b'zebra=apple\nfoo=bar\n',
     ),
     (
         ['select', '--escaped', '-', 'e\\u00F0'],
@@ -160,13 +190,60 @@ def test_cmd_select(args, rc, output):
     assert r.exit_code == rc, r.stdout_bytes
     assert r.stdout_bytes == b'#Mon Nov 07 15:29:40 EST 2016\n' + output
 
+@pytest.mark.parametrize('args,rc,output', [
+    (
+        ['select', '--defaults', 'defaults.properties', '-', 'key'],
+        0,
+        b'key=value\n',
+    ),
+    (
+        ['select', '--defaults', 'defaults.properties', '-', 'lost'],
+        0,
+        b'lost=found\n',
+    ),
+    (
+        ['select', '--defaults', 'defaults.properties', '-', 'nonexistent'],
+        1,
+        b'javaproperties select: nonexistent: key not found\n',
+    ),
+    (
+        ['select', '-D', 'defaults.properties', '-d42', '-', 'key'],
+        0,
+        b'key=value\n',
+    ),
+    (
+        ['select', '-D', 'defaults.properties', '-d42', '-', 'lost'],
+        0,
+        b'lost=found\n',
+    ),
+    (
+        ['select', '-D', 'defaults.properties', '-d42', '-', 'nonexistent'],
+        0,
+        b'nonexistent=42\n',
+    ),
+])
+def test_cmd_select_with_defaults(defaults_file, args, rc, output):
+    r = CliRunner().invoke(javaproperties, args, input=INPUT)
+    assert r.exit_code == rc, r.stdout_bytes
+    assert r.stdout_bytes == b'#Mon Nov 07 15:29:40 EST 2016\n' + output
+
+def test_cmd_select_repeated():
+    r = CliRunner().invoke(
+        javaproperties,
+        ['select', '-', 'repeated'],
+        input=(
+            b'foo: bar\n'
+            b'repeated = first\n'
+            b'key = value\n'
+            b'zebra apple\n'
+            b'repeated = second\n'
+        ),
+    )
+    assert r.exit_code == 0, r.stdout_bytes
+    assert r.stdout_bytes == b'#Mon Nov 07 15:29:40 EST 2016\nrepeated=second\n'
+
 # --outfile
-# --separator
-# -d
-# -D
 # universal newlines?
-# getting a key that appears multiple times in the file
-# getting keys out of order
 # reading from a file
 # key in source with a non-escaped Latin-1 character
 # key with non-BMP character

@@ -9,7 +9,7 @@ INPUT = (
     b'zebra apple\n'
     b'e\\u00f0=escaped\n'
     b'e\\\\u00f0=not escaped\n'
-    b'latin-1 = \xF0\n'
+    b'latin-1 = \xC3\xB0\n'
     b'bmp = \\u2603\n'
     b'astral = \\uD83D\\uDC10\n'
     b'bad-surrogate = \\uDC10\\uD83D\n'
@@ -30,6 +30,16 @@ INPUT = (
         ['get', '-', 'key', 'nonexistent'],
         1,
         b'value\njavaproperties get: nonexistent: key not found\n',
+    ),
+    (
+        ['get', '-', '-d', '42', 'key'],
+        0,
+        b'value\n',
+    ),
+    (
+        ['get', '-', '-d', '42', 'nonexistent'],
+        0,
+        b'42\n',
     ),
     (
         ['get', '--escaped', '-', 'e\\u00F0'],
@@ -64,6 +74,11 @@ INPUT = (
     (
         ['get', '-', 'latin-1'],
         0,
+        b'\xC3\x83\xC2\xB0\n',
+    ),
+    (
+        ['get', '--encoding=utf-8', '-', 'latin-1'],
+        0,
         b'\xC3\xB0\n',
     ),
     (
@@ -97,18 +112,80 @@ INPUT = (
             ),
         ],
     ),
+    (
+        ['get', '-', 'key', 'key'],
+        0,
+        b'value\nvalue\n'
+    ),
+    (
+        ['get', '-', 'foo', 'zebra'],
+        0,
+        b'bar\napple\n'
+    ),
+    (
+        ['get', '-', 'zebra', 'foo'],
+        0,
+        b'apple\nbar\n'
+    ),
 ])
 def test_cmd_get(args, rc, output):
     r = CliRunner().invoke(javaproperties, args, input=INPUT)
     assert r.exit_code == rc, r.stdout_bytes
     assert r.stdout_bytes == output
 
-# --encoding
-# -d
-# -D
+def test_cmd_get_repeated():
+    r = CliRunner().invoke(
+        javaproperties,
+        ['get', '-', 'repeated'],
+        input=(
+            b'foo: bar\n'
+            b'repeated = first\n'
+            b'key = value\n'
+            b'zebra apple\n'
+            b'repeated = second\n'
+        ),
+    )
+    assert r.exit_code == 0, r.stdout_bytes
+    assert r.stdout_bytes == b'second\n'
+
+@pytest.mark.parametrize('args,rc,output', [
+    (
+        ['get', '--defaults', 'defaults.properties', '-', 'key'],
+        0,
+        b'value\n',
+    ),
+    (
+        ['get', '--defaults', 'defaults.properties', '-', 'lost'],
+        0,
+        b'found\n',
+    ),
+    (
+        ['get', '--defaults', 'defaults.properties', '-', 'nonexistent'],
+        1,
+        b'javaproperties get: nonexistent: key not found\n',
+    ),
+    (
+        ['get', '-D', 'defaults.properties', '-d42', '-', 'key'],
+        0,
+        b'value\n',
+    ),
+    (
+        ['get', '-D', 'defaults.properties', '-d42', '-', 'lost'],
+        0,
+        b'found\n',
+    ),
+    (
+        ['get', '-D', 'defaults.properties', '-d42', '-', 'nonexistent'],
+        0,
+        b'42\n',
+    ),
+])
+def test_cmd_get_with_defaults(defaults_file, args, rc, output):
+    r = CliRunner().invoke(javaproperties, args, input=INPUT)
+    assert r.exit_code == rc, r.stdout_bytes
+    assert r.stdout_bytes == output
+
 # universal newlines?
-# getting a key that appears multiple times in the file
-# getting keys out of order
 # reading from a file
 # key in source with a non-escaped Latin-1 character
 # key with non-BMP character

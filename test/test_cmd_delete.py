@@ -31,6 +31,23 @@ INPUT = (
         INPUT,
     ),
     (
+        ['delete', '-', 'key'],
+        0,
+        b'#Mon Nov 07 15:29:40 EST 2016\n'
+        b'foo: bar\n'
+        b'zebra apple\n'
+        b'e\\u00f0=escaped\n'
+        b'e\\\\u00f0=not escaped\n'
+        b'latin-1 = \xF0\n'
+        b'bmp = \\u2603\n'
+        b'astral = \\uD83D\\uDC10\n',
+    ),
+    (
+        ['delete', '-', 'nonexistent'],
+        0,
+        b'#Mon Nov 07 15:29:40 EST 2016\n' + INPUT,
+    ),
+    (
         ['delete', '--preserve-timestamp', '-', 'key', 'nonexistent'],
         0,
         b'foo: bar\n'
@@ -89,6 +106,37 @@ INPUT = (
         0,
         INPUT,
     ),
+    (
+        ['delete', '--preserve-timestamp', '-', 'key', 'key'],
+        0,
+        b'foo: bar\n'
+        b'zebra apple\n'
+        b'e\\u00f0=escaped\n'
+        b'e\\\\u00f0=not escaped\n'
+        b'latin-1 = \xF0\n'
+        b'bmp = \\u2603\n'
+        b'astral = \\uD83D\\uDC10\n',
+    ),
+    (
+        ['delete', '--preserve-timestamp', '-', 'key', 'bmp'],
+        0,
+        b'foo: bar\n'
+        b'zebra apple\n'
+        b'e\\u00f0=escaped\n'
+        b'e\\\\u00f0=not escaped\n'
+        b'latin-1 = \xF0\n'
+        b'astral = \\uD83D\\uDC10\n',
+    ),
+    (
+        ['delete', '--preserve-timestamp', '-', 'bmp', 'key'],
+        0,
+        b'foo: bar\n'
+        b'zebra apple\n'
+        b'e\\u00f0=escaped\n'
+        b'e\\\\u00f0=not escaped\n'
+        b'latin-1 = \xF0\n'
+        b'astral = \\uD83D\\uDC10\n',
+    ),
 ])
 def test_cmd_delete(args, rc, output):
     r = CliRunner().invoke(javaproperties, args, input=INPUT)
@@ -111,15 +159,173 @@ def test_cmd_delete_keep_bad_surrogate():
     assert r.exit_code == 0
     assert r.stdout_bytes == b'bad-surrogate = \\uDC10\\uD83D\n'
 
-# --encoding
+@pytest.mark.parametrize('args,rc,output', [
+    (
+        ['delete', '--preserve-timestamp', '-', 'key'],
+        0,
+        b'#Tue Feb 25 19:13:27 EST 2020\n'
+        b'foo: bar\n'
+        b'zebra apple\n'
+        b'e\\u00f0=escaped\n'
+        b'e\\\\u00f0=not escaped\n'
+        b'latin-1 = \xF0\n'
+        b'bmp = \\u2603\n'
+        b'astral = \\uD83D\\uDC10\n',
+    ),
+    (
+        ['delete', '--preserve-timestamp', '-', 'nonexistent'],
+        0,
+        b'#Tue Feb 25 19:13:27 EST 2020\n' + INPUT,
+    ),
+    (
+        ['delete', '-', 'key'],
+        0,
+        b'#Mon Nov 07 15:29:40 EST 2016\n'
+        b'foo: bar\n'
+        b'zebra apple\n'
+        b'e\\u00f0=escaped\n'
+        b'e\\\\u00f0=not escaped\n'
+        b'latin-1 = \xF0\n'
+        b'bmp = \\u2603\n'
+        b'astral = \\uD83D\\uDC10\n',
+    ),
+    (
+        ['delete', '-', 'nonexistent'],
+        0,
+        b'#Mon Nov 07 15:29:40 EST 2016\n' + INPUT,
+    ),
+])
+def test_cmd_delete_with_timestamp(args, rc, output):
+    r = CliRunner().invoke(javaproperties, args,
+                           input=b'#Tue Feb 25 19:13:27 EST 2020\n' + INPUT)
+    assert r.exit_code == rc, r.stdout_bytes
+    assert r.stdout_bytes == output
+
+def test_cmd_delete_repeated():
+    r = CliRunner().invoke(
+        javaproperties,
+        ['delete', '--preserve-timestamp', '-', 'repeated'],
+        input=(
+            b'foo: bar\n'
+            b'repeated = first\n'
+            b'key = value\n'
+            b'zebra apple\n'
+            b'repeated = second\n'
+        ),
+    )
+    assert r.exit_code == 0, r.stdout_bytes
+    assert r.stdout_bytes == (
+        b'foo: bar\n'
+        b'key = value\n'
+        b'zebra apple\n'
+    )
+
+@pytest.mark.parametrize('args,rc,output', [
+    (
+        ['delete', '--preserve-timestamp', '-', b'k\xC3\xABy'],
+        0,
+        b'foo: bar\n'
+        b'zebra apple\n',
+    ),
+    (
+        ['delete', '--preserve-timestamp', '--escaped', '-', 'k\\u00EBy'],
+        0,
+        b'foo: bar\n'
+        b'zebra apple\n',
+    ),
+])
+def test_cmd_delete_raw_latin1_key(args, rc, output):
+    r = CliRunner().invoke(javaproperties, args, input=(
+        b'foo: bar\n'
+        b'k\xEBy = value\n'
+        b'zebra apple\n'
+    ))
+    assert r.exit_code == rc, r.stdout_bytes
+    assert r.stdout_bytes == output
+
+@pytest.mark.parametrize('args,rc,output', [
+    (
+        ['delete', '--preserve-timestamp', '-', b'k\xC3\xABy'],
+        0,
+        b'foo: bar\n'
+        b'k\xC3\xABy = value\n'
+        b'zebra apple\n',
+    ),
+    (
+        ['delete', '--preserve-timestamp', '--escaped', '-', 'k\\u00EBy'],
+        0,
+        b'foo: bar\n'
+        b'k\xC3\xABy = value\n'
+        b'zebra apple\n',
+    ),
+    (
+        [
+            'delete', '--preserve-timestamp', '--encoding', 'utf-8',
+            '-', b'k\xC3\xABy',
+        ],
+        0,
+        b'foo: bar\n'
+        b'zebra apple\n',
+    ),
+    (
+        [
+            'delete', '--preserve-timestamp', '-E', 'utf-8', '--escaped',
+            '-', 'k\\u00EBy',
+        ],
+        0,
+        b'foo: bar\n'
+        b'zebra apple\n',
+    ),
+])
+def test_cmd_delete_raw_utf8_key(args, rc, output):
+    r = CliRunner().invoke(javaproperties, args, input=(
+        b'foo: bar\n'
+        b'k\xC3\xABy = value\n'
+        b'zebra apple\n'
+    ))
+    assert r.exit_code == rc, r.stdout_bytes
+    assert r.stdout_bytes == output
+
+@pytest.mark.parametrize('args,rc,output', [
+    (
+        ['delete', '-T', '-', 'key'],
+        0,
+        b'foo: bar\n'
+        b'zebra apple\n'
+    ),
+    (
+        ['delete', '-T', '-', 'zebra'],
+        0,
+        b'foo: bar\n'
+        b'key = value\n'
+    ),
+    (
+        ['delete', '-T', '-', 'nonexistent'],
+        0,
+        b'foo: bar\n'
+        b'key = value\n'
+        b'zebra apple\n'
+    ),
+])
+@pytest.mark.parametrize('inp', [
+    b'foo: bar\n'
+    b'key = value\n'
+    b'zebra apple\\\n',
+
+    b'foo: bar\n'
+    b'key = value\n'
+    b'zebra apple\\',
+
+    b'foo: bar\n'
+    b'key = value\n'
+    b'zebra apple',
+])
+def test_cmd_delete_fix_final_eol(args, rc, inp, output):
+    r = CliRunner().invoke(javaproperties, args, input=inp)
+    assert r.exit_code == rc, r.stdout_bytes
+    assert r.stdout_bytes == output
+
 # --outfile
-# --preserve-timestamp when there is a timestamp in input
-# no --preserve-timestamp, with & without a timestamp in input
-# stripping extra trailing line continuations
 # universal newlines?
-# deleting a key that appears multiple times in the file
-# deleting keys out of order
 # reading from a file
-# key in source with a non-escaped Latin-1 character
-# key with non-BMP character
 # invalid \u escape
