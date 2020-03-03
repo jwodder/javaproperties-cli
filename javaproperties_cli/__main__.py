@@ -490,4 +490,4 @@ def setproperties(fpin, fpout, newprops, preserve_timestamp=False,
                                  ensure_ascii=ensure_ascii), file=fpout)
 
 if __name__ == '__main__':
-    javaproperties()
+    javaproperties()  # pragma: no cover

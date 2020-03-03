@@ -127,4 +127,4 @@ def json2properties(ctx, infile, outfile, separator, encoding, comment,
              ensure_ascii=ensure_ascii, ensure_ascii_comments=ensure_ascii)
 
 if __name__ == '__main__':
-    json2properties()
+    json2properties()  # pragma: no cover

@@ -42,6 +42,16 @@ INPUT = (
         b'42\n',
     ),
     (
+        ['get', '-', '-d', '\\u7121', 'nonexistent'],
+        0,
+        b'\\u7121\n',
+    ),
+    (
+        ['get', '-', '-d', '\\u7121', '--escaped', 'nonexistent'],
+        0,
+        b'\xE7\x84\xA1\n',
+    ),
+    (
         ['get', '--escaped', '-', 'e\\u00F0'],
         0,
         b'escaped\n',

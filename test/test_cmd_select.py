@@ -42,6 +42,16 @@ INPUT = (
         b'nonexistent=42\n',
     ),
     (
+        ['select', '-', '-d', '\\u7121', 'nonexistent'],
+        0,
+        b'nonexistent=\\\\u7121\n',
+    ),
+    (
+        ['select', '-', '-d', '\\u7121', '--escaped', 'nonexistent'],
+        0,
+        b'nonexistent=\\u7121\n',
+    ),
+    (
         ['select', '-', 'key', 'nonexistent'],
         1,
         b'key=value\njavaproperties select: nonexistent: key not found\n',

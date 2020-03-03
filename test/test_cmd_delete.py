@@ -325,6 +325,27 @@ def test_cmd_delete_fix_final_eol(args, rc, inp, output):
     assert r.exit_code == rc, r.stdout_bytes
     assert r.stdout_bytes == output
 
+def test_cmd_delete_header_comments():
+    r = CliRunner().invoke(
+        javaproperties,
+        ['delete', '-', 'key'],
+        input=(
+            b'#This is a comment.\n'
+            b' ! So is this.\n'
+            b'foo: bar\n'
+            b'key = value\n'
+            b'zebra apple\n'
+        ),
+    )
+    assert r.exit_code == 0, r.stdout_bytes
+    assert r.stdout_bytes == (
+        b'#This is a comment.\n'
+        b' ! So is this.\n'
+        b'#Mon Nov 07 15:29:40 EST 2016\n'
+        b'foo: bar\n'
+        b'zebra apple\n'
+    )
+
 # --outfile
 # universal newlines?
 # reading from a file

@@ -73,4 +73,4 @@ def properties2json(infile, outfile, encoding, ensure_ascii):
         fp.write('\n')
 
 if __name__ == '__main__':
-    properties2json()
+    properties2json()  # pragma: no cover
