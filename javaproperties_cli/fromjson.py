@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 """
+.. program:: json2properties
+
 :program:`json2properties`
 --------------------------
 
@@ -26,8 +28,9 @@ standard input and standard output, respectively.
 The JSON document must be an object with scalar (i.e., string, numeric,
 boolean, and/or null) values; anything else will result in an error.
 
-Output is sorted by key, and numeric, boolean, & null values are output using
-their JSON representations; e.g., the input:
+Key ordering is preserved in the output by default (unless the
+:option:`--sort-keys` option is given), and numeric, boolean, & null values are
+output using their JSON representations; e.g., the input:
 
 .. code-block:: json
 
@@ -42,14 +45,15 @@ becomes:
 .. code-block:: properties
 
     #Mon Sep 26 18:57:44 UTC 2016
+    yes=true
     no=false
     nothing=null
-    yes=true
+
+.. versionchanged:: 0.7.0
+    Key ordering is now preserved by default instead of always being sorted
 
 OPTIONS
 ^^^^^^^
-
-.. program:: json2properties
 
 .. option:: -A, --ascii
 
@@ -75,6 +79,12 @@ OPTIONS
     Use ``<sep>`` as the key-value separator in the output; default value:
     ``=``
 
+.. option:: -S, --sort-keys
+
+    .. versionadded:: 0.7.0
+
+    Sort entries in output by key
+
 .. option:: -U, --unicode
 
     .. versionadded:: 0.6.0
@@ -84,6 +94,7 @@ OPTIONS
     sequences.  This overrides :option:`--ascii`.
 """
 
+from   collections    import OrderedDict
 from   decimal        import Decimal
 import json
 import click
@@ -98,14 +109,20 @@ from   .util          import command, encoding_option, outfile_type
 @encoding_option
 @click.option('-s', '--separator', default='=', show_default=True,
               help='Key-value separator to use in output')
+@click.option('-S', '--sort-keys', is_flag=True,
+              help='Sort entries in output by key')
 @click.argument('infile', type=click.File('r'), default='-')
 @click.argument('outfile', type=outfile_type, default='-')
 @click.pass_context
 def json2properties(ctx, infile, outfile, separator, encoding, comment,
-                    ensure_ascii):
+                    ensure_ascii, sort_keys):
     """Convert a JSON object to a Java .properties file"""
     with infile:
-        props = json.load(infile, parse_float=Decimal)
+        props = json.load(
+            infile,
+            parse_float=Decimal,
+            object_pairs_hook=OrderedDict,
+        )
     if not isinstance(props, dict):
         ctx.fail('Only dicts can be converted to .properties')
     strprops = []
@@ -119,12 +136,12 @@ def json2properties(ctx, infile, outfile, separator, encoding, comment,
             strprops.append((k, str(v)))
         else:
             strprops.append((k, json.dumps(v)))
-    strprops.sort()
     with click.open_file(
         outfile, 'w', encoding=encoding, errors='javapropertiesreplace',
     ) as fp:
         dump(strprops, fp, separator=separator, comments=comment,
-             ensure_ascii=ensure_ascii, ensure_ascii_comments=ensure_ascii)
+             ensure_ascii=ensure_ascii, ensure_ascii_comments=ensure_ascii,
+             sort_keys=sort_keys)
 
 if __name__ == '__main__':
     json2properties()  # pragma: no cover

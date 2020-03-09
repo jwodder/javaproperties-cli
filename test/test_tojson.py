@@ -23,8 +23,8 @@ from   javaproperties_cli.tojson import properties2json
         b'zebra apple\n',
         True,
         b'{\n'
-        b'    "foo": "bar",\n'
         b'    "key": "value",\n'
+        b'    "foo": "bar",\n'
         b'    "zebra": "apple"\n'
         b'}\n',
     ),
@@ -37,10 +37,10 @@ from   javaproperties_cli.tojson import properties2json
         b'true=false\n',
         True,
         b'{\n'
-        b'    "foo": "3.14",\n'
         b'    "key": "42",\n'
-        b'    "true": "false",\n'
-        b'    "zebra": "null"\n'
+        b'    "foo": "3.14",\n'
+        b'    "zebra": "null",\n'
+        b'    "true": "false"\n'
         b'}\n',
     ),
     (
@@ -66,11 +66,11 @@ from   javaproperties_cli.tojson import properties2json
         True,
         b'{\n'
         b'    "edh": "\\u00f0",\n'
-        b'    "goat": "\\ud83d\\udc10",\n'
         b'    "snowman": "\\u2603",\n'
+        b'    "goat": "\\ud83d\\udc10",\n'
         b'    "\\u00f0": "edh",\n'
-        b'    "\\u2603": "snowman",\n'
-        b'    "\\ud83d\\udc10": "goat"\n'
+        b'    "\\ud83d\\udc10": "goat",\n'
+        b'    "\\u2603": "snowman"\n'
         b'}\n',
     ),
     (
@@ -85,11 +85,11 @@ from   javaproperties_cli.tojson import properties2json
         True,
         b'{\n'
         b'    "edh": "\\u00c3\\u00b0",\n'
-        b'    "goat": "\\u00f0\\u009f\\u0090\\u0090",\n'
         b'    "snowman": "\\u00e2\\u0098\\u0083",\n'
+        b'    "goat": "\\u00f0\\u009f\\u0090\\u0090",\n'
         b'    "\\u00c3\\u00b0": "edh",\n'
-        b'    "\\u00e2\\u0098\\u0083": "snowman",\n'
-        b'    "\\u00f0\\u009f\\u0090\\u0090": "goat"\n'
+        b'    "\\u00f0\\u009f\\u0090\\u0090": "goat",\n'
+        b'    "\\u00e2\\u0098\\u0083": "snowman"\n'
         b'}\n',
     ),
     (
@@ -104,11 +104,11 @@ from   javaproperties_cli.tojson import properties2json
         True,
         b'{\n'
         b'    "edh": "\\u00f0",\n'
-        b'    "goat": "\\ud83d\\udc10",\n'
         b'    "snowman": "\\u2603",\n'
+        b'    "goat": "\\ud83d\\udc10",\n'
         b'    "\\u00f0": "edh",\n'
-        b'    "\\u2603": "snowman",\n'
-        b'    "\\ud83d\\udc10": "goat"\n'
+        b'    "\\ud83d\\udc10": "goat",\n'
+        b'    "\\u2603": "snowman"\n'
         b'}\n',
     ),
     (
@@ -123,11 +123,11 @@ from   javaproperties_cli.tojson import properties2json
         True,
         b'{\n'
         b'    "edh": "\xC3\xB0",\n'
-        b'    "goat": "\xF0\x9F\x90\x90",\n'
         b'    "snowman": "\xE2\x98\x83",\n'
+        b'    "goat": "\xF0\x9F\x90\x90",\n'
         b'    "\xC3\xB0": "edh",\n'
-        b'    "\xE2\x98\x83": "snowman",\n'
-        b'    "\xF0\x9F\x90\x90": "goat"\n'
+        b'    "\xF0\x9F\x90\x90": "goat",\n'
+        b'    "\xE2\x98\x83": "snowman"\n'
         b'}\n',
     ),
     (
@@ -142,11 +142,11 @@ from   javaproperties_cli.tojson import properties2json
         True,
         b'{\n'
         b'    "edh": "\\u00f0",\n'
-        b'    "goat": "\\ud83d\\udc10",\n'
         b'    "snowman": "\\u2603",\n'
+        b'    "goat": "\\ud83d\\udc10",\n'
         b'    "\\u00f0": "edh",\n'
-        b'    "\\u2603": "snowman",\n'
-        b'    "\\ud83d\\udc10": "goat"\n'
+        b'    "\\ud83d\\udc10": "goat",\n'
+        b'    "\\u2603": "snowman"\n'
         b'}\n',
     ),
     (
@@ -158,8 +158,21 @@ from   javaproperties_cli.tojson import properties2json
         b'key=lock\n',
         True,
         b'{\n'
-        b'    "foo": "bar",\n'
         b'    "key": "lock",\n'
+        b'    "foo": "bar",\n'
+        b'    "zebra": "apple"\n'
+        b'}\n',
+    ),
+    (
+        ['--sort-keys'],
+        b'#Mon Nov 07 15:29:40 EST 2016\n'
+        b'key = value\n'
+        b'foo: bar\n'
+        b'zebra apple\n',
+        True,
+        b'{\n'
+        b'    "foo": "bar",\n'
+        b'    "key": "value",\n'
         b'    "zebra": "apple"\n'
         b'}\n',
     ),

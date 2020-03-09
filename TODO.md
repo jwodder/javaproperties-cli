@@ -59,10 +59,6 @@
     - Note that just concatenating the two files (optionally followed by
       reformatting to eliminate duplicates) will not work 100% of the time due
       to the possibility of the first file ending with a line continuation
-- Give `properties2json` and `json2properties` options for preserving the order
-  of the input keys
-    - Make them do this by default, with `--sort-keys` options added for the
-      old behavior?
 - Make `json2properties` and `properties2json` into subcommands of
   `javaproperties` named `fromjson` and `tojson`?
 - Give `propertes2json` options for preserving the comment & timestamp in

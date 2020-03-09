@@ -17,8 +17,8 @@ from   javaproperties_cli.fromjson import json2properties
         b'}\n',
         [],
         b'#Mon Nov 07 15:29:40 EST 2016\n'
-        b'foo=bar\n'
         b'key=value\n'
+        b'foo=bar\n'
         b'zebra=apple\n',
     ),
     (
@@ -30,10 +30,10 @@ from   javaproperties_cli.fromjson import json2properties
         b'}\n',
         [],
         b'#Mon Nov 07 15:29:40 EST 2016\n'
-        b'answer=42\n'
+        b'yes=true\n'
         b'no=false\n'
         b'nothing=null\n'
-        b'yes=true\n',
+        b'answer=42\n',
     ),
     (
         b'{\n'
@@ -55,8 +55,8 @@ from   javaproperties_cli.fromjson import json2properties
         [],
         b'#Mon Nov 07 15:29:40 EST 2016\n'
         b'edh=\\u00f0\n'
-        b'goat=\\ud83d\\udc10\n'
         b'snowman=\\u2603\n'
+        b'goat=\\ud83d\\udc10\n'
         b'\\u00f0=edh\n'
         b'\\u2603=snowman\n'
         b'\\ud83d\\udc10=goat\n',
@@ -73,8 +73,8 @@ from   javaproperties_cli.fromjson import json2properties
         [],
         b'#Mon Nov 07 15:29:40 EST 2016\n'
         b'edh=\\u00f0\n'
-        b'goat=\\ud83d\\udc10\n'
         b'snowman=\\u2603\n'
+        b'goat=\\ud83d\\udc10\n'
         b'\\u00f0=edh\n'
         b'\\u2603=snowman\n'
         b'\\ud83d\\udc10=goat\n',
@@ -87,8 +87,8 @@ from   javaproperties_cli.fromjson import json2properties
         b'}\n',
         ['-s\t:  '],
         b'#Mon Nov 07 15:29:40 EST 2016\n'
-        b'foo\t:  bar\n'
         b'key\t:  value\n'
+        b'foo\t:  bar\n'
         b'zebra\t:  apple\n',
     ),
     (
@@ -100,8 +100,8 @@ from   javaproperties_cli.fromjson import json2properties
         ['-c', 'This is a comment.'],
         b'#This is a comment.\n'
         b'#Mon Nov 07 15:29:40 EST 2016\n'
-        b'foo=bar\n'
         b'key=value\n'
+        b'foo=bar\n'
         b'zebra=apple\n',
     ),
     (
@@ -116,8 +116,8 @@ from   javaproperties_cli.fromjson import json2properties
         ["--unicode"],
         b'#Mon Nov 07 15:29:40 EST 2016\n'
         b'edh=\xF0\n'
-        b'goat=\\ud83d\\udc10\n'
         b'snowman=\\u2603\n'
+        b'goat=\\ud83d\\udc10\n'
         b'\xF0=edh\n'
         b'\\u2603=snowman\n'
         b'\\ud83d\\udc10=goat\n',
@@ -134,8 +134,8 @@ from   javaproperties_cli.fromjson import json2properties
         ["--unicode", "--encoding", "utf-8"],
         b'#Mon Nov 07 15:29:40 EST 2016\n'
         b'edh=\xC3\xB0\n'
-        b'goat=\xF0\x9F\x90\x90\n'
         b'snowman=\xE2\x98\x83\n'
+        b'goat=\xF0\x9F\x90\x90\n'
         b'\xC3\xB0=edh\n'
         b'\xE2\x98\x83=snowman\n'
         b'\xF0\x9F\x90\x90=goat\n'
@@ -149,8 +149,8 @@ from   javaproperties_cli.fromjson import json2properties
         ['-c', b'Latin-1: \xC3\xB0, Unicode: \xE2\x98\x83'],
         b'#Latin-1: \\u00f0, Unicode: \\u2603\n'
         b'#Mon Nov 07 15:29:40 EST 2016\n'
-        b'foo=bar\n'
         b'key=value\n'
+        b'foo=bar\n'
         b'zebra=apple\n',
     ),
     (
@@ -162,8 +162,8 @@ from   javaproperties_cli.fromjson import json2properties
         ['-c', b'Latin-1: \xC3\xB0, Unicode: \xE2\x98\x83', '--unicode'],
         b'#Latin-1: \xF0, Unicode: \\u2603\n'
         b'#Mon Nov 07 15:29:40 EST 2016\n'
-        b'foo=bar\n'
         b'key=value\n'
+        b'foo=bar\n'
         b'zebra=apple\n',
     ),
     (
@@ -174,6 +174,18 @@ from   javaproperties_cli.fromjson import json2properties
         b'}\n',
         ['-c', b'Latin-1: \xC3\xB0, Unicode: \xE2\x98\x83', '-U', '-Eutf-8'],
         b'#Latin-1: \xC3\xB0, Unicode: \xE2\x98\x83\n'
+        b'#Mon Nov 07 15:29:40 EST 2016\n'
+        b'key=value\n'
+        b'foo=bar\n'
+        b'zebra=apple\n',
+    ),
+    (
+        b'{\n'
+        b'    "key": "value",\n'
+        b'    "foo": "bar",\n'
+        b'    "zebra": "apple"\n'
+        b'}\n',
+        ['--sort-keys'],
         b'#Mon Nov 07 15:29:40 EST 2016\n'
         b'foo=bar\n'
         b'key=value\n'
