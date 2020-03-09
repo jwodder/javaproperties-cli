@@ -1,3 +1,4 @@
+import re
 from   click.testing               import CliRunner
 import pytest
 from   javaproperties_cli.fromjson import json2properties
@@ -204,12 +205,17 @@ def test_json2properties(args, inp, output):
 def test_json2properties_bad_top_level(inp):
     r = CliRunner().invoke(json2properties, input=inp)
     assert r.exit_code != 0
-    assert r.stdout_bytes == b'''\
-Usage: json2properties [OPTIONS] [INFILE] [OUTFILE]
-Try "json2properties -h" for help.
-
-Error: Only dicts can be converted to .properties
-'''
+    stdout_lines = r.stdout.splitlines()
+    assert len(stdout_lines) == 4, r.stdout
+    assert stdout_lines[0] \
+        == 'Usage: json2properties [OPTIONS] [INFILE] [OUTFILE]'
+    assert re.match(
+        r'^Try [\'"]json2properties -h[\'"] for help\.$',
+        stdout_lines[1],
+    )
+    assert stdout_lines[2] == ''
+    assert stdout_lines[3] \
+        == 'Error: Only dicts can be converted to .properties'
 
 @pytest.mark.parametrize('inp', [
     b'{\n'
@@ -225,12 +231,17 @@ Error: Only dicts can be converted to .properties
 def test_json2properties_bad_value(inp):
     r = CliRunner().invoke(json2properties, input=inp)
     assert r.exit_code != 0
-    assert r.stdout_bytes == b'''\
-Usage: json2properties [OPTIONS] [INFILE] [OUTFILE]
-Try "json2properties -h" for help.
-
-Error: Dictionary values must be scalars, not lists or dicts
-'''
+    stdout_lines = r.stdout.splitlines()
+    assert len(stdout_lines) == 4, r.stdout
+    assert stdout_lines[0] \
+        == 'Usage: json2properties [OPTIONS] [INFILE] [OUTFILE]'
+    assert re.match(
+        r'^Try [\'"]json2properties -h[\'"] for help\.$',
+        stdout_lines[1],
+    )
+    assert stdout_lines[2] == ''
+    assert stdout_lines[3] \
+        == 'Error: Dictionary values must be scalars, not lists or dicts'
 
 # invalid JSON
 # Test with actual files as infile & outfile
