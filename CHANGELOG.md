@@ -1,3 +1,7 @@
+v0.6.1 (in development)
+-----------------------
+- Require `javaproperties` 0.7.\*
+
 v0.6.0 (2020-03-02)
 -------------------
 - Require `javaproperties` 0.6.\*

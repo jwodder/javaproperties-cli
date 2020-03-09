@@ -41,6 +41,8 @@
       the key?
     - Give `format` an option for using a different output encoding than input
       encoding?
+    - `set` and `delete`: Don't automatically strip trailing line continuations
+      from the last line of the file?
 
 - Support XML properties files:
     - Add `javaproperties fromxml` and `javaproperties toxml` commands for
