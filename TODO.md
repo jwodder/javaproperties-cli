@@ -43,6 +43,9 @@
       encoding?
     - `set` and `delete`: Don't automatically strip trailing line continuations
       from the last line of the file?
+    - Support "chaining" subcommands so that one can write, say,
+      "`javaproperties infile.properties set foo bar set key value delete zebra
+      format`" ?
 
 - Support XML properties files:
     - Add `javaproperties fromxml` and `javaproperties toxml` commands for
