@@ -99,7 +99,7 @@ from   decimal        import Decimal
 import json
 import click
 from   javaproperties import dump
-from   six            import string_types, iteritems
+from   six            import iteritems, string_types
 from   .util          import command, encoding_option, outfile_type
 
 @command()

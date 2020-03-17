@@ -279,8 +279,8 @@ Options
 
 from   __future__     import print_function
 import click
-from   javaproperties import KeyValue, load, parse, unescape, dump, \
-                                join_key_value, java_timestamp, to_comment
+from   javaproperties import KeyValue, dump, java_timestamp, join_key_value, \
+                                load, parse, to_comment, unescape
 from   six            import iteritems
 from   .util          import command, encoding_option, infile_type, outfile_type
 
