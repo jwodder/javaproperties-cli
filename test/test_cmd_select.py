@@ -27,6 +27,11 @@ INPUT = (
         b'javaproperties select: nonexistent: key not found\n',
     ),
     (
+        ['select', '--quiet', '-', 'nonexistent'],
+        0,
+        b'',
+    ),
+    (
         ['select', '--separator=:', '-', 'key'],
         0,
         b'key:value\n',
@@ -55,6 +60,11 @@ INPUT = (
         ['select', '-', 'key', 'nonexistent'],
         1,
         b'key=value\njavaproperties select: nonexistent: key not found\n',
+    ),
+    (
+        ['select', '--quiet', '-', 'key', 'nonexistent'],
+        0,
+        b'key=value\n',
     ),
     (
         ['select', '-', 'key', 'key'],
@@ -215,6 +225,11 @@ def test_cmd_select(args, rc, output):
         ['select', '--defaults', 'defaults.properties', '-', 'nonexistent'],
         1,
         b'javaproperties select: nonexistent: key not found\n',
+    ),
+    (
+        ['select', '-q', '--defaults', 'defaults.properties', '-', 'nonexistent'],
+        0,
+        b'',
     ),
     (
         ['select', '-D', 'defaults.properties', '-d42', '-', 'key'],

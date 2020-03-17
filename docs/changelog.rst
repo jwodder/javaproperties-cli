@@ -7,6 +7,8 @@ v0.7.0 (in development)
   input ordering of keys by default; use the new ``--sort-keys`` option to get
   the old behavior
 - Drop support for Python 3.4
+- Gave :program:`javaproperties`' :program:`get` and :program:`select`
+  subcommands ``--quiet`` options for suppressing warnings about missing keys
 
 v0.6.1 (2020-03-09)
 -------------------

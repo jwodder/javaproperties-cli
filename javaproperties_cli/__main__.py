@@ -41,8 +41,9 @@ Options
 
     Default value for undefined keys.  If this option is not specified, keys
     requested on the command line that are not defined in either the main
-    ``.properties`` file or the :option:`--defaults` file will cause a warning
-    to be printed to stderr and the command to exit with a failure status.
+    ``.properties`` file or the :option:`--defaults` file will (unless the
+    :option:`--quiet` option is given) cause a warning to be printed to stderr
+    and the command to exit with a failure status.
 
 .. option:: -D <file>, --defaults <file>
 
@@ -60,6 +61,12 @@ Options
 
     Specifies the encoding of the input file(s); default value: ``iso-8859-1``
     (a.k.a. Latin-1).  Output always uses the locale's encoding.
+
+.. option:: -q, --quiet
+
+    .. versionadded:: 0.7.0
+
+    Do not warn about or fail due to missing keys
 
 
 .. _select:
@@ -93,8 +100,9 @@ Options
 
     Default value for undefined keys.  If this option is not specified, keys
     requested on the command line that are not defined in either the main
-    ``.properties`` file or the :option:`--defaults` file will cause a warning
-    to be printed to stderr and the command to exit with a failure status.
+    ``.properties`` file or the :option:`--defaults` file will (unless the
+    :option:`--quiet` option is given) cause a warning to be printed to stderr
+    and the command to exit with a failure status.
 
 .. option:: -D <file>, --defaults <file>
 
@@ -121,6 +129,12 @@ Options
 
     Use ``<sep>`` as the key-value separator in the output; default value:
     ``=``
+
+.. option:: -q, --quiet
+
+    .. versionadded:: 0.7.0
+
+    Do not warn about or fail due to missing keys
 
 .. option:: -U, --unicode
 
@@ -297,19 +311,20 @@ def javaproperties():
 @click.option('-e', '--escaped', is_flag=True,
               help='Parse command-line keys & values for escapes')
 @encoding_option
+@click.option('-q', '--quiet', is_flag=True, help="Don't warn on missing keys")
 @click.argument('file', type=infile_type)
 @click.argument('key', nargs=-1, required=True)
 @click.pass_context
-def get(ctx, default_value, defaults, escaped, file, key, encoding):
+def get(ctx, default_value, defaults, escaped, file, key, encoding, quiet):
     """ Query values from a Java .properties file """
     ok = True
     for k,v in getselect(file, key, defaults, default_value, encoding, escaped):
-        if v is None:
+        if v is not None:
+            click.echo(v)
+        elif not quiet:
             click.echo(u'{0}: {1}: key not found'.format(ctx.command_path, k),
                        err=True)
             ok = False
-        else:
-            click.echo(v)
     ctx.exit(0 if ok else 1)
 
 @javaproperties.command()
@@ -324,13 +339,14 @@ def get(ctx, default_value, defaults, escaped, file, key, encoding):
 @encoding_option
 @click.option('-o', '--outfile', type=outfile_type, default='-',
               help='Write output to this file')
+@click.option('-q', '--quiet', is_flag=True, help="Don't warn on missing keys")
 @click.option('-s', '--separator', default='=', show_default=True,
               help='Key-value separator to use in output')
 @click.argument('file', type=infile_type)
 @click.argument('key', nargs=-1, required=True)
 @click.pass_context
 def select(ctx, default_value, defaults, escaped, separator, file, key,
-           encoding, outfile, ensure_ascii):
+           encoding, outfile, ensure_ascii, quiet):
     """ Extract key-value pairs from a Java .properties file """
     ok = True
     with click.open_file(
@@ -339,13 +355,13 @@ def select(ctx, default_value, defaults, escaped, separator, file, key,
         print(to_comment(java_timestamp()), file=fpout)
         for k,v in getselect(file, key, defaults, default_value, encoding,
                              escaped):
-            if v is None:
+            if v is not None:
+                print(join_key_value(k, v, separator=separator,
+                                     ensure_ascii=ensure_ascii), file=fpout)
+            elif not quiet:
                 click.echo(u'{0}: {1}: key not found'
                            .format(ctx.command_path, k), err=True)
                 ok = False
-            else:
-                print(join_key_value(k, v, separator=separator,
-                                     ensure_ascii=ensure_ascii), file=fpout)
     ctx.exit(0 if ok else 1)
 
 @javaproperties.command('set')

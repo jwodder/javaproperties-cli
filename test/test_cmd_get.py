@@ -27,9 +27,19 @@ INPUT = (
         b'javaproperties get: nonexistent: key not found\n',
     ),
     (
+        ['get', '--quiet', '-', 'nonexistent'],
+        0,
+        b'',
+    ),
+    (
         ['get', '-', 'key', 'nonexistent'],
         1,
         b'value\njavaproperties get: nonexistent: key not found\n',
+    ),
+    (
+        ['get', '--quiet', '-', 'key', 'nonexistent'],
+        0,
+        b'value\n',
     ),
     (
         ['get', '-', '-d', '42', 'key'],
@@ -173,6 +183,11 @@ def test_cmd_get_repeated():
         ['get', '--defaults', 'defaults.properties', '-', 'nonexistent'],
         1,
         b'javaproperties get: nonexistent: key not found\n',
+    ),
+    (
+        ['get', '-q', '--defaults', 'defaults.properties', '-', 'nonexistent'],
+        0,
+        b'',
     ),
     (
         ['get', '-D', 'defaults.properties', '-d42', '-', 'key'],

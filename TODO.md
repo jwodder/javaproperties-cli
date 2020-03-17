@@ -35,8 +35,6 @@
         - This will require eliminating the whole "streaming editing" thing and
           just using `PropertiesFile` instead (which might be a good idea
           regardless)
-    - `get` and `select`: Add an option (`--quiet`?) for not warning & failing
-      when a given key doesn't exist yet `--default-value` is unspecified
     - `set`: Add options for whether to replace the first or last occurrence of
       the key?
     - Give `format` an option for using a different output encoding than input
