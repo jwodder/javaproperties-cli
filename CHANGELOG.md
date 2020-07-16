@@ -1,5 +1,5 @@
-v0.7.0 (in development)
------------------------
+v0.7.0 (2020-07-16)
+-------------------
 - `properties2json` and `json2properties` now preserve the input ordering of
   keys by default; use the new `--sort-keys` option to get the old behavior
 - Drop support for Python 3.4
