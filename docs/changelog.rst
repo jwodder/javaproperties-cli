@@ -1,7 +1,7 @@
 Changelog
 =========
 
-v0.7.0 (in development)
+v0.7.0 (2020-07-16)
 -----------------------
 - :program:`properties2json` and :program:`json2properties` now preserve the
   input ordering of keys by default; use the new ``--sort-keys`` option to get
