@@ -159,7 +159,7 @@ def test_cmd_format_file():
     with runner.isolated_filesystem():
         with open('test.properties', 'wb') as fp:
             fp.write(INPUT)
-        r = CliRunner().invoke(javaproperties, ['format', 'test.properties'])
+        r = runner.invoke(javaproperties, ['format', 'test.properties'])
         assert r.exit_code == 0
         assert r.stdout_bytes == OUTPUT
 

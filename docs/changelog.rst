@@ -1,8 +1,13 @@
 Changelog
 =========
 
+v0.8.0 (2020-07-16)
+-------------------
+- Support Python 3.9
+
+
 v0.7.0 (2020-07-16)
------------------------
+-------------------
 - :program:`properties2json` and :program:`json2properties` now preserve the
   input ordering of keys by default; use the new ``--sort-keys`` option to get
   the old behavior
@@ -10,9 +15,11 @@ v0.7.0 (2020-07-16)
 - Gave :program:`javaproperties`' :program:`get` and :program:`select`
   subcommands ``--quiet`` options for suppressing warnings about missing keys
 
+
 v0.6.1 (2020-03-09)
 -------------------
 - Require ``javaproperties`` 0.7.\*
+
 
 v0.6.0 (2020-03-02)
 -------------------
@@ -28,17 +35,20 @@ v0.6.0 (2020-03-02)
 - By default, comments output by :program:`json2properties` now have all
   non-ASCII characters escaped rather than all non-Latin-1 characters
 
+
 v0.5.0 (2020-01-24)
------------------------
+-------------------
 - Include installation instructions, GitHub links, and changelog in the Read
   the Docs site
 - Gave :program:`json2properties` a ``--comment <comment>`` option
 - Support Python 3.8
 
+
 v0.4.1 (2018-09-18)
 -------------------
 - Drop support for Python 2.6 and 3.3
 - Support ``javaproperties`` 0.5.0
+
 
 v0.4.0 (2017-04-22)
 -------------------
@@ -51,16 +61,19 @@ v0.4.0 (2017-04-22)
 .. |clipkg| replace:: ``javaproperties-cli``
 .. _clipkg: https://github.com/jwodder/javaproperties-cli
 
+
 v0.3.0 (2017-04-13)
 -------------------
 - Added the ``PropertiesFile`` class for preserving comments in files [#1]
 - The ``ordereddict`` package is now required under Python 2.6
+
 
 v0.2.1 (2017-03-20)
 -------------------
 - **Bugfix** to :program:`javaproperties` command: Don't die horribly on
   missing non-ASCII keys
 - PyPy now supported
+
 
 v0.2.0 (2016-11-14)
 -------------------
@@ -72,6 +85,7 @@ v0.2.0 (2016-11-14)
 - Exported the ``java_timestamp()`` function
 - ``to_comment()`` now converts CR LF and CR line endings inside comments to LF
 - Some minor documentation improvements
+
 
 v0.1.0 (2016-10-02)
 -------------------

@@ -1,3 +1,7 @@
+v0.8.0 (in development)
+-----------------------
+- Support Python 3.9
+
 v0.7.0 (2020-07-16)
 -------------------
 - `properties2json` and `json2properties` now preserve the input ordering of
