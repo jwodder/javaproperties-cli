@@ -3,8 +3,9 @@
     :alt: Project Status: Active - The project has reached a stable, usable
           state and is being actively developed.
 
-.. image:: https://travis-ci.com/jwodder/javaproperties-cli.svg?branch=master
-    :target: https://travis-ci.com/jwodder/javaproperties-cli
+.. image:: https://github.com/jwodder/javaproperties-cli/workflows/Test/badge.svg?branch=master
+    :target: https://github.com/jwodder/javaproperties-cli/actions?workflow=Test
+    :alt: CI Status
 
 .. image:: https://codecov.io/gh/jwodder/javaproperties-cli/branch/master/graph/badge.svg
     :target: https://codecov.io/gh/jwodder/javaproperties-cli
