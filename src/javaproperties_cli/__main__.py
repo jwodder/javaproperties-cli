@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 :program:`javaproperties`
 -------------------------
@@ -291,11 +290,9 @@ Options
     sequences.  This overrides :option:`--ascii`.
 """
 
-from   __future__     import print_function
 import click
 from   javaproperties import KeyValue, dump, java_timestamp, join_key_value, \
                                 load, parse, to_comment, unescape
-from   six            import iteritems
 from   .util          import command, encoding_option, infile_type, outfile_type
 
 @command(group=True)
@@ -322,8 +319,7 @@ def get(ctx, default_value, defaults, escaped, file, key, encoding, quiet):
         if v is not None:
             click.echo(v)
         elif not quiet:
-            click.echo(u'{0}: {1}: key not found'.format(ctx.command_path, k),
-                       err=True)
+            click.echo(f'{ctx.command_path}: {k}: key not found', err=True)
             ok = False
     ctx.exit(0 if ok else 1)
 
@@ -359,8 +355,7 @@ def select(ctx, default_value, defaults, escaped, separator, file, key,
                 print(join_key_value(k, v, separator=separator,
                                      ensure_ascii=ensure_ascii), file=fpout)
             elif not quiet:
-                click.echo(u'{0}: {1}: key not found'
-                           .format(ctx.command_path, k), err=True)
+                click.echo(f'{ctx.command_path}: {k}: key not found', err=True)
                 ok = False
     ctx.exit(0 if ok else 1)
 
@@ -498,7 +493,7 @@ def setproperties(fpin, fpout, newprops, preserve_timestamp=False,
             # Use `source_stripped` in case the last line of the file ends with
             # a trailing line continuation:
             print(kv.source_stripped, file=fpout)
-    for key, value in iteritems(newprops):
+    for key, value in newprops.items():
         if value is not None:
             print(join_key_value(key, value, separator=separator,
                                  ensure_ascii=ensure_ascii), file=fpout)

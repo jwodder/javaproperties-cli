@@ -1,4 +1,3 @@
-import sys
 from   click.testing               import CliRunner
 import pytest
 from   javaproperties_cli.__main__ import javaproperties
@@ -186,23 +185,10 @@ INPUT = (
         0,
         b'bad-surrogate=\\udc10\\ud83d\n',
     ),
-    pytest.param(
-        ['select', '--unicode', '-EUTF-8', '-', 'bad-surrogate'],
-        0,
-        b'bad-surrogate=\xED\xB0\x90\xED\xA0\xBD\n',
-        marks=pytest.mark.skipif(
-            sys.version_info[0] != 2,
-            reason='Python 2 only',
-        ),
-    ),
-    pytest.param(
+    (
         ['select', '--unicode', '-EUTF-8', '-', 'bad-surrogate'],
         0,
         b'bad-surrogate=\\udc10\\ud83d\n',
-        marks=pytest.mark.skipif(
-            sys.version_info[0] == 2,
-            reason='Python 3 only',
-        ),
     ),
 ])
 def test_cmd_select(args, rc, output):

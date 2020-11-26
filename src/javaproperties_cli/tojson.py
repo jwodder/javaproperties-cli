@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 .. program:: properties2json
 
@@ -76,7 +75,7 @@ from   .util          import command, encoding_option, infile_type, outfile_type
 @click.argument('infile', type=infile_type, default='-')
 @click.argument('outfile', type=outfile_type, default='-')
 def properties2json(infile, outfile, encoding, ensure_ascii, sort_keys):
-    """Convert a Java .properties file to JSON"""
+    """ Convert a Java .properties file to JSON """
     with click.open_file(infile, encoding=encoding) as fp:
         props = load(fp, object_pairs_hook=OrderedDict)
     with click.open_file(outfile, 'w', encoding='utf-8') as fp:

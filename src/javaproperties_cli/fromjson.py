@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 .. program:: json2properties
 
@@ -99,7 +98,6 @@ from   decimal        import Decimal
 import json
 import click
 from   javaproperties import dump
-from   six            import iteritems, string_types
 from   .util          import command, encoding_option, outfile_type
 
 @command()
@@ -116,7 +114,7 @@ from   .util          import command, encoding_option, outfile_type
 @click.pass_context
 def json2properties(ctx, infile, outfile, separator, encoding, comment,
                     ensure_ascii, sort_keys):
-    """Convert a JSON object to a Java .properties file"""
+    """ Convert a JSON object to a Java .properties file """
     with infile:
         props = json.load(
             infile,
@@ -126,11 +124,11 @@ def json2properties(ctx, infile, outfile, separator, encoding, comment,
     if not isinstance(props, dict):
         ctx.fail('Only dicts can be converted to .properties')
     strprops = []
-    for k,v in iteritems(props):
-        assert isinstance(k, string_types)
+    for k,v in props.items():
+        assert isinstance(k, str)
         if isinstance(v, (list, dict)):
             ctx.fail('Dictionary values must be scalars, not lists or dicts')
-        elif isinstance(v, string_types):
+        elif isinstance(v, str):
             strprops.append((k,v))
         elif isinstance(v, Decimal):
             strprops.append((k, str(v)))

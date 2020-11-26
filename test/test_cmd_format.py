@@ -1,6 +1,5 @@
 from   click.testing               import CliRunner
 import pytest
-from   six                         import PY3
 from   javaproperties_cli.__main__ import javaproperties
 
 INPUT = (
@@ -144,7 +143,7 @@ OUTPUT = (
         b'plugh=plover stuff \n'
         b'quux=\n'
         b'space=\\   \n'
-        b'taog=' + (b'\\udc10\\ud83d' if PY3 else b'\xED\xB0\x90\xEd\xA0\xBD') + b'\n'
+        b'taog=\\udc10\\ud83d\n'
         b'test=\n'
         b'xyzzy=\xC3\xA9\n',
     ),
