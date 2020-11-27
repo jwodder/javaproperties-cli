@@ -10,8 +10,10 @@ def command(group=False):
         )(click.version_option(
             __version__,
             '-V', '--version',
-            message='javaproperties-cli %(version)s (javaproperties {0})'
-                    .format(javaproperties.__version__),
+            message=(
+                'javaproperties-cli %(version)s'
+                f' (javaproperties {javaproperties.__version__})'
+            ),
         )(f))
     return wrapper
 

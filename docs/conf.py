@@ -1,4 +1,3 @@
-from __future__         import unicode_literals
 from javaproperties_cli import __version__
 
 project   = 'javaproperties-cli'

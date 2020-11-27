@@ -132,13 +132,13 @@ from   javaproperties_cli.tojson import properties2json
     ),
     (
         ['--encoding', 'utf-16BE'],
-        u'#Mon Nov 07 15:29:40 EST 2016\n'
-        u'edh: \u00F0\n'
-        u'snowman: \u2603\n'
-        u'goat: \U0001F410\n'
-        u'\u00F0: edh\n'
-        u'\U0001F410: goat\n'
-        u'\u2603: snowman\n'.encode('UTF-16BE'),
+        '#Mon Nov 07 15:29:40 EST 2016\n'
+        'edh: \u00F0\n'
+        'snowman: \u2603\n'
+        'goat: \U0001F410\n'
+        '\u00F0: edh\n'
+        '\U0001F410: goat\n'
+        '\u2603: snowman\n'.encode('UTF-16BE'),
         True,
         b'{\n'
         b'    "edh": "\\u00f0",\n'
