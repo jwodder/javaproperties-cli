@@ -1,7 +1,7 @@
 Changelog
 =========
 
-v0.8.0 (2020-07-16)
+v0.7.1 (2020-11-28)
 -------------------
 - Support Python 3.9
 - Drop support for Python 2.7 and 3.5
