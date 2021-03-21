@@ -233,7 +233,8 @@ def test_cmd_select(args, rc, output):
         b'nonexistent=42\n',
     ),
 ])
-def test_cmd_select_with_defaults(defaults_file, args, rc, output):
+@pytest.mark.usefixtures("defaults_file")
+def test_cmd_select_with_defaults(args, rc, output):
     r = CliRunner().invoke(javaproperties, args, input=INPUT)
     assert r.exit_code == rc, r.stdout_bytes
     assert r.stdout_bytes == b'#Mon Nov 07 15:29:40 EST 2016\n' + output

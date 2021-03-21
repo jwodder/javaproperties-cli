@@ -191,7 +191,8 @@ def test_cmd_get_repeated():
         b'42\n',
     ),
 ])
-def test_cmd_get_with_defaults(defaults_file, args, rc, output):
+@pytest.mark.usefixtures("defaults_file")
+def test_cmd_get_with_defaults(args, rc, output):
     r = CliRunner().invoke(javaproperties, args, input=INPUT)
     assert r.exit_code == rc, r.stdout_bytes
     assert r.stdout_bytes == output
