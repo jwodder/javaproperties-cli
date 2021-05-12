@@ -2,7 +2,7 @@ from javaproperties_cli import __version__
 
 project   = 'javaproperties-cli'
 author    = 'John T. Wodder II'
-copyright = '2016-2020 John T. Wodder II'
+copyright = '2016-2021 John T. Wodder II'
 
 extensions = [
     'sphinx.ext.autodoc',
