@@ -1,6 +1,11 @@
 Changelog
 =========
 
+v0.8.0 (in development)
+-----------------------
+- Support Click 8
+
+
 v0.7.1 (2020-11-28)
 -------------------
 - Support Python 3.9
