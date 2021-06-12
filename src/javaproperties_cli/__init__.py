@@ -10,8 +10,8 @@ Visit <https://github.com/jwodder/javaproperties-cli> or
 <http://javaproperties-cli.rtfd.io> for more information.
 """
 
-__version__      = '0.8.0'
-__author__       = 'John Thorvald Wodder II'
-__author_email__ = 'javaproperties-cli@varonathe.org'
-__license__      = 'MIT'
-__url__          = 'https://github.com/jwodder/javaproperties-cli'
+__version__ = "0.8.0"
+__author__ = "John Thorvald Wodder II"
+__author_email__ = "javaproperties-cli@varonathe.org"
+__license__ = "MIT"
+__url__ = "https://github.com/jwodder/javaproperties-cli"

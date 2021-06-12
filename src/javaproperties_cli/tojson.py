@@ -60,33 +60,40 @@ OPTIONS
     Output non-ASCII characters literally.  This overrides :option:`--ascii`.
 """
 
-from   collections    import OrderedDict
+from collections import OrderedDict
 import json
 import click
-from   javaproperties import load
-from   .util          import command, encoding_option, infile_type, outfile_type
+from javaproperties import load
+from .util import command, encoding_option, infile_type, outfile_type
+
 
 @command()
-@click.option('-A/-U', '--ascii/--unicode', 'ensure_ascii', default=True,
-              help='Whether to escape non-ASCII characters or output raw')
+@click.option(
+    "-A/-U",
+    "--ascii/--unicode",
+    "ensure_ascii",
+    default=True,
+    help="Whether to escape non-ASCII characters or output raw",
+)
 @encoding_option
-@click.option('-S', '--sort-keys', is_flag=True,
-              help='Sort entries in output by key')
-@click.argument('infile', type=infile_type, default='-')
-@click.argument('outfile', type=outfile_type, default='-')
+@click.option("-S", "--sort-keys", is_flag=True, help="Sort entries in output by key")
+@click.argument("infile", type=infile_type, default="-")
+@click.argument("outfile", type=outfile_type, default="-")
 def properties2json(infile, outfile, encoding, ensure_ascii, sort_keys):
-    """ Convert a Java .properties file to JSON """
+    """Convert a Java .properties file to JSON"""
     with click.open_file(infile, encoding=encoding) as fp:
         props = load(fp, object_pairs_hook=OrderedDict)
-    with click.open_file(outfile, 'w', encoding='utf-8') as fp:
+    with click.open_file(outfile, "w", encoding="utf-8") as fp:
         json.dump(
-            props, fp,
-            sort_keys    = sort_keys,
-            indent       = 4,
-            separators   = (',', ': '),
-            ensure_ascii = ensure_ascii,
+            props,
+            fp,
+            sort_keys=sort_keys,
+            indent=4,
+            separators=(",", ": "),
+            ensure_ascii=ensure_ascii,
         )
-        fp.write('\n')
+        fp.write("\n")
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     properties2json()  # pragma: no cover

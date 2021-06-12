@@ -291,149 +291,266 @@ Options
 """
 
 import click
-from   javaproperties import KeyValue, dump, java_timestamp, join_key_value, \
-                                load, parse, to_comment, unescape
-from   .util          import command, encoding_option, infile_type, outfile_type
+from javaproperties import (
+    KeyValue,
+    dump,
+    java_timestamp,
+    join_key_value,
+    load,
+    parse,
+    to_comment,
+    unescape,
+)
+from .util import command, encoding_option, infile_type, outfile_type
+
 
 @command(group=True)
 def javaproperties():
-    """ Basic manipulation of Java .properties files """
+    """Basic manipulation of Java .properties files"""
     pass
 
+
 @javaproperties.command()
-@click.option('-d', '--default-value', metavar='VALUE',
-              help='Default value for undefined keys')
-@click.option('-D', '--defaults', metavar='FILE', type=infile_type,
-              help='.properties file of default values')
-@click.option('-e', '--escaped', is_flag=True,
-              help='Parse command-line keys & values for escapes')
+@click.option(
+    "-d", "--default-value", metavar="VALUE", help="Default value for undefined keys"
+)
+@click.option(
+    "-D",
+    "--defaults",
+    metavar="FILE",
+    type=infile_type,
+    help=".properties file of default values",
+)
+@click.option(
+    "-e", "--escaped", is_flag=True, help="Parse command-line keys & values for escapes"
+)
 @encoding_option
-@click.option('-q', '--quiet', is_flag=True, help="Don't warn on missing keys")
-@click.argument('file', type=infile_type)
-@click.argument('key', nargs=-1, required=True)
+@click.option("-q", "--quiet", is_flag=True, help="Don't warn on missing keys")
+@click.argument("file", type=infile_type)
+@click.argument("key", nargs=-1, required=True)
 @click.pass_context
 def get(ctx, default_value, defaults, escaped, file, key, encoding, quiet):
-    """ Query values from a Java .properties file """
+    """Query values from a Java .properties file"""
     ok = True
-    for k,v in getselect(file, key, defaults, default_value, encoding, escaped):
+    for k, v in getselect(file, key, defaults, default_value, encoding, escaped):
         if v is not None:
             click.echo(v)
         elif not quiet:
-            click.echo(f'{ctx.command_path}: {k}: key not found', err=True)
+            click.echo(f"{ctx.command_path}: {k}: key not found", err=True)
             ok = False
     ctx.exit(0 if ok else 1)
 
+
 @javaproperties.command()
-@click.option('-A/-U', '--ascii/--unicode', 'ensure_ascii', default=True,
-              help='Whether to escape non-ASCII characters or output raw')
-@click.option('-d', '--default-value', metavar='VALUE',
-              help='Default value for undefined keys')
-@click.option('-D', '--defaults', metavar='FILE', type=infile_type,
-              help='.properties file of default values')
-@click.option('-e', '--escaped', is_flag=True,
-              help='Parse command-line keys & values for escapes')
+@click.option(
+    "-A/-U",
+    "--ascii/--unicode",
+    "ensure_ascii",
+    default=True,
+    help="Whether to escape non-ASCII characters or output raw",
+)
+@click.option(
+    "-d", "--default-value", metavar="VALUE", help="Default value for undefined keys"
+)
+@click.option(
+    "-D",
+    "--defaults",
+    metavar="FILE",
+    type=infile_type,
+    help=".properties file of default values",
+)
+@click.option(
+    "-e", "--escaped", is_flag=True, help="Parse command-line keys & values for escapes"
+)
 @encoding_option
-@click.option('-o', '--outfile', type=outfile_type, default='-',
-              help='Write output to this file')
-@click.option('-q', '--quiet', is_flag=True, help="Don't warn on missing keys")
-@click.option('-s', '--separator', default='=', show_default=True,
-              help='Key-value separator to use in output')
-@click.argument('file', type=infile_type)
-@click.argument('key', nargs=-1, required=True)
+@click.option(
+    "-o", "--outfile", type=outfile_type, default="-", help="Write output to this file"
+)
+@click.option("-q", "--quiet", is_flag=True, help="Don't warn on missing keys")
+@click.option(
+    "-s",
+    "--separator",
+    default="=",
+    show_default=True,
+    help="Key-value separator to use in output",
+)
+@click.argument("file", type=infile_type)
+@click.argument("key", nargs=-1, required=True)
 @click.pass_context
-def select(ctx, default_value, defaults, escaped, separator, file, key,
-           encoding, outfile, ensure_ascii, quiet):
-    """ Extract key-value pairs from a Java .properties file """
+def select(
+    ctx,
+    default_value,
+    defaults,
+    escaped,
+    separator,
+    file,
+    key,
+    encoding,
+    outfile,
+    ensure_ascii,
+    quiet,
+):
+    """Extract key-value pairs from a Java .properties file"""
     ok = True
     with click.open_file(
-        outfile, 'w', encoding=encoding, errors='javapropertiesreplace',
+        outfile,
+        "w",
+        encoding=encoding,
+        errors="javapropertiesreplace",
     ) as fpout:
         print(to_comment(java_timestamp()), file=fpout)
-        for k,v in getselect(file, key, defaults, default_value, encoding,
-                             escaped):
+        for k, v in getselect(file, key, defaults, default_value, encoding, escaped):
             if v is not None:
-                print(join_key_value(k, v, separator=separator,
-                                     ensure_ascii=ensure_ascii), file=fpout)
+                print(
+                    join_key_value(
+                        k, v, separator=separator, ensure_ascii=ensure_ascii
+                    ),
+                    file=fpout,
+                )
             elif not quiet:
-                click.echo(f'{ctx.command_path}: {k}: key not found', err=True)
+                click.echo(f"{ctx.command_path}: {k}: key not found", err=True)
                 ok = False
     ctx.exit(0 if ok else 1)
 
-@javaproperties.command('set')
-@click.option('-A/-U', '--ascii/--unicode', 'ensure_ascii', default=True,
-              help='Whether to escape non-ASCII characters or output raw')
-@click.option('-e', '--escaped', is_flag=True,
-              help='Parse command-line keys & values for escapes')
+
+@javaproperties.command("set")
+@click.option(
+    "-A/-U",
+    "--ascii/--unicode",
+    "ensure_ascii",
+    default=True,
+    help="Whether to escape non-ASCII characters or output raw",
+)
+@click.option(
+    "-e", "--escaped", is_flag=True, help="Parse command-line keys & values for escapes"
+)
 @encoding_option
-@click.option('-s', '--separator', default='=', show_default=True,
-              help='Key-value separator to use in output')
-@click.option('-o', '--outfile', type=outfile_type, default='-',
-              help='Write output to this file')
-@click.option('-T', '--preserve-timestamp', is_flag=True,
-              help='Keep the timestamp from the input file')
-@click.argument('file', type=infile_type)
-@click.argument('key')
-@click.argument('value')
-def setprop(escaped, separator, outfile, preserve_timestamp, file, key, value,
-            encoding, ensure_ascii):
-    """ Set values in a Java .properties file """
+@click.option(
+    "-s",
+    "--separator",
+    default="=",
+    show_default=True,
+    help="Key-value separator to use in output",
+)
+@click.option(
+    "-o", "--outfile", type=outfile_type, default="-", help="Write output to this file"
+)
+@click.option(
+    "-T",
+    "--preserve-timestamp",
+    is_flag=True,
+    help="Keep the timestamp from the input file",
+)
+@click.argument("file", type=infile_type)
+@click.argument("key")
+@click.argument("value")
+def setprop(
+    escaped,
+    separator,
+    outfile,
+    preserve_timestamp,
+    file,
+    key,
+    value,
+    encoding,
+    ensure_ascii,
+):
+    """Set values in a Java .properties file"""
     if escaped:
         key = unescape(key)
         value = unescape(value)
     with click.open_file(file, encoding=encoding) as fpin:
         with click.open_file(
-            outfile, 'w', encoding=encoding, errors='javapropertiesreplace',
+            outfile,
+            "w",
+            encoding=encoding,
+            errors="javapropertiesreplace",
         ) as fpout:
-            setproperties(fpin, fpout, {key: value}, preserve_timestamp,
-                          separator, ensure_ascii)
+            setproperties(
+                fpin, fpout, {key: value}, preserve_timestamp, separator, ensure_ascii
+            )
+
 
 @javaproperties.command()
-@click.option('-e', '--escaped', is_flag=True,
-              help='Parse command-line keys & values for escapes')
+@click.option(
+    "-e", "--escaped", is_flag=True, help="Parse command-line keys & values for escapes"
+)
 @encoding_option
-@click.option('-o', '--outfile', type=outfile_type, default='-',
-              help='Write output to this file')
-@click.option('-T', '--preserve-timestamp', is_flag=True,
-              help='Keep the timestamp from the input file')
-@click.argument('file', type=infile_type)
-@click.argument('key', nargs=-1, required=True)
+@click.option(
+    "-o", "--outfile", type=outfile_type, default="-", help="Write output to this file"
+)
+@click.option(
+    "-T",
+    "--preserve-timestamp",
+    is_flag=True,
+    help="Keep the timestamp from the input file",
+)
+@click.argument("file", type=infile_type)
+@click.argument("key", nargs=-1, required=True)
 def delete(escaped, outfile, preserve_timestamp, file, key, encoding):
-    """ Remove values from a Java .properties file """
+    """Remove values from a Java .properties file"""
     if escaped:
         key = list(map(unescape, key))
     with click.open_file(file, encoding=encoding) as fpin:
         with click.open_file(
-            outfile, 'w', encoding=encoding, errors='javapropertiesreplace',
+            outfile,
+            "w",
+            encoding=encoding,
+            errors="javapropertiesreplace",
         ) as fpout:
             setproperties(fpin, fpout, dict.fromkeys(key), preserve_timestamp)
 
+
 @javaproperties.command()
-@click.option('-A/-U', '--ascii/--unicode', 'ensure_ascii', default=True,
-              help='Whether to escape non-ASCII characters or output raw')
+@click.option(
+    "-A/-U",
+    "--ascii/--unicode",
+    "ensure_ascii",
+    default=True,
+    help="Whether to escape non-ASCII characters or output raw",
+)
 @encoding_option
-@click.option('-o', '--outfile', type=outfile_type, default='-',
-              help='Write output to this file')
-@click.option('-s', '--separator', default='=', show_default=True,
-              help='Key-value separator to use in output')
-@click.argument('file', type=infile_type, default='-')
+@click.option(
+    "-o", "--outfile", type=outfile_type, default="-", help="Write output to this file"
+)
+@click.option(
+    "-s",
+    "--separator",
+    default="=",
+    show_default=True,
+    help="Key-value separator to use in output",
+)
+@click.argument("file", type=infile_type, default="-")
 def format(outfile, separator, file, encoding, ensure_ascii):
-    """ Format/"canonicalize" a Java .properties file """
+    """Format/"canonicalize" a Java .properties file"""
     with click.open_file(file, encoding=encoding) as fpin:
         with click.open_file(
-            outfile, 'w', encoding=encoding, errors='javapropertiesreplace',
+            outfile,
+            "w",
+            encoding=encoding,
+            errors="javapropertiesreplace",
         ) as fpout:
-            dump(load(fpin), fpout, sort_keys=True, separator=separator,
-                 ensure_ascii=ensure_ascii)
+            dump(
+                load(fpin),
+                fpout,
+                sort_keys=True,
+                separator=separator,
+                ensure_ascii=ensure_ascii,
+            )
+
 
 def getproperties(fp, keys):
     keys = set(keys)
+
     def getprops(seq):
         props = {}
-        for k,v in seq:
+        for k, v in seq:
             if k in keys:
                 props[k] = v
         return props
+
     return load(fp, object_pairs_hook=getprops)
+
 
 def getselect(file, key, defaults, default_value, encoding, escaped):
     if escaped:
@@ -453,26 +570,28 @@ def getselect(file, key, defaults, default_value, encoding, escaped):
             v = props[k]
         elif k in defaults:
             v = defaults[k]
-        yield (k,v)
+        yield (k, v)
 
-def setproperties(fpin, fpout, newprops, preserve_timestamp=False,
-                  separator='=', ensure_ascii=True):
+
+def setproperties(
+    fpin, fpout, newprops, preserve_timestamp=False, separator="=", ensure_ascii=True
+):
     in_header = True
     prev = None
     for kv in parse(fpin):
         if in_header:
             if not isinstance(kv, KeyValue):
                 if prev is not None:
-                    print(prev.source, end='', file=fpout)
+                    print(prev.source, end="", file=fpout)
                 prev = kv
                 continue
             else:
                 if prev is not None:
                     if preserve_timestamp:
-                        print(prev.source, end='', file=fpout)
+                        print(prev.source, end="", file=fpout)
                     else:
                         if not prev.is_timestamp():
-                            print(prev.source, end='', file=fpout)
+                            print(prev.source, end="", file=fpout)
                         print(to_comment(java_timestamp()), file=fpout)
                 elif not preserve_timestamp:
                     print(to_comment(java_timestamp()), file=fpout)
@@ -495,8 +614,13 @@ def setproperties(fpin, fpout, newprops, preserve_timestamp=False,
             print(kv.source_stripped, file=fpout)
     for key, value in newprops.items():
         if value is not None:
-            print(join_key_value(key, value, separator=separator,
-                                 ensure_ascii=ensure_ascii), file=fpout)
+            print(
+                join_key_value(
+                    key, value, separator=separator, ensure_ascii=ensure_ascii
+                ),
+                file=fpout,
+            )
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     javaproperties()  # pragma: no cover

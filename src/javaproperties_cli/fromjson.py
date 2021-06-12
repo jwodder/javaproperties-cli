@@ -93,28 +93,39 @@ OPTIONS
     sequences.  This overrides :option:`--ascii`.
 """
 
-from   collections    import OrderedDict
-from   decimal        import Decimal
+from collections import OrderedDict
+from decimal import Decimal
 import json
 import click
-from   javaproperties import dump
-from   .util          import command, encoding_option, outfile_type
+from javaproperties import dump
+from .util import command, encoding_option, outfile_type
+
 
 @command()
-@click.option('-A/-U', '--ascii/--unicode', 'ensure_ascii', default=True,
-              help='Whether to escape non-ASCII characters or output raw')
-@click.option('-c', '--comment', help='Set comment in output')
+@click.option(
+    "-A/-U",
+    "--ascii/--unicode",
+    "ensure_ascii",
+    default=True,
+    help="Whether to escape non-ASCII characters or output raw",
+)
+@click.option("-c", "--comment", help="Set comment in output")
 @encoding_option
-@click.option('-s', '--separator', default='=', show_default=True,
-              help='Key-value separator to use in output')
-@click.option('-S', '--sort-keys', is_flag=True,
-              help='Sort entries in output by key')
-@click.argument('infile', type=click.File('r'), default='-')
-@click.argument('outfile', type=outfile_type, default='-')
+@click.option(
+    "-s",
+    "--separator",
+    default="=",
+    show_default=True,
+    help="Key-value separator to use in output",
+)
+@click.option("-S", "--sort-keys", is_flag=True, help="Sort entries in output by key")
+@click.argument("infile", type=click.File("r"), default="-")
+@click.argument("outfile", type=outfile_type, default="-")
 @click.pass_context
-def json2properties(ctx, infile, outfile, separator, encoding, comment,
-                    ensure_ascii, sort_keys):
-    """ Convert a JSON object to a Java .properties file """
+def json2properties(
+    ctx, infile, outfile, separator, encoding, comment, ensure_ascii, sort_keys
+):
+    """Convert a JSON object to a Java .properties file"""
     with infile:
         props = json.load(
             infile,
@@ -122,24 +133,34 @@ def json2properties(ctx, infile, outfile, separator, encoding, comment,
             object_pairs_hook=OrderedDict,
         )
     if not isinstance(props, dict):
-        ctx.fail('Only dicts can be converted to .properties')
+        ctx.fail("Only dicts can be converted to .properties")
     strprops = []
-    for k,v in props.items():
+    for k, v in props.items():
         assert isinstance(k, str)
         if isinstance(v, (list, dict)):
-            ctx.fail('Dictionary values must be scalars, not lists or dicts')
+            ctx.fail("Dictionary values must be scalars, not lists or dicts")
         elif isinstance(v, str):
-            strprops.append((k,v))
+            strprops.append((k, v))
         elif isinstance(v, Decimal):
             strprops.append((k, str(v)))
         else:
             strprops.append((k, json.dumps(v)))
     with click.open_file(
-        outfile, 'w', encoding=encoding, errors='javapropertiesreplace',
+        outfile,
+        "w",
+        encoding=encoding,
+        errors="javapropertiesreplace",
     ) as fp:
-        dump(strprops, fp, separator=separator, comments=comment,
-             ensure_ascii=ensure_ascii, ensure_ascii_comments=ensure_ascii,
-             sort_keys=sort_keys)
+        dump(
+            strprops,
+            fp,
+            separator=separator,
+            comments=comment,
+            ensure_ascii=ensure_ascii,
+            ensure_ascii_comments=ensure_ascii,
+            sort_keys=sort_keys,
+        )
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     json2properties()  # pragma: no cover
