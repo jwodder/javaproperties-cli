@@ -1,3 +1,7 @@
+v0.9.0 (in development)
+-----------------------
+- Support Python 3.10
+
 v0.8.0 (2021-05-12)
 -------------------
 - Support Click 8
