@@ -30,7 +30,7 @@ line-oriented format, not the XML variant.
 
 Installation
 ============
-``javaproperties-cli`` requires Python 3.6 or higher.  Just use `pip
+``javaproperties-cli`` requires Python 3.7 or higher.  Just use `pip
 <https://pip.pypa.io>`_ for Python 3 (You have pip, right?) to install
 ``javaproperties-cli`` and its dependencies::
 
