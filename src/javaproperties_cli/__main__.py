@@ -501,7 +501,7 @@ def delete(escaped, outfile, preserve_timestamp, file, key, encoding):
             setproperties(fpin, fpout, dict.fromkeys(key), preserve_timestamp)
 
 
-@javaproperties.command()
+@javaproperties.command("format")
 @click.option(
     "-A/-U",
     "--ascii/--unicode",
@@ -521,7 +521,7 @@ def delete(escaped, outfile, preserve_timestamp, file, key, encoding):
     help="Key-value separator to use in output",
 )
 @click.argument("file", type=infile_type, default="-")
-def format(outfile, separator, file, encoding, ensure_ascii):
+def formatprops(outfile, separator, file, encoding, ensure_ascii):
     """Format/"canonicalize" a Java .properties file"""
     with click.open_file(file, encoding=encoding) as fpin:
         with click.open_file(
