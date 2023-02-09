@@ -211,7 +211,7 @@ def test_json2properties(args, inp, output):
         b'    "foo": "bar",\n'
         b'    "zebra": "apple"\n'
         b"}]\n",
-        br'"{\"key\": \"value\", \"foo\": \"bar\", \"zebra\": \"apple\"}"',
+        rb'"{\"key\": \"value\", \"foo\": \"bar\", \"zebra\": \"apple\"}"',
         b"42\n",
         b"3.14\n",
         b"true\n",
