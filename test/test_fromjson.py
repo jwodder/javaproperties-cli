@@ -195,6 +195,34 @@ from javaproperties_cli.fromjson import json2properties
             b"key=value\n"
             b"zebra=apple\n",
         ),
+        (
+            (
+                "{\n"
+                '    "key": "value",\n'
+                '    "foo": "bar",\n'
+                '    "zebra": "apple"\n'
+                "}\n"
+            ).encode("utf-16le"),
+            [],
+            b"#Mon Nov 07 15:29:40 EST 2016\n"
+            b"key=value\n"
+            b"foo=bar\n"
+            b"zebra=apple\n",
+        ),
+        (
+            (
+                "{\n"
+                '    "key": "value",\n'
+                '    "foo": "bar",\n'
+                '    "zebra": "apple"\n'
+                "}\n"
+            ).encode("utf-32be"),
+            [],
+            b"#Mon Nov 07 15:29:40 EST 2016\n"
+            b"key=value\n"
+            b"foo=bar\n"
+            b"zebra=apple\n",
+        ),
     ],
 )
 def test_json2properties(args, inp, output):
