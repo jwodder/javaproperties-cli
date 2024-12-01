@@ -119,7 +119,7 @@ from .util import command, encoding_option, outfile_type
     help="Key-value separator to use in output",
 )
 @click.option("-S", "--sort-keys", is_flag=True, help="Sort entries in output by key")
-@click.argument("infile", type=click.File("r"), default="-")
+@click.argument("infile", type=click.File("rb"), default="-")
 @click.argument("outfile", type=outfile_type, default="-")
 @click.pass_context
 def json2properties(
