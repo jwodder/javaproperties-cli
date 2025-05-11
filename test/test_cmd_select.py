@@ -193,8 +193,8 @@ INPUT = (
 )
 def test_cmd_select(args, rc, output):
     r = CliRunner().invoke(javaproperties, args, input=INPUT)
-    assert r.exit_code == rc, r.stdout_bytes
-    assert r.stdout_bytes == b"#Mon Nov 07 15:29:40 EST 2016\n" + output
+    assert r.exit_code == rc, r.output_bytes
+    assert r.output_bytes == b"#Mon Nov 07 15:29:40 EST 2016\n" + output
 
 
 @pytest.mark.parametrize(
@@ -240,8 +240,8 @@ def test_cmd_select(args, rc, output):
 @pytest.mark.usefixtures("defaults_file")
 def test_cmd_select_with_defaults(args, rc, output):
     r = CliRunner().invoke(javaproperties, args, input=INPUT)
-    assert r.exit_code == rc, r.stdout_bytes
-    assert r.stdout_bytes == b"#Mon Nov 07 15:29:40 EST 2016\n" + output
+    assert r.exit_code == rc, r.output_bytes
+    assert r.output_bytes == b"#Mon Nov 07 15:29:40 EST 2016\n" + output
 
 
 def test_cmd_select_repeated():
@@ -256,8 +256,8 @@ def test_cmd_select_repeated():
             b"repeated = second\n"
         ),
     )
-    assert r.exit_code == 0, r.stdout_bytes
-    assert r.stdout_bytes == b"#Mon Nov 07 15:29:40 EST 2016\nrepeated=second\n"
+    assert r.exit_code == 0, r.output_bytes
+    assert r.output_bytes == b"#Mon Nov 07 15:29:40 EST 2016\nrepeated=second\n"
 
 
 # --outfile

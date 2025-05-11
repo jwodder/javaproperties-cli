@@ -42,7 +42,7 @@ classifiers = [
 ]
 
 dependencies = [
-    "click          >= 7.0",
+    "click          ~= 8.2",
     "javaproperties >= 0.7.0, <0.9",
 ]
 
