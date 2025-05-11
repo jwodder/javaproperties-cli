@@ -1,8 +1,8 @@
 Changelog
 =========
 
-v0.8.2 (in development)
------------------------
+v0.8.2 (2025-05-11)
+-------------------
 - :program:`json2properties` now supports input in UTF-16 and UTF-32 in
   addition to UTF-8
 - Update tests for click v8.2.0
