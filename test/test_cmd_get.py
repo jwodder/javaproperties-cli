@@ -8,7 +8,7 @@ INPUT = (
     b"zebra apple\n"
     b"e\\u00f0=escaped\n"
     b"e\\\\u00f0=not escaped\n"
-    b"latin-1 = \xC3\xB0\n"
+    b"latin-1 = \xc3\xb0\n"
     b"bmp = \\u2603\n"
     b"astral = \\uD83D\\uDC10\n"
     b"bad-surrogate = \\uDC10\\uD83D\n"
@@ -61,7 +61,7 @@ INPUT = (
         (
             ["get", "-", "-d", "\\u7121", "--escaped", "nonexistent"],
             0,
-            b"\xE7\x84\xA1\n",
+            b"\xe7\x84\xa1\n",
         ),
         (
             ["get", "--escaped", "-", "e\\u00F0"],
@@ -71,7 +71,7 @@ INPUT = (
         (
             ["get", "--escaped", "-", "x\\u00F0"],
             1,
-            b"javaproperties get: x\xC3\xB0: key not found\n",
+            b"javaproperties get: x\xc3\xb0: key not found\n",
         ),
         (
             ["get", "-", "e\\u00f0"],
@@ -84,34 +84,34 @@ INPUT = (
             b"javaproperties get: x\\u00f0: key not found\n",
         ),
         (
-            ["get", "-", b"e\xC3\xB0"],
+            ["get", "-", b"e\xc3\xb0"],
             0,
             b"escaped\n",
         ),
         (
-            ["get", "-", b"x\xC3\xB0"],
+            ["get", "-", b"x\xc3\xb0"],
             1,
-            b"javaproperties get: x\xC3\xB0: key not found\n",
+            b"javaproperties get: x\xc3\xb0: key not found\n",
         ),
         (
             ["get", "-", "latin-1"],
             0,
-            b"\xC3\x83\xC2\xB0\n",
+            b"\xc3\x83\xc2\xb0\n",
         ),
         (
             ["get", "--encoding=utf-8", "-", "latin-1"],
             0,
-            b"\xC3\xB0\n",
+            b"\xc3\xb0\n",
         ),
         (
             ["get", "-", "bmp"],
             0,
-            b"\xE2\x98\x83\n",
+            b"\xe2\x98\x83\n",
         ),
         (
             ["get", "-", "astral"],
             0,
-            b"\xF0\x9F\x90\x90\n",
+            b"\xf0\x9f\x90\x90\n",
         ),
         pytest.param(
             ["get", "-", "bad-surrogate"],
@@ -128,8 +128,8 @@ INPUT = (
 )
 def test_cmd_get(args, rc, output):
     r = CliRunner().invoke(javaproperties, args, input=INPUT)
-    assert r.exit_code == rc, r.stdout_bytes
-    assert r.stdout_bytes == output
+    assert r.exit_code == rc, r.output_bytes
+    assert r.output_bytes == output
 
 
 def test_cmd_get_repeated():
@@ -191,8 +191,8 @@ def test_cmd_get_repeated():
 @pytest.mark.usefixtures("defaults_file")
 def test_cmd_get_with_defaults(args, rc, output):
     r = CliRunner().invoke(javaproperties, args, input=INPUT)
-    assert r.exit_code == rc, r.stdout_bytes
-    assert r.stdout_bytes == output
+    assert r.exit_code == rc, r.output_bytes
+    assert r.output_bytes == output
 
 
 # universal newlines?
