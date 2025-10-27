@@ -74,12 +74,12 @@ from javaproperties_cli.tojson import properties2json
         (
             [],
             b"#Mon Nov 07 15:29:40 EST 2016\n"
-            b"edh: \xC3\xB0\n"
-            b"snowman: \xE2\x98\x83\n"
-            b"goat: \xF0\x9F\x90\x90\n"
-            b"\xC3\xB0: edh\n"
-            b"\xF0\x9F\x90\x90: goat\n"
-            b"\xE2\x98\x83: snowman\n",
+            b"edh: \xc3\xb0\n"
+            b"snowman: \xe2\x98\x83\n"
+            b"goat: \xf0\x9f\x90\x90\n"
+            b"\xc3\xb0: edh\n"
+            b"\xf0\x9f\x90\x90: goat\n"
+            b"\xe2\x98\x83: snowman\n",
             True,
             b"{\n"
             b'    "edh": "\\u00c3\\u00b0",\n'
@@ -93,12 +93,12 @@ from javaproperties_cli.tojson import properties2json
         (
             ["--encoding", "utf-8"],
             b"#Mon Nov 07 15:29:40 EST 2016\n"
-            b"edh: \xC3\xB0\n"
-            b"snowman: \xE2\x98\x83\n"
-            b"goat: \xF0\x9F\x90\x90\n"
-            b"\xC3\xB0: edh\n"
-            b"\xF0\x9F\x90\x90: goat\n"
-            b"\xE2\x98\x83: snowman\n",
+            b"edh: \xc3\xb0\n"
+            b"snowman: \xe2\x98\x83\n"
+            b"goat: \xf0\x9f\x90\x90\n"
+            b"\xc3\xb0: edh\n"
+            b"\xf0\x9f\x90\x90: goat\n"
+            b"\xe2\x98\x83: snowman\n",
             True,
             b"{\n"
             b'    "edh": "\\u00f0",\n'
@@ -112,30 +112,30 @@ from javaproperties_cli.tojson import properties2json
         (
             ["--encoding", "utf-8", "--unicode"],
             b"#Mon Nov 07 15:29:40 EST 2016\n"
-            b"edh: \xC3\xB0\n"
-            b"snowman: \xE2\x98\x83\n"
-            b"goat: \xF0\x9F\x90\x90\n"
-            b"\xC3\xB0: edh\n"
-            b"\xF0\x9F\x90\x90: goat\n"
-            b"\xE2\x98\x83: snowman\n",
+            b"edh: \xc3\xb0\n"
+            b"snowman: \xe2\x98\x83\n"
+            b"goat: \xf0\x9f\x90\x90\n"
+            b"\xc3\xb0: edh\n"
+            b"\xf0\x9f\x90\x90: goat\n"
+            b"\xe2\x98\x83: snowman\n",
             True,
             b"{\n"
-            b'    "edh": "\xC3\xB0",\n'
-            b'    "snowman": "\xE2\x98\x83",\n'
-            b'    "goat": "\xF0\x9F\x90\x90",\n'
-            b'    "\xC3\xB0": "edh",\n'
-            b'    "\xF0\x9F\x90\x90": "goat",\n'
-            b'    "\xE2\x98\x83": "snowman"\n'
+            b'    "edh": "\xc3\xb0",\n'
+            b'    "snowman": "\xe2\x98\x83",\n'
+            b'    "goat": "\xf0\x9f\x90\x90",\n'
+            b'    "\xc3\xb0": "edh",\n'
+            b'    "\xf0\x9f\x90\x90": "goat",\n'
+            b'    "\xe2\x98\x83": "snowman"\n'
             b"}\n",
         ),
         (
             ["--encoding", "utf-16BE"],
             "#Mon Nov 07 15:29:40 EST 2016\n"
-            "edh: \u00F0\n"
+            "edh: \u00f0\n"
             "snowman: \u2603\n"
-            "goat: \U0001F410\n"
-            "\u00F0: edh\n"
-            "\U0001F410: goat\n"
+            "goat: \U0001f410\n"
+            "\u00f0: edh\n"
+            "\U0001f410: goat\n"
             "\u2603: snowman\n".encode("UTF-16BE"),
             True,
             b"{\n"

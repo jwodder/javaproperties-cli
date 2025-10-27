@@ -20,7 +20,7 @@ INPUT = (
     b"  \\\n"
     b"   quux\n"
     b"\n"
-    b"xyzzy = \xC3\xA9\n"
+    b"xyzzy = \xc3\xa9\n"
     b"\n"
     b"  \\\n"
     b"#: after hash\n"
@@ -119,7 +119,7 @@ OUTPUT = (
             b"foo=bar \n"
             b"goat=\\ud83d\\udc10\n"
             b"horizontal\\ttab=eight spaces\n"
-            b"latin1=\xE9\n"
+            b"latin1=\xe9\n"
             b"line\\nfeed=go down one\n"
             b"newline=\\n\n"
             b"plugh=plover stuff \n"
@@ -127,7 +127,7 @@ OUTPUT = (
             b"space=\\   \n"
             b"taog=\\udc10\\ud83d\n"
             b"test=\n"
-            b"xyzzy=\xC3\xA9\n",
+            b"xyzzy=\xc3\xa9\n",
         ),
         (
             ["format", "--unicode", "--encoding=UTF-8"],
@@ -138,9 +138,9 @@ OUTPUT = (
             b"carriage\\rreturn=go to start of line\n"
             b"dwarf=\n"
             b"foo=bar \n"
-            b"goat=\xF0\x9F\x90\x90\n"
+            b"goat=\xf0\x9f\x90\x90\n"
             b"horizontal\\ttab=eight spaces\n"
-            b"latin1=\xC3\xA9\n"
+            b"latin1=\xc3\xa9\n"
             b"line\\nfeed=go down one\n"
             b"newline=\\n\n"
             b"plugh=plover stuff \n"
@@ -148,7 +148,7 @@ OUTPUT = (
             b"space=\\   \n"
             b"taog=\\udc10\\ud83d\n"
             b"test=\n"
-            b"xyzzy=\xC3\xA9\n",
+            b"xyzzy=\xc3\xa9\n",
         ),
     ],
 )

@@ -8,7 +8,7 @@ INPUT = (
     b"zebra apple\n"
     b"e\\u00f0=escaped\n"
     b"e\\\\u00f0=not escaped\n"
-    b"latin-1 = \xF0\n"
+    b"latin-1 = \xf0\n"
     b"bmp = \\u2603\n"
     b"astral = \\uD83D\\uDC10\n"
 )
@@ -24,7 +24,7 @@ INPUT = (
             b"zebra apple\n"
             b"e\\u00f0=escaped\n"
             b"e\\\\u00f0=not escaped\n"
-            b"latin-1 = \xF0\n"
+            b"latin-1 = \xf0\n"
             b"bmp = \\u2603\n"
             b"astral = \\uD83D\\uDC10\n",
         ),
@@ -41,7 +41,7 @@ INPUT = (
             b"zebra apple\n"
             b"e\\u00f0=escaped\n"
             b"e\\\\u00f0=not escaped\n"
-            b"latin-1 = \xF0\n"
+            b"latin-1 = \xf0\n"
             b"bmp = \\u2603\n"
             b"astral = \\uD83D\\uDC10\n",
         ),
@@ -57,7 +57,7 @@ INPUT = (
             b"zebra apple\n"
             b"e\\u00f0=escaped\n"
             b"e\\\\u00f0=not escaped\n"
-            b"latin-1 = \xF0\n"
+            b"latin-1 = \xf0\n"
             b"bmp = \\u2603\n"
             b"astral = \\uD83D\\uDC10\n",
         ),
@@ -68,7 +68,7 @@ INPUT = (
             b"key = value\n"
             b"zebra apple\n"
             b"e\\\\u00f0=not escaped\n"
-            b"latin-1 = \xF0\n"
+            b"latin-1 = \xf0\n"
             b"bmp = \\u2603\n"
             b"astral = \\uD83D\\uDC10\n",
         ),
@@ -84,7 +84,7 @@ INPUT = (
             b"key = value\n"
             b"zebra apple\n"
             b"e\\u00f0=escaped\n"
-            b"latin-1 = \xF0\n"
+            b"latin-1 = \xf0\n"
             b"bmp = \\u2603\n"
             b"astral = \\uD83D\\uDC10\n",
         ),
@@ -94,18 +94,18 @@ INPUT = (
             INPUT,
         ),
         (
-            ["delete", "--preserve-timestamp", "-", b"e\xC3\xB0"],
+            ["delete", "--preserve-timestamp", "-", b"e\xc3\xb0"],
             0,
             b"foo: bar\n"
             b"key = value\n"
             b"zebra apple\n"
             b"e\\\\u00f0=not escaped\n"
-            b"latin-1 = \xF0\n"
+            b"latin-1 = \xf0\n"
             b"bmp = \\u2603\n"
             b"astral = \\uD83D\\uDC10\n",
         ),
         (
-            ["delete", "--preserve-timestamp", "-", b"x\xC3\xB0"],
+            ["delete", "--preserve-timestamp", "-", b"x\xc3\xb0"],
             0,
             INPUT,
         ),
@@ -116,7 +116,7 @@ INPUT = (
             b"zebra apple\n"
             b"e\\u00f0=escaped\n"
             b"e\\\\u00f0=not escaped\n"
-            b"latin-1 = \xF0\n"
+            b"latin-1 = \xf0\n"
             b"bmp = \\u2603\n"
             b"astral = \\uD83D\\uDC10\n",
         ),
@@ -127,7 +127,7 @@ INPUT = (
             b"zebra apple\n"
             b"e\\u00f0=escaped\n"
             b"e\\\\u00f0=not escaped\n"
-            b"latin-1 = \xF0\n"
+            b"latin-1 = \xf0\n"
             b"astral = \\uD83D\\uDC10\n",
         ),
         (
@@ -137,7 +137,7 @@ INPUT = (
             b"zebra apple\n"
             b"e\\u00f0=escaped\n"
             b"e\\\\u00f0=not escaped\n"
-            b"latin-1 = \xF0\n"
+            b"latin-1 = \xf0\n"
             b"astral = \\uD83D\\uDC10\n",
         ),
     ],
@@ -179,7 +179,7 @@ def test_cmd_delete_keep_bad_surrogate():
             b"zebra apple\n"
             b"e\\u00f0=escaped\n"
             b"e\\\\u00f0=not escaped\n"
-            b"latin-1 = \xF0\n"
+            b"latin-1 = \xf0\n"
             b"bmp = \\u2603\n"
             b"astral = \\uD83D\\uDC10\n",
         ),
@@ -196,7 +196,7 @@ def test_cmd_delete_keep_bad_surrogate():
             b"zebra apple\n"
             b"e\\u00f0=escaped\n"
             b"e\\\\u00f0=not escaped\n"
-            b"latin-1 = \xF0\n"
+            b"latin-1 = \xf0\n"
             b"bmp = \\u2603\n"
             b"astral = \\uD83D\\uDC10\n",
         ),
@@ -235,7 +235,7 @@ def test_cmd_delete_repeated():
     "args,rc,output",
     [
         (
-            ["delete", "--preserve-timestamp", "-", b"k\xC3\xABy"],
+            ["delete", "--preserve-timestamp", "-", b"k\xc3\xaby"],
             0,
             b"foo: bar\n" b"zebra apple\n",
         ),
@@ -248,7 +248,7 @@ def test_cmd_delete_repeated():
 )
 def test_cmd_delete_raw_latin1_key(args, rc, output):
     r = CliRunner().invoke(
-        javaproperties, args, input=(b"foo: bar\n" b"k\xEBy = value\n" b"zebra apple\n")
+        javaproperties, args, input=(b"foo: bar\n" b"k\xeby = value\n" b"zebra apple\n")
     )
     assert r.exit_code == rc, r.stdout_bytes
     assert r.stdout_bytes == output
@@ -258,14 +258,14 @@ def test_cmd_delete_raw_latin1_key(args, rc, output):
     "args,rc,output",
     [
         (
-            ["delete", "--preserve-timestamp", "-", b"k\xC3\xABy"],
+            ["delete", "--preserve-timestamp", "-", b"k\xc3\xaby"],
             0,
-            b"foo: bar\n" b"k\xC3\xABy = value\n" b"zebra apple\n",
+            b"foo: bar\n" b"k\xc3\xaby = value\n" b"zebra apple\n",
         ),
         (
             ["delete", "--preserve-timestamp", "--escaped", "-", "k\\u00EBy"],
             0,
-            b"foo: bar\n" b"k\xC3\xABy = value\n" b"zebra apple\n",
+            b"foo: bar\n" b"k\xc3\xaby = value\n" b"zebra apple\n",
         ),
         (
             [
@@ -274,7 +274,7 @@ def test_cmd_delete_raw_latin1_key(args, rc, output):
                 "--encoding",
                 "utf-8",
                 "-",
-                b"k\xC3\xABy",
+                b"k\xc3\xaby",
             ],
             0,
             b"foo: bar\n" b"zebra apple\n",
@@ -298,7 +298,7 @@ def test_cmd_delete_raw_utf8_key(args, rc, output):
     r = CliRunner().invoke(
         javaproperties,
         args,
-        input=(b"foo: bar\n" b"k\xC3\xABy = value\n" b"zebra apple\n"),
+        input=(b"foo: bar\n" b"k\xc3\xaby = value\n" b"zebra apple\n"),
     )
     assert r.exit_code == rc, r.stdout_bytes
     assert r.stdout_bytes == output

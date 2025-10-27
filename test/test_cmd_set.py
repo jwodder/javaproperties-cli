@@ -8,7 +8,7 @@ INPUT = (
     b"zebra apple\n"
     b"e\\u00f0=escaped\n"
     b"e\\\\u00f0=not escaped\n"
-    b"latin-1 = \xC3\xB0\n"
+    b"latin-1 = \xc3\xb0\n"
     b"bmp = \\u2603\n"
     b"astral = \\uD83D\\uDC10\n"
     b"bad-surrogate = \\uDC10\\uD83D\n"
@@ -26,7 +26,7 @@ INPUT = (
             b"zebra apple\n"
             b"e\\u00f0=escaped\n"
             b"e\\\\u00f0=not escaped\n"
-            b"latin-1 = \xC3\xB0\n"
+            b"latin-1 = \xc3\xb0\n"
             b"bmp = \\u2603\n"
             b"astral = \\uD83D\\uDC10\n"
             b"bad-surrogate = \\uDC10\\uD83D\n",
@@ -39,7 +39,7 @@ INPUT = (
             b"zebra apple\n"
             b"e\\u00f0=escaped\n"
             b"e\\\\u00f0=not escaped\n"
-            b"latin-1 = \xC3\xB0\n"
+            b"latin-1 = \xc3\xb0\n"
             b"bmp = \\u2603\n"
             b"astral = \\uD83D\\uDC10\n"
             b"bad-surrogate = \\uDC10\\uD83D\n",
@@ -58,7 +58,7 @@ INPUT = (
             b"zebra apple\n"
             b"e\\u00f0=escaped\n"
             b"e\\\\u00f0=not escaped\n"
-            b"latin-1 = \xC3\xB0\n"
+            b"latin-1 = \xc3\xb0\n"
             b"bmp = \\u2603\n"
             b"astral = \\uD83D\\uDC10\n"
             b"bad-surrogate = \\uDC10\\uD83D\n",
@@ -76,7 +76,7 @@ INPUT = (
             b"zebra apple\n"
             b"e\\u00f0=escaped\n"
             b"e\\\\u00f0=not escaped\n"
-            b"latin-1 = \xC3\xB0\n"
+            b"latin-1 = \xc3\xb0\n"
             b"bmp = \\u2603\n"
             b"astral = \\uD83D\\uDC10\n"
             b"bad-surrogate = \\uDC10\\uD83D\n",
@@ -96,7 +96,7 @@ INPUT = (
             b"zebra apple\n"
             b"e\\u00f0=\\u00a1new\\!\n"
             b"e\\\\u00f0=not escaped\n"
-            b"latin-1 = \xC3\xB0\n"
+            b"latin-1 = \xc3\xb0\n"
             b"bmp = \\u2603\n"
             b"astral = \\uD83D\\uDC10\n"
             b"bad-surrogate = \\uDC10\\uD83D\n",
@@ -115,9 +115,9 @@ INPUT = (
             b"foo: bar\n"
             b"key = value\n"
             b"zebra apple\n"
-            b"e\xF0=\xA1new\\!\n"
+            b"e\xf0=\xa1new\\!\n"
             b"e\\\\u00f0=not escaped\n"
-            b"latin-1 = \xC3\xB0\n"
+            b"latin-1 = \xc3\xb0\n"
             b"bmp = \\u2603\n"
             b"astral = \\uD83D\\uDC10\n"
             b"bad-surrogate = \\uDC10\\uD83D\n",
@@ -137,9 +137,9 @@ INPUT = (
             b"foo: bar\n"
             b"key = value\n"
             b"zebra apple\n"
-            b"e\xC3\xB0=\xC2\xA1new\\!\n"
+            b"e\xc3\xb0=\xc2\xa1new\\!\n"
             b"e\\\\u00f0=not escaped\n"
-            b"latin-1 = \xC3\xB0\n"
+            b"latin-1 = \xc3\xb0\n"
             b"bmp = \\u2603\n"
             b"astral = \\uD83D\\uDC10\n"
             b"bad-surrogate = \\uDC10\\uD83D\n",
@@ -159,7 +159,7 @@ INPUT = (
             b"zebra apple\n"
             b"e\\u00f0=escaped\n"
             b"e\\\\u00f0=not escaped\n"
-            b"latin-1 = \xC3\xB0\n"
+            b"latin-1 = \xc3\xb0\n"
             b"bmp = \\u2603\n"
             b"astral = \\uD83D\\uDC10\n"
             b"bad-surrogate = \\uDC10\\uD83D\n"
@@ -173,7 +173,7 @@ INPUT = (
             b"zebra apple\n"
             b"e\\u00f0=escaped\n"
             b"e\\\\u00f0=\\\\u00A1new\\!\n"
-            b"latin-1 = \xC3\xB0\n"
+            b"latin-1 = \xc3\xb0\n"
             b"bmp = \\u2603\n"
             b"astral = \\uD83D\\uDC10\n"
             b"bad-surrogate = \\uDC10\\uD83D\n",
@@ -186,34 +186,34 @@ INPUT = (
             b"zebra apple\n"
             b"e\\u00f0=escaped\n"
             b"e\\\\u00f0=not escaped\n"
-            b"latin-1 = \xC3\xB0\n"
+            b"latin-1 = \xc3\xb0\n"
             b"bmp = \\u2603\n"
             b"astral = \\uD83D\\uDC10\n"
             b"bad-surrogate = \\uDC10\\uD83D\n"
             b"x\\\\u00F0=\\\\u00A1new\\!\n",
         ),
         (
-            ["set", "--preserve-timestamp", "-", b"e\xC3\xB0", b"\xC2\xA1new!"],
+            ["set", "--preserve-timestamp", "-", b"e\xc3\xb0", b"\xc2\xa1new!"],
             0,
             b"foo: bar\n"
             b"key = value\n"
             b"zebra apple\n"
             b"e\\u00f0=\\u00a1new\\!\n"
             b"e\\\\u00f0=not escaped\n"
-            b"latin-1 = \xC3\xB0\n"
+            b"latin-1 = \xc3\xb0\n"
             b"bmp = \\u2603\n"
             b"astral = \\uD83D\\uDC10\n"
             b"bad-surrogate = \\uDC10\\uD83D\n",
         ),
         (
-            ["set", "--preserve-timestamp", "-", b"x\xC3\xB0", b"\xC2\xA1new!"],
+            ["set", "--preserve-timestamp", "-", b"x\xc3\xb0", b"\xc2\xa1new!"],
             0,
             b"foo: bar\n"
             b"key = value\n"
             b"zebra apple\n"
             b"e\\u00f0=escaped\n"
             b"e\\\\u00f0=not escaped\n"
-            b"latin-1 = \xC3\xB0\n"
+            b"latin-1 = \xc3\xb0\n"
             b"bmp = \\u2603\n"
             b"astral = \\uD83D\\uDC10\n"
             b"bad-surrogate = \\uDC10\\uD83D\n"
@@ -235,11 +235,11 @@ INPUT = (
             b"zebra apple\n"
             b"e\\u00f0=escaped\n"
             b"e\\\\u00f0=not escaped\n"
-            b"latin-1 = \xC3\xB0\n"
+            b"latin-1 = \xc3\xb0\n"
             b"bmp = \\u2603\n"
             b"astral = \\uD83D\\uDC10\n"
             b"bad-surrogate = \\uDC10\\uD83D\n"
-            b"k\xEBy=\\u94a5\n",
+            b"k\xeby=\\u94a5\n",
         ),
         (
             [
@@ -258,11 +258,11 @@ INPUT = (
             b"zebra apple\n"
             b"e\\u00f0=escaped\n"
             b"e\\\\u00f0=not escaped\n"
-            b"latin-1 = \xC3\xB0\n"
+            b"latin-1 = \xc3\xb0\n"
             b"bmp = \\u2603\n"
             b"astral = \\uD83D\\uDC10\n"
             b"bad-surrogate = \\uDC10\\uD83D\n"
-            b"k\xC3\xABy=\xE9\x92\xA5\n",
+            b"k\xc3\xaby=\xe9\x92\xa5\n",
         ),
     ],
 )
@@ -382,14 +382,14 @@ def test_cmd_set_with_timestamp(args, rc, output):
     "args,rc,output",
     [
         (
-            ["set", "-T", "-", b"k\xC3\xABy", "lock"],
+            ["set", "-T", "-", b"k\xc3\xaby", "lock"],
             0,
             b"foo: bar\n" b"k\\u00eby=lock\n" b"zebra apple\n",
         ),
         (
-            ["set", "-T", "--unicode", "-", b"k\xC3\xABy", "lock"],
+            ["set", "-T", "--unicode", "-", b"k\xc3\xaby", "lock"],
             0,
-            b"foo: bar\n" b"k\xEBy=lock\n" b"zebra apple\n",
+            b"foo: bar\n" b"k\xeby=lock\n" b"zebra apple\n",
         ),
         (
             ["set", "-T", "--escaped", "-", "k\\u00EBy", "lock"],
@@ -400,7 +400,7 @@ def test_cmd_set_with_timestamp(args, rc, output):
 )
 def test_cmd_set_raw_latin1_key(args, rc, output):
     r = CliRunner().invoke(
-        javaproperties, args, input=(b"foo: bar\n" b"k\xEBy = value\n" b"zebra apple\n")
+        javaproperties, args, input=(b"foo: bar\n" b"k\xeby = value\n" b"zebra apple\n")
     )
     assert r.exit_code == rc, r.stdout_bytes
     assert r.stdout_bytes == output
@@ -410,29 +410,29 @@ def test_cmd_set_raw_latin1_key(args, rc, output):
     "args,rc,output",
     [
         (
-            ["set", "-T", "-", b"k\xC3\xABy", "lock"],
+            ["set", "-T", "-", b"k\xc3\xaby", "lock"],
             0,
-            b"foo: bar\n" b"k\xC3\xABy = value\n" b"zebra apple\n" b"k\\u00eby=lock\n",
+            b"foo: bar\n" b"k\xc3\xaby = value\n" b"zebra apple\n" b"k\\u00eby=lock\n",
         ),
         (
-            ["set", "-T", "--unicode", "-", b"k\xC3\xABy", "lock"],
+            ["set", "-T", "--unicode", "-", b"k\xc3\xaby", "lock"],
             0,
-            b"foo: bar\n" b"k\xC3\xABy = value\n" b"zebra apple\n" b"k\xEBy=lock\n",
+            b"foo: bar\n" b"k\xc3\xaby = value\n" b"zebra apple\n" b"k\xeby=lock\n",
         ),
         (
             ["set", "-T", "--escaped", "-", "k\\u00EBy", "lock"],
             0,
-            b"foo: bar\n" b"k\xC3\xABy = value\n" b"zebra apple\n" b"k\\u00eby=lock\n",
+            b"foo: bar\n" b"k\xc3\xaby = value\n" b"zebra apple\n" b"k\\u00eby=lock\n",
         ),
         (
-            ["set", "-T", "--encoding", "utf-8", "-", b"k\xC3\xABy", "lock"],
+            ["set", "-T", "--encoding", "utf-8", "-", b"k\xc3\xaby", "lock"],
             0,
             b"foo: bar\n" b"k\\u00eby=lock\n" b"zebra apple\n",
         ),
         (
-            ["set", "-TU", "--encoding", "utf-8", "-", b"k\xC3\xABy", "lock"],
+            ["set", "-TU", "--encoding", "utf-8", "-", b"k\xc3\xaby", "lock"],
             0,
-            b"foo: bar\n" b"k\xC3\xABy=lock\n" b"zebra apple\n",
+            b"foo: bar\n" b"k\xc3\xaby=lock\n" b"zebra apple\n",
         ),
         (
             ["set", "-T", "-E", "utf-8", "--escaped", "-", "k\\u00EBy", "lock"],
@@ -445,7 +445,7 @@ def test_cmd_set_raw_utf8_key(args, rc, output):
     r = CliRunner().invoke(
         javaproperties,
         args,
-        input=(b"foo: bar\n" b"k\xC3\xABy = value\n" b"zebra apple\n"),
+        input=(b"foo: bar\n" b"k\xc3\xaby = value\n" b"zebra apple\n"),
     )
     assert r.exit_code == rc, r.stdout_bytes
     assert r.stdout_bytes == output

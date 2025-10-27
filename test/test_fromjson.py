@@ -67,12 +67,12 @@ from javaproperties_cli.fromjson import json2properties
         ),
         (
             b"{\n"
-            b'    "edh": "\xC3\xB0",\n'
-            b'    "snowman": "\xE2\x98\x83",\n'
-            b'    "goat": "\xF0\x9F\x90\x90",\n'
-            b'    "\xC3\xB0": "edh",\n'
-            b'    "\xE2\x98\x83": "snowman",\n'
-            b'    "\xF0\x9F\x90\x90": "goat"\n'
+            b'    "edh": "\xc3\xb0",\n'
+            b'    "snowman": "\xe2\x98\x83",\n'
+            b'    "goat": "\xf0\x9f\x90\x90",\n'
+            b'    "\xc3\xb0": "edh",\n'
+            b'    "\xe2\x98\x83": "snowman",\n'
+            b'    "\xf0\x9f\x90\x90": "goat"\n'
             b"}\n",
             [],
             b"#Mon Nov 07 15:29:40 EST 2016\n"
@@ -119,10 +119,10 @@ from javaproperties_cli.fromjson import json2properties
             b"}\n",
             ["--unicode"],
             b"#Mon Nov 07 15:29:40 EST 2016\n"
-            b"edh=\xF0\n"
+            b"edh=\xf0\n"
             b"snowman=\\u2603\n"
             b"goat=\\ud83d\\udc10\n"
-            b"\xF0=edh\n"
+            b"\xf0=edh\n"
             b"\\u2603=snowman\n"
             b"\\ud83d\\udc10=goat\n",
         ),
@@ -137,12 +137,12 @@ from javaproperties_cli.fromjson import json2properties
             b"}\n",
             ["--unicode", "--encoding", "utf-8"],
             b"#Mon Nov 07 15:29:40 EST 2016\n"
-            b"edh=\xC3\xB0\n"
-            b"snowman=\xE2\x98\x83\n"
-            b"goat=\xF0\x9F\x90\x90\n"
-            b"\xC3\xB0=edh\n"
-            b"\xE2\x98\x83=snowman\n"
-            b"\xF0\x9F\x90\x90=goat\n",
+            b"edh=\xc3\xb0\n"
+            b"snowman=\xe2\x98\x83\n"
+            b"goat=\xf0\x9f\x90\x90\n"
+            b"\xc3\xb0=edh\n"
+            b"\xe2\x98\x83=snowman\n"
+            b"\xf0\x9f\x90\x90=goat\n",
         ),
         (
             b"{\n"
@@ -150,7 +150,7 @@ from javaproperties_cli.fromjson import json2properties
             b'    "foo": "bar",\n'
             b'    "zebra": "apple"\n'
             b"}\n",
-            ["-c", b"Latin-1: \xC3\xB0, Unicode: \xE2\x98\x83"],
+            ["-c", b"Latin-1: \xc3\xb0, Unicode: \xe2\x98\x83"],
             b"#Latin-1: \\u00f0, Unicode: \\u2603\n"
             b"#Mon Nov 07 15:29:40 EST 2016\n"
             b"key=value\n"
@@ -163,8 +163,8 @@ from javaproperties_cli.fromjson import json2properties
             b'    "foo": "bar",\n'
             b'    "zebra": "apple"\n'
             b"}\n",
-            ["-c", b"Latin-1: \xC3\xB0, Unicode: \xE2\x98\x83", "--unicode"],
-            b"#Latin-1: \xF0, Unicode: \\u2603\n"
+            ["-c", b"Latin-1: \xc3\xb0, Unicode: \xe2\x98\x83", "--unicode"],
+            b"#Latin-1: \xf0, Unicode: \\u2603\n"
             b"#Mon Nov 07 15:29:40 EST 2016\n"
             b"key=value\n"
             b"foo=bar\n"
@@ -176,8 +176,8 @@ from javaproperties_cli.fromjson import json2properties
             b'    "foo": "bar",\n'
             b'    "zebra": "apple"\n'
             b"}\n",
-            ["-c", b"Latin-1: \xC3\xB0, Unicode: \xE2\x98\x83", "-U", "-Eutf-8"],
-            b"#Latin-1: \xC3\xB0, Unicode: \xE2\x98\x83\n"
+            ["-c", b"Latin-1: \xc3\xb0, Unicode: \xe2\x98\x83", "-U", "-Eutf-8"],
+            b"#Latin-1: \xc3\xb0, Unicode: \xe2\x98\x83\n"
             b"#Mon Nov 07 15:29:40 EST 2016\n"
             b"key=value\n"
             b"foo=bar\n"

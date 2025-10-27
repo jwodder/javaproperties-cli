@@ -8,7 +8,7 @@ INPUT = (
     b"zebra apple\n"
     b"e\\u00f0=escaped\n"
     b"e\\\\u00f0=not escaped\n"
-    b"latin-1 = \xC3\xB0\n"
+    b"latin-1 = \xc3\xb0\n"
     b"bmp = \\u2603\n"
     b"astral = \\uD83D\\uDC10\n"
     b"bad-surrogate = \\uDC10\\uD83D\n"
@@ -91,17 +91,17 @@ INPUT = (
         (
             ["select", "--escaped", "--unicode", "-", "e\\u00F0"],
             0,
-            b"e\xF0=escaped\n",
+            b"e\xf0=escaped\n",
         ),
         (
             ["select", "--escaped", "--unicode", "-EUTF-8", "-", "e\\u00F0"],
             0,
-            b"e\xC3\xB0=escaped\n",
+            b"e\xc3\xb0=escaped\n",
         ),
         (
             ["select", "--escaped", "-", "x\\u00F0"],
             1,
-            b"javaproperties select: x\xC3\xB0: key not found\n",
+            b"javaproperties select: x\xc3\xb0: key not found\n",
         ),
         (
             ["select", "-", "e\\u00f0"],
@@ -114,24 +114,24 @@ INPUT = (
             b"javaproperties select: x\\u00f0: key not found\n",
         ),
         (
-            ["select", "-", b"e\xC3\xB0"],
+            ["select", "-", b"e\xc3\xb0"],
             0,
             b"e\\u00f0=escaped\n",
         ),
         (
-            ["select", "--unicode", "-", b"e\xC3\xB0"],
+            ["select", "--unicode", "-", b"e\xc3\xb0"],
             0,
-            b"e\xF0=escaped\n",
+            b"e\xf0=escaped\n",
         ),
         (
-            ["select", "--unicode", "-EUTF-8", "-", b"e\xC3\xB0"],
+            ["select", "--unicode", "-EUTF-8", "-", b"e\xc3\xb0"],
             0,
-            b"e\xC3\xB0=escaped\n",
+            b"e\xc3\xb0=escaped\n",
         ),
         (
-            ["select", "-", b"x\xC3\xB0"],
+            ["select", "-", b"x\xc3\xb0"],
             1,
-            b"javaproperties select: x\xC3\xB0: key not found\n",
+            b"javaproperties select: x\xc3\xb0: key not found\n",
         ),
         (
             ["select", "-", "latin-1"],
@@ -151,12 +151,12 @@ INPUT = (
         (
             ["select", "--unicode", "-", "latin-1"],
             0,
-            b"latin-1=\xC3\xB0\n",
+            b"latin-1=\xc3\xb0\n",
         ),
         (
             ["select", "-EUTF-8", "--unicode", "-", "latin-1"],
             0,
-            b"latin-1=\xC3\xB0\n",
+            b"latin-1=\xc3\xb0\n",
         ),
         (
             ["select", "-", "bmp"],
@@ -171,13 +171,13 @@ INPUT = (
         (
             ["select", "--unicode", "-EUTF-8", "-", "bmp"],
             0,
-            b"bmp=\xE2\x98\x83\n",
+            b"bmp=\xe2\x98\x83\n",
         ),
         (["select", "-", "astral"], 0, b"astral=\\ud83d\\udc10\n"),
         (
             ["select", "--unicode", "-EUTF-8", "-", "astral"],
             0,
-            b"astral=\xF0\x9F\x90\x90\n",
+            b"astral=\xf0\x9f\x90\x90\n",
         ),
         (
             ["select", "-", "bad-surrogate"],
