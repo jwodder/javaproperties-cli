@@ -1,3 +1,7 @@
+v0.9.0 (in development)
+-----------------------
+- Support Python 3.14
+
 v0.8.2 (2025-05-11)
 -------------------
 - `json2properties` now supports input in UTF-16 and UTF-32 in addition to
