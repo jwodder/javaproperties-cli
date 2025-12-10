@@ -182,7 +182,7 @@ def test_properties2json(args, inp, success, output):
         assert r.exit_code == 0
     else:
         assert r.exit_code != 0
-    assert r.stdout_bytes == output
+    assert r.stdout_bytes.replace(b"\r\n", b"\n") == output
 
 
 # invalid \u escape

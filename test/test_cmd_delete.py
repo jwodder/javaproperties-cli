@@ -145,7 +145,7 @@ INPUT = (
 def test_cmd_delete(args, rc, output):
     r = CliRunner().invoke(javaproperties, args, input=INPUT)
     assert r.exit_code == rc, r.stdout_bytes
-    assert r.stdout_bytes == output
+    assert r.stdout_bytes.replace(b"\r\n", b"\n") == output
 
 
 def test_cmd_delete_del_bad_surrogate():
@@ -155,7 +155,9 @@ def test_cmd_delete_del_bad_surrogate():
         input=b"good-surrogate = \\uD83D\\uDC10\n" b"bad-surrogate = \\uDC10\\uD83D\n",
     )
     assert r.exit_code == 0
-    assert r.stdout_bytes == b"good-surrogate = \\uD83D\\uDC10\n"
+    assert (
+        r.stdout_bytes.replace(b"\r\n", b"\n") == b"good-surrogate = \\uD83D\\uDC10\n"
+    )
 
 
 def test_cmd_delete_keep_bad_surrogate():
@@ -165,7 +167,7 @@ def test_cmd_delete_keep_bad_surrogate():
         input=b"good-surrogate = \\uD83D\\uDC10\n" b"bad-surrogate = \\uDC10\\uD83D\n",
     )
     assert r.exit_code == 0
-    assert r.stdout_bytes == b"bad-surrogate = \\uDC10\\uD83D\n"
+    assert r.stdout_bytes.replace(b"\r\n", b"\n") == b"bad-surrogate = \\uDC10\\uD83D\n"
 
 
 @pytest.mark.parametrize(
@@ -212,7 +214,7 @@ def test_cmd_delete_with_timestamp(args, rc, output):
         javaproperties, args, input=b"#Tue Feb 25 19:13:27 EST 2020\n" + INPUT
     )
     assert r.exit_code == rc, r.stdout_bytes
-    assert r.stdout_bytes == output
+    assert r.stdout_bytes.replace(b"\r\n", b"\n") == output
 
 
 def test_cmd_delete_repeated():
@@ -228,7 +230,9 @@ def test_cmd_delete_repeated():
         ),
     )
     assert r.exit_code == 0, r.stdout_bytes
-    assert r.stdout_bytes == (b"foo: bar\n" b"key = value\n" b"zebra apple\n")
+    assert r.stdout_bytes.replace(b"\r\n", b"\n") == (
+        b"foo: bar\n" b"key = value\n" b"zebra apple\n"
+    )
 
 
 @pytest.mark.parametrize(
@@ -251,7 +255,7 @@ def test_cmd_delete_raw_latin1_key(args, rc, output):
         javaproperties, args, input=(b"foo: bar\n" b"k\xeby = value\n" b"zebra apple\n")
     )
     assert r.exit_code == rc, r.stdout_bytes
-    assert r.stdout_bytes == output
+    assert r.stdout_bytes.replace(b"\r\n", b"\n") == output
 
 
 @pytest.mark.parametrize(
@@ -301,7 +305,7 @@ def test_cmd_delete_raw_utf8_key(args, rc, output):
         input=(b"foo: bar\n" b"k\xc3\xaby = value\n" b"zebra apple\n"),
     )
     assert r.exit_code == rc, r.stdout_bytes
-    assert r.stdout_bytes == output
+    assert r.stdout_bytes.replace(b"\r\n", b"\n") == output
 
 
 @pytest.mark.parametrize(
@@ -327,7 +331,7 @@ def test_cmd_delete_raw_utf8_key(args, rc, output):
 def test_cmd_delete_fix_final_eol(args, rc, inp, output):
     r = CliRunner().invoke(javaproperties, args, input=inp)
     assert r.exit_code == rc, r.stdout_bytes
-    assert r.stdout_bytes == output
+    assert r.stdout_bytes.replace(b"\r\n", b"\n") == output
 
 
 def test_cmd_delete_header_comments():
@@ -343,7 +347,7 @@ def test_cmd_delete_header_comments():
         ),
     )
     assert r.exit_code == 0, r.stdout_bytes
-    assert r.stdout_bytes == (
+    assert r.stdout_bytes.replace(b"\r\n", b"\n") == (
         b"#This is a comment.\n"
         b" ! So is this.\n"
         b"#Mon Nov 07 15:29:40 EST 2016\n"

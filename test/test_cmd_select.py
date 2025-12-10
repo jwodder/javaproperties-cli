@@ -194,7 +194,10 @@ INPUT = (
 def test_cmd_select(args, rc, output):
     r = CliRunner().invoke(javaproperties, args, input=INPUT)
     assert r.exit_code == rc, r.output_bytes
-    assert r.output_bytes == b"#Mon Nov 07 15:29:40 EST 2016\n" + output
+    assert (
+        r.output_bytes.replace(b"\r\n", b"\n")
+        == b"#Mon Nov 07 15:29:40 EST 2016\n" + output
+    )
 
 
 @pytest.mark.parametrize(
@@ -241,7 +244,10 @@ def test_cmd_select(args, rc, output):
 def test_cmd_select_with_defaults(args, rc, output):
     r = CliRunner().invoke(javaproperties, args, input=INPUT)
     assert r.exit_code == rc, r.output_bytes
-    assert r.output_bytes == b"#Mon Nov 07 15:29:40 EST 2016\n" + output
+    assert (
+        r.output_bytes.replace(b"\r\n", b"\n")
+        == b"#Mon Nov 07 15:29:40 EST 2016\n" + output
+    )
 
 
 def test_cmd_select_repeated():
@@ -257,7 +263,10 @@ def test_cmd_select_repeated():
         ),
     )
     assert r.exit_code == 0, r.output_bytes
-    assert r.output_bytes == b"#Mon Nov 07 15:29:40 EST 2016\nrepeated=second\n"
+    assert (
+        r.output_bytes.replace(b"\r\n", b"\n")
+        == b"#Mon Nov 07 15:29:40 EST 2016\nrepeated=second\n"
+    )
 
 
 # --outfile

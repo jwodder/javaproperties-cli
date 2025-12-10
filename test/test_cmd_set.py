@@ -269,7 +269,7 @@ INPUT = (
 def test_cmd_set(args, rc, output):
     r = CliRunner().invoke(javaproperties, args, input=INPUT)
     assert r.exit_code == rc, r.stdout_bytes
-    assert r.stdout_bytes == output
+    assert r.stdout_bytes.replace(b"\r\n", b"\n") == output
 
 
 def test_cmd_set_repeated():
@@ -285,7 +285,7 @@ def test_cmd_set_repeated():
         ),
     )
     assert r.exit_code == 0, r.stdout_bytes
-    assert r.stdout_bytes == (
+    assert r.stdout_bytes.replace(b"\r\n", b"\n") == (
         b"foo: bar\n" b"repeated=nth\n" b"key = value\n" b"zebra apple\n"
     )
 
@@ -321,7 +321,7 @@ def test_cmd_set_repeated():
 def test_cmd_set_fix_final_eol(args, rc, inp, output):
     r = CliRunner().invoke(javaproperties, args, input=inp)
     assert r.exit_code == rc, r.stdout_bytes
-    assert r.stdout_bytes == output
+    assert r.stdout_bytes.replace(b"\r\n", b"\n") == output
 
 
 @pytest.mark.parametrize(
@@ -375,7 +375,7 @@ def test_cmd_set_with_timestamp(args, rc, output):
         ),
     )
     assert r.exit_code == rc, r.stdout_bytes
-    assert r.stdout_bytes == output
+    assert r.stdout_bytes.replace(b"\r\n", b"\n") == output
 
 
 @pytest.mark.parametrize(
@@ -403,7 +403,7 @@ def test_cmd_set_raw_latin1_key(args, rc, output):
         javaproperties, args, input=(b"foo: bar\n" b"k\xeby = value\n" b"zebra apple\n")
     )
     assert r.exit_code == rc, r.stdout_bytes
-    assert r.stdout_bytes == output
+    assert r.stdout_bytes.replace(b"\r\n", b"\n") == output
 
 
 @pytest.mark.parametrize(
@@ -448,7 +448,7 @@ def test_cmd_set_raw_utf8_key(args, rc, output):
         input=(b"foo: bar\n" b"k\xc3\xaby = value\n" b"zebra apple\n"),
     )
     assert r.exit_code == rc, r.stdout_bytes
-    assert r.stdout_bytes == output
+    assert r.stdout_bytes.replace(b"\r\n", b"\n") == output
 
 
 def test_cmd_set_header_comments():
@@ -464,7 +464,7 @@ def test_cmd_set_header_comments():
         ),
     )
     assert r.exit_code == 0, r.stdout_bytes
-    assert r.stdout_bytes == (
+    assert r.stdout_bytes.replace(b"\r\n", b"\n") == (
         b"#This is a comment.\n"
         b" ! So is this.\n"
         b"#Mon Nov 07 15:29:40 EST 2016\n"

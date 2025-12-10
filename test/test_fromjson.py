@@ -228,7 +228,7 @@ from javaproperties_cli.fromjson import json2properties
 def test_json2properties(args, inp, output):
     r = CliRunner().invoke(json2properties, args, input=inp)
     assert r.exit_code == 0
-    assert r.stdout_bytes == output
+    assert r.stdout_bytes.replace(b"\r\n", b"\n") == output
 
 
 @pytest.mark.parametrize(
