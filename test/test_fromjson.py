@@ -5,8 +5,13 @@ import pytest
 from javaproperties_cli.fromjson import json2properties
 
 ON_WINDOWS = platform.system() == "Windows"
+ON_PYPY = platform.python_implementation() == "PyPy"
 
 
+@pytest.mark.skipif(
+    ON_WINDOWS and ON_PYPY,
+    reason="PyPy on Windows doesn't seem to handle TZ right",
+)
 @pytest.mark.parametrize(
     "inp,args,output",
     [

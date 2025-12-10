@@ -4,6 +4,7 @@ import pytest
 from javaproperties_cli.__main__ import javaproperties
 
 ON_WINDOWS = platform.system() == "Windows"
+ON_PYPY = platform.python_implementation() == "PyPy"
 
 INPUT = (
     b"foo: bar\n"
@@ -36,7 +37,7 @@ INPUT = (
             0,
             INPUT,
         ),
-        (
+        pytest.param(
             ["delete", "-", "key"],
             0,
             b"#Mon Nov 07 15:29:40 EST 2016\n"
@@ -47,11 +48,19 @@ INPUT = (
             b"latin-1 = \xf0\n"
             b"bmp = \\u2603\n"
             b"astral = \\uD83D\\uDC10\n",
+            marks=pytest.mark.skipif(
+                ON_WINDOWS and ON_PYPY,
+                reason="PyPy on Windows doesn't seem to handle TZ right",
+            ),
         ),
-        (
+        pytest.param(
             ["delete", "-", "nonexistent"],
             0,
             b"#Mon Nov 07 15:29:40 EST 2016\n" + INPUT,
+            marks=pytest.mark.skipif(
+                ON_WINDOWS and ON_PYPY,
+                reason="PyPy on Windows doesn't seem to handle TZ right",
+            ),
         ),
         (
             ["delete", "--preserve-timestamp", "-", "key", "nonexistent"],
@@ -195,7 +204,7 @@ def test_cmd_delete_keep_bad_surrogate():
             0,
             b"#Tue Feb 25 19:13:27 EST 2020\n" + INPUT,
         ),
-        (
+        pytest.param(
             ["delete", "-", "key"],
             0,
             b"#Mon Nov 07 15:29:40 EST 2016\n"
@@ -206,11 +215,19 @@ def test_cmd_delete_keep_bad_surrogate():
             b"latin-1 = \xf0\n"
             b"bmp = \\u2603\n"
             b"astral = \\uD83D\\uDC10\n",
+            marks=pytest.mark.skipif(
+                ON_WINDOWS and ON_PYPY,
+                reason="PyPy on Windows doesn't seem to handle TZ right",
+            ),
         ),
-        (
+        pytest.param(
             ["delete", "-", "nonexistent"],
             0,
             b"#Mon Nov 07 15:29:40 EST 2016\n" + INPUT,
+            marks=pytest.mark.skipif(
+                ON_WINDOWS and ON_PYPY,
+                reason="PyPy on Windows doesn't seem to handle TZ right",
+            ),
         ),
     ],
 )
@@ -258,7 +275,7 @@ def test_cmd_delete_repeated():
 )
 def test_cmd_delete_raw_latin1_key(args, rc, output):
     r = CliRunner().invoke(
-        javaproperties, args, input=(b"foo: bar\nk\xeby = value\nzebra apple\n")
+        javaproperties, args, input=b"foo: bar\nk\xeby = value\nzebra apple\n"
     )
     assert r.exit_code == rc, r.stdout_bytes
     assert r.stdout_bytes.replace(b"\r\n", b"\n") == output
@@ -310,7 +327,7 @@ def test_cmd_delete_raw_utf8_key(args, rc, output):
     r = CliRunner().invoke(
         javaproperties,
         args,
-        input=(b"foo: bar\nk\xc3\xaby = value\nzebra apple\n"),
+        input=b"foo: bar\nk\xc3\xaby = value\nzebra apple\n",
     )
     assert r.exit_code == rc, r.stdout_bytes
     assert r.stdout_bytes.replace(b"\r\n", b"\n") == output
@@ -342,6 +359,9 @@ def test_cmd_delete_fix_final_eol(args, rc, inp, output):
     assert r.stdout_bytes.replace(b"\r\n", b"\n") == output
 
 
+@pytest.mark.skipif(
+    ON_WINDOWS and ON_PYPY, reason="PyPy on Windows doesn't seem to handle TZ right"
+)
 def test_cmd_delete_header_comments():
     r = CliRunner().invoke(
         javaproperties,

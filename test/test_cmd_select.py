@@ -4,6 +4,12 @@ import pytest
 from javaproperties_cli.__main__ import javaproperties
 
 ON_WINDOWS = platform.system() == "Windows"
+ON_PYPY = platform.python_implementation() == "PyPy"
+
+pytestmark = pytest.mark.skipif(
+    ON_WINDOWS and ON_PYPY,
+    reason="PyPy on Windows doesn't seem to handle TZ right",
+)
 
 INPUT = (
     b"foo: bar\n"

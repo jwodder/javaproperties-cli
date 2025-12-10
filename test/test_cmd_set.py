@@ -4,6 +4,7 @@ import pytest
 from javaproperties_cli.__main__ import javaproperties
 
 ON_WINDOWS = platform.system() == "Windows"
+ON_PYPY = platform.python_implementation() == "PyPy"
 
 INPUT = (
     b"foo: bar\n"
@@ -52,7 +53,7 @@ INPUT = (
             0,
             INPUT + b"nonexistent=mu\n",
         ),
-        (
+        pytest.param(
             ["set", "-", "key", "other value"],
             0,
             b"#Mon Nov 07 15:29:40 EST 2016\n"
@@ -65,11 +66,19 @@ INPUT = (
             b"bmp = \\u2603\n"
             b"astral = \\uD83D\\uDC10\n"
             b"bad-surrogate = \\uDC10\\uD83D\n",
+            marks=pytest.mark.skipif(
+                ON_WINDOWS and ON_PYPY,
+                reason="PyPy on Windows doesn't seem to handle TZ right",
+            ),
         ),
-        (
+        pytest.param(
             ["set", "-", "nonexistent", "mu"],
             0,
             b"#Mon Nov 07 15:29:40 EST 2016\n" + INPUT + b"nonexistent=mu\n",
+            marks=pytest.mark.skipif(
+                ON_WINDOWS and ON_PYPY,
+                reason="PyPy on Windows doesn't seem to handle TZ right",
+            ),
         ),
         (
             ["set", "--preserve-timestamp", "-s\t:\t", "-", "key", "other value"],
@@ -349,15 +358,19 @@ def test_cmd_set_fix_final_eol(args, rc, inp, output):
             b"zebra apple\n"
             b"new=shiny\\!\n",
         ),
-        (
+        pytest.param(
             ["set", "-", "key", "lock"],
             0,
             b"#Mon Nov 07 15:29:40 EST 2016\n"
             b"foo: bar\n"
             b"key=lock\n"
             b"zebra apple\n",
+            marks=pytest.mark.skipif(
+                ON_WINDOWS and ON_PYPY,
+                reason="PyPy on Windows doesn't seem to handle TZ right",
+            ),
         ),
-        (
+        pytest.param(
             ["set", "-", "new", "shiny!"],
             0,
             b"#Mon Nov 07 15:29:40 EST 2016\n"
@@ -365,6 +378,10 @@ def test_cmd_set_fix_final_eol(args, rc, inp, output):
             b"key = value\n"
             b"zebra apple\n"
             b"new=shiny\\!\n",
+            marks=pytest.mark.skipif(
+                ON_WINDOWS and ON_PYPY,
+                reason="PyPy on Windows doesn't seem to handle TZ right",
+            ),
         ),
     ],
 )
@@ -462,6 +479,10 @@ def test_cmd_set_raw_utf8_key(args, rc, output):
     assert r.stdout_bytes.replace(b"\r\n", b"\n") == output
 
 
+@pytest.mark.skipif(
+    ON_WINDOWS and ON_PYPY,
+    reason="PyPy on Windows doesn't seem to handle TZ right",
+)
 def test_cmd_set_header_comments():
     r = CliRunner().invoke(
         javaproperties,
