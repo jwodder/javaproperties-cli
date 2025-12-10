@@ -1,6 +1,10 @@
+import platform
 from click.testing import CliRunner
 import pytest
 from javaproperties_cli.__main__ import javaproperties
+
+ON_WINDOWS = platform.system() == "Windows"
+ON_PYPY = platform.python_implementation() == "PyPy"
 
 INPUT = (
     b"foo: bar\n"
@@ -33,7 +37,7 @@ INPUT = (
             0,
             INPUT,
         ),
-        (
+        pytest.param(
             ["delete", "-", "key"],
             0,
             b"#Mon Nov 07 15:29:40 EST 2016\n"
@@ -44,11 +48,19 @@ INPUT = (
             b"latin-1 = \xf0\n"
             b"bmp = \\u2603\n"
             b"astral = \\uD83D\\uDC10\n",
+            marks=pytest.mark.skipif(
+                ON_WINDOWS and ON_PYPY,
+                reason="PyPy on Windows doesn't seem to handle TZ right",
+            ),
         ),
-        (
+        pytest.param(
             ["delete", "-", "nonexistent"],
             0,
             b"#Mon Nov 07 15:29:40 EST 2016\n" + INPUT,
+            marks=pytest.mark.skipif(
+                ON_WINDOWS and ON_PYPY,
+                reason="PyPy on Windows doesn't seem to handle TZ right",
+            ),
         ),
         (
             ["delete", "--preserve-timestamp", "-", "key", "nonexistent"],
@@ -93,7 +105,7 @@ INPUT = (
             0,
             INPUT,
         ),
-        (
+        pytest.param(
             ["delete", "--preserve-timestamp", "-", b"e\xc3\xb0"],
             0,
             b"foo: bar\n"
@@ -103,11 +115,13 @@ INPUT = (
             b"latin-1 = \xf0\n"
             b"bmp = \\u2603\n"
             b"astral = \\uD83D\\uDC10\n",
+            marks=pytest.mark.skipif(ON_WINDOWS, reason="argv is not UTF-8 on Windows"),
         ),
-        (
+        pytest.param(
             ["delete", "--preserve-timestamp", "-", b"x\xc3\xb0"],
             0,
             INPUT,
+            marks=pytest.mark.skipif(ON_WINDOWS, reason="argv is not UTF-8 on Windows"),
         ),
         (
             ["delete", "--preserve-timestamp", "-", "key", "key"],
@@ -145,27 +159,29 @@ INPUT = (
 def test_cmd_delete(args, rc, output):
     r = CliRunner().invoke(javaproperties, args, input=INPUT)
     assert r.exit_code == rc, r.stdout_bytes
-    assert r.stdout_bytes == output
+    assert r.stdout_bytes.replace(b"\r\n", b"\n") == output
 
 
 def test_cmd_delete_del_bad_surrogate():
     r = CliRunner().invoke(
         javaproperties,
         ["delete", "--preserve-timestamp", "-", "bad-surrogate"],
-        input=b"good-surrogate = \\uD83D\\uDC10\n" b"bad-surrogate = \\uDC10\\uD83D\n",
+        input=b"good-surrogate = \\uD83D\\uDC10\nbad-surrogate = \\uDC10\\uD83D\n",
     )
     assert r.exit_code == 0
-    assert r.stdout_bytes == b"good-surrogate = \\uD83D\\uDC10\n"
+    assert (
+        r.stdout_bytes.replace(b"\r\n", b"\n") == b"good-surrogate = \\uD83D\\uDC10\n"
+    )
 
 
 def test_cmd_delete_keep_bad_surrogate():
     r = CliRunner().invoke(
         javaproperties,
         ["delete", "--preserve-timestamp", "-", "good-surrogate"],
-        input=b"good-surrogate = \\uD83D\\uDC10\n" b"bad-surrogate = \\uDC10\\uD83D\n",
+        input=b"good-surrogate = \\uD83D\\uDC10\nbad-surrogate = \\uDC10\\uD83D\n",
     )
     assert r.exit_code == 0
-    assert r.stdout_bytes == b"bad-surrogate = \\uDC10\\uD83D\n"
+    assert r.stdout_bytes.replace(b"\r\n", b"\n") == b"bad-surrogate = \\uDC10\\uD83D\n"
 
 
 @pytest.mark.parametrize(
@@ -188,7 +204,7 @@ def test_cmd_delete_keep_bad_surrogate():
             0,
             b"#Tue Feb 25 19:13:27 EST 2020\n" + INPUT,
         ),
-        (
+        pytest.param(
             ["delete", "-", "key"],
             0,
             b"#Mon Nov 07 15:29:40 EST 2016\n"
@@ -199,11 +215,19 @@ def test_cmd_delete_keep_bad_surrogate():
             b"latin-1 = \xf0\n"
             b"bmp = \\u2603\n"
             b"astral = \\uD83D\\uDC10\n",
+            marks=pytest.mark.skipif(
+                ON_WINDOWS and ON_PYPY,
+                reason="PyPy on Windows doesn't seem to handle TZ right",
+            ),
         ),
-        (
+        pytest.param(
             ["delete", "-", "nonexistent"],
             0,
             b"#Mon Nov 07 15:29:40 EST 2016\n" + INPUT,
+            marks=pytest.mark.skipif(
+                ON_WINDOWS and ON_PYPY,
+                reason="PyPy on Windows doesn't seem to handle TZ right",
+            ),
         ),
     ],
 )
@@ -212,7 +236,7 @@ def test_cmd_delete_with_timestamp(args, rc, output):
         javaproperties, args, input=b"#Tue Feb 25 19:13:27 EST 2020\n" + INPUT
     )
     assert r.exit_code == rc, r.stdout_bytes
-    assert r.stdout_bytes == output
+    assert r.stdout_bytes.replace(b"\r\n", b"\n") == output
 
 
 def test_cmd_delete_repeated():
@@ -228,46 +252,50 @@ def test_cmd_delete_repeated():
         ),
     )
     assert r.exit_code == 0, r.stdout_bytes
-    assert r.stdout_bytes == (b"foo: bar\n" b"key = value\n" b"zebra apple\n")
+    assert r.stdout_bytes.replace(b"\r\n", b"\n") == (
+        b"foo: bar\nkey = value\nzebra apple\n"
+    )
 
 
 @pytest.mark.parametrize(
     "args,rc,output",
     [
-        (
+        pytest.param(
             ["delete", "--preserve-timestamp", "-", b"k\xc3\xaby"],
             0,
-            b"foo: bar\n" b"zebra apple\n",
+            b"foo: bar\nzebra apple\n",
+            marks=pytest.mark.skipif(ON_WINDOWS, reason="argv is not UTF-8 on Windows"),
         ),
         (
             ["delete", "--preserve-timestamp", "--escaped", "-", "k\\u00EBy"],
             0,
-            b"foo: bar\n" b"zebra apple\n",
+            b"foo: bar\nzebra apple\n",
         ),
     ],
 )
 def test_cmd_delete_raw_latin1_key(args, rc, output):
     r = CliRunner().invoke(
-        javaproperties, args, input=(b"foo: bar\n" b"k\xeby = value\n" b"zebra apple\n")
+        javaproperties, args, input=b"foo: bar\nk\xeby = value\nzebra apple\n"
     )
     assert r.exit_code == rc, r.stdout_bytes
-    assert r.stdout_bytes == output
+    assert r.stdout_bytes.replace(b"\r\n", b"\n") == output
 
 
 @pytest.mark.parametrize(
     "args,rc,output",
     [
-        (
+        pytest.param(
             ["delete", "--preserve-timestamp", "-", b"k\xc3\xaby"],
             0,
-            b"foo: bar\n" b"k\xc3\xaby = value\n" b"zebra apple\n",
+            b"foo: bar\nk\xc3\xaby = value\nzebra apple\n",
+            marks=pytest.mark.skipif(ON_WINDOWS, reason="argv is not UTF-8 on Windows"),
         ),
         (
             ["delete", "--preserve-timestamp", "--escaped", "-", "k\\u00EBy"],
             0,
-            b"foo: bar\n" b"k\xc3\xaby = value\n" b"zebra apple\n",
+            b"foo: bar\nk\xc3\xaby = value\nzebra apple\n",
         ),
-        (
+        pytest.param(
             [
                 "delete",
                 "--preserve-timestamp",
@@ -277,7 +305,8 @@ def test_cmd_delete_raw_latin1_key(args, rc, output):
                 b"k\xc3\xaby",
             ],
             0,
-            b"foo: bar\n" b"zebra apple\n",
+            b"foo: bar\nzebra apple\n",
+            marks=pytest.mark.skipif(ON_WINDOWS, reason="argv is not UTF-8 on Windows"),
         ),
         (
             [
@@ -290,7 +319,7 @@ def test_cmd_delete_raw_latin1_key(args, rc, output):
                 "k\\u00EBy",
             ],
             0,
-            b"foo: bar\n" b"zebra apple\n",
+            b"foo: bar\nzebra apple\n",
         ),
     ],
 )
@@ -298,38 +327,41 @@ def test_cmd_delete_raw_utf8_key(args, rc, output):
     r = CliRunner().invoke(
         javaproperties,
         args,
-        input=(b"foo: bar\n" b"k\xc3\xaby = value\n" b"zebra apple\n"),
+        input=b"foo: bar\nk\xc3\xaby = value\nzebra apple\n",
     )
     assert r.exit_code == rc, r.stdout_bytes
-    assert r.stdout_bytes == output
+    assert r.stdout_bytes.replace(b"\r\n", b"\n") == output
 
 
 @pytest.mark.parametrize(
     "args,rc,output",
     [
-        (["delete", "-T", "-", "key"], 0, b"foo: bar\n" b"zebra apple\n"),
-        (["delete", "-T", "-", "zebra"], 0, b"foo: bar\n" b"key = value\n"),
+        (["delete", "-T", "-", "key"], 0, b"foo: bar\nzebra apple\n"),
+        (["delete", "-T", "-", "zebra"], 0, b"foo: bar\nkey = value\n"),
         (
             ["delete", "-T", "-", "nonexistent"],
             0,
-            b"foo: bar\n" b"key = value\n" b"zebra apple\n",
+            b"foo: bar\nkey = value\nzebra apple\n",
         ),
     ],
 )
 @pytest.mark.parametrize(
     "inp",
     [
-        b"foo: bar\n" b"key = value\n" b"zebra apple\\\n",
-        b"foo: bar\n" b"key = value\n" b"zebra apple\\",
-        b"foo: bar\n" b"key = value\n" b"zebra apple",
+        b"foo: bar\nkey = value\nzebra apple\\\n",
+        b"foo: bar\nkey = value\nzebra apple\\",
+        b"foo: bar\nkey = value\nzebra apple",
     ],
 )
 def test_cmd_delete_fix_final_eol(args, rc, inp, output):
     r = CliRunner().invoke(javaproperties, args, input=inp)
     assert r.exit_code == rc, r.stdout_bytes
-    assert r.stdout_bytes == output
+    assert r.stdout_bytes.replace(b"\r\n", b"\n") == output
 
 
+@pytest.mark.skipif(
+    ON_WINDOWS and ON_PYPY, reason="PyPy on Windows doesn't seem to handle TZ right"
+)
 def test_cmd_delete_header_comments():
     r = CliRunner().invoke(
         javaproperties,
@@ -343,7 +375,7 @@ def test_cmd_delete_header_comments():
         ),
     )
     assert r.exit_code == 0, r.stdout_bytes
-    assert r.stdout_bytes == (
+    assert r.stdout_bytes.replace(b"\r\n", b"\n") == (
         b"#This is a comment.\n"
         b" ! So is this.\n"
         b"#Mon Nov 07 15:29:40 EST 2016\n"

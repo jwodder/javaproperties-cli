@@ -1,6 +1,15 @@
+import platform
 from click.testing import CliRunner
 import pytest
 from javaproperties_cli.__main__ import javaproperties
+
+ON_WINDOWS = platform.system() == "Windows"
+ON_PYPY = platform.python_implementation() == "PyPy"
+
+pytestmark = pytest.mark.skipif(
+    ON_WINDOWS and ON_PYPY,
+    reason="PyPy on Windows doesn't seem to handle TZ right",
+)
 
 INPUT = (
     b"foo = bar \n"
@@ -155,7 +164,7 @@ OUTPUT = (
 def test_cmd_format(args, output):
     r = CliRunner().invoke(javaproperties, args, input=INPUT)
     assert r.exit_code == 0, r.stdout_bytes
-    assert r.stdout_bytes == output
+    assert r.stdout_bytes.replace(b"\r\n", b"\n") == output
 
 
 def test_cmd_format_file():
@@ -165,7 +174,7 @@ def test_cmd_format_file():
             fp.write(INPUT)
         r = runner.invoke(javaproperties, ["format", "test.properties"])
         assert r.exit_code == 0
-        assert r.stdout_bytes == OUTPUT
+        assert r.stdout_bytes.replace(b"\r\n", b"\n") == OUTPUT
 
 
 # --outfile

@@ -14,10 +14,14 @@ concurrency:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
+        os:
+          - macos-latest
+          - ubuntu-latest
+          - windows-latest
         python-version:
           - '3.10'
           - '3.11'
@@ -30,6 +34,7 @@ jobs:
         include:
           - python-version: '3.10'
             toxenv: lint
+            os: ubuntu-latest
     steps:
       - name: Check out repository
         uses: actions/checkout@v6

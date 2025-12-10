@@ -1,6 +1,9 @@
+import platform
 from click.testing import CliRunner
 import pytest
 from javaproperties_cli.__main__ import javaproperties
+
+ON_WINDOWS = platform.system() == "Windows"
 
 INPUT = (
     b"foo: bar\n"
@@ -83,15 +86,17 @@ INPUT = (
             1,
             b"javaproperties get: x\\u00f0: key not found\n",
         ),
-        (
+        pytest.param(
             ["get", "-", b"e\xc3\xb0"],
             0,
             b"escaped\n",
+            marks=pytest.mark.skipif(ON_WINDOWS, reason="argv is not UTF-8 on Windows"),
         ),
-        (
+        pytest.param(
             ["get", "-", b"x\xc3\xb0"],
             1,
             b"javaproperties get: x\xc3\xb0: key not found\n",
+            marks=pytest.mark.skipif(ON_WINDOWS, reason="argv is not UTF-8 on Windows"),
         ),
         (
             ["get", "-", "latin-1"],
@@ -129,7 +134,7 @@ INPUT = (
 def test_cmd_get(args, rc, output):
     r = CliRunner().invoke(javaproperties, args, input=INPUT)
     assert r.exit_code == rc, r.output_bytes
-    assert r.output_bytes == output
+    assert r.output_bytes.replace(b"\r\n", b"\n") == output
 
 
 def test_cmd_get_repeated():
@@ -145,7 +150,7 @@ def test_cmd_get_repeated():
         ),
     )
     assert r.exit_code == 0, r.stdout_bytes
-    assert r.stdout_bytes == b"second\n"
+    assert r.stdout_bytes.replace(b"\r\n", b"\n") == b"second\n"
 
 
 @pytest.mark.parametrize(
@@ -192,7 +197,7 @@ def test_cmd_get_repeated():
 def test_cmd_get_with_defaults(args, rc, output):
     r = CliRunner().invoke(javaproperties, args, input=INPUT)
     assert r.exit_code == rc, r.output_bytes
-    assert r.output_bytes == output
+    assert r.output_bytes.replace(b"\r\n", b"\n") == output
 
 
 # universal newlines?

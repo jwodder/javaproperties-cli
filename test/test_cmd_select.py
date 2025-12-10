@@ -1,6 +1,15 @@
+import platform
 from click.testing import CliRunner
 import pytest
 from javaproperties_cli.__main__ import javaproperties
+
+ON_WINDOWS = platform.system() == "Windows"
+ON_PYPY = platform.python_implementation() == "PyPy"
+
+pytestmark = pytest.mark.skipif(
+    ON_WINDOWS and ON_PYPY,
+    reason="PyPy on Windows doesn't seem to handle TZ right",
+)
 
 INPUT = (
     b"foo: bar\n"
@@ -113,25 +122,29 @@ INPUT = (
             1,
             b"javaproperties select: x\\u00f0: key not found\n",
         ),
-        (
+        pytest.param(
             ["select", "-", b"e\xc3\xb0"],
             0,
             b"e\\u00f0=escaped\n",
+            marks=pytest.mark.skipif(ON_WINDOWS, reason="argv is not UTF-8 on Windows"),
         ),
-        (
+        pytest.param(
             ["select", "--unicode", "-", b"e\xc3\xb0"],
             0,
             b"e\xf0=escaped\n",
+            marks=pytest.mark.skipif(ON_WINDOWS, reason="argv is not UTF-8 on Windows"),
         ),
-        (
+        pytest.param(
             ["select", "--unicode", "-EUTF-8", "-", b"e\xc3\xb0"],
             0,
             b"e\xc3\xb0=escaped\n",
+            marks=pytest.mark.skipif(ON_WINDOWS, reason="argv is not UTF-8 on Windows"),
         ),
-        (
+        pytest.param(
             ["select", "-", b"x\xc3\xb0"],
             1,
             b"javaproperties select: x\xc3\xb0: key not found\n",
+            marks=pytest.mark.skipif(ON_WINDOWS, reason="argv is not UTF-8 on Windows"),
         ),
         (
             ["select", "-", "latin-1"],
@@ -194,7 +207,10 @@ INPUT = (
 def test_cmd_select(args, rc, output):
     r = CliRunner().invoke(javaproperties, args, input=INPUT)
     assert r.exit_code == rc, r.output_bytes
-    assert r.output_bytes == b"#Mon Nov 07 15:29:40 EST 2016\n" + output
+    assert (
+        r.output_bytes.replace(b"\r\n", b"\n")
+        == b"#Mon Nov 07 15:29:40 EST 2016\n" + output
+    )
 
 
 @pytest.mark.parametrize(
@@ -241,7 +257,10 @@ def test_cmd_select(args, rc, output):
 def test_cmd_select_with_defaults(args, rc, output):
     r = CliRunner().invoke(javaproperties, args, input=INPUT)
     assert r.exit_code == rc, r.output_bytes
-    assert r.output_bytes == b"#Mon Nov 07 15:29:40 EST 2016\n" + output
+    assert (
+        r.output_bytes.replace(b"\r\n", b"\n")
+        == b"#Mon Nov 07 15:29:40 EST 2016\n" + output
+    )
 
 
 def test_cmd_select_repeated():
@@ -257,7 +276,10 @@ def test_cmd_select_repeated():
         ),
     )
     assert r.exit_code == 0, r.output_bytes
-    assert r.output_bytes == b"#Mon Nov 07 15:29:40 EST 2016\nrepeated=second\n"
+    assert (
+        r.output_bytes.replace(b"\r\n", b"\n")
+        == b"#Mon Nov 07 15:29:40 EST 2016\nrepeated=second\n"
+    )
 
 
 # --outfile
