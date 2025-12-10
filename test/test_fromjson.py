@@ -1,7 +1,10 @@
+import platform
 import click
 from click.testing import CliRunner
 import pytest
 from javaproperties_cli.fromjson import json2properties
+
+ON_WINDOWS = platform.system() == "Windows"
 
 
 @pytest.mark.parametrize(
@@ -144,7 +147,7 @@ from javaproperties_cli.fromjson import json2properties
             b"\xe2\x98\x83=snowman\n"
             b"\xf0\x9f\x90\x90=goat\n",
         ),
-        (
+        pytest.param(
             b"{\n"
             b'    "key": "value",\n'
             b'    "foo": "bar",\n'
@@ -156,8 +159,9 @@ from javaproperties_cli.fromjson import json2properties
             b"key=value\n"
             b"foo=bar\n"
             b"zebra=apple\n",
+            marks=pytest.mark.skipif(ON_WINDOWS, reason="argv is not UTF-8 on Windows"),
         ),
-        (
+        pytest.param(
             b"{\n"
             b'    "key": "value",\n'
             b'    "foo": "bar",\n'
@@ -169,8 +173,9 @@ from javaproperties_cli.fromjson import json2properties
             b"key=value\n"
             b"foo=bar\n"
             b"zebra=apple\n",
+            marks=pytest.mark.skipif(ON_WINDOWS, reason="argv is not UTF-8 on Windows"),
         ),
-        (
+        pytest.param(
             b"{\n"
             b'    "key": "value",\n'
             b'    "foo": "bar",\n'
@@ -182,6 +187,7 @@ from javaproperties_cli.fromjson import json2properties
             b"key=value\n"
             b"foo=bar\n"
             b"zebra=apple\n",
+            marks=pytest.mark.skipif(ON_WINDOWS, reason="argv is not UTF-8 on Windows"),
         ),
         (
             b"{\n"

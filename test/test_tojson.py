@@ -48,9 +48,9 @@ from javaproperties_cli.tojson import properties2json
         ),
         (
             [],
-            b"#Mon Nov 07 15:29:40 EST 2016\n" b"empty=\n" b"missing\n",
+            b"#Mon Nov 07 15:29:40 EST 2016\nempty=\nmissing\n",
             True,
-            b"{\n" b'    "empty": "",\n' b'    "missing": ""\n' b"}\n",
+            b'{\n    "empty": "",\n    "missing": ""\n}\n',
         ),
         (
             [],

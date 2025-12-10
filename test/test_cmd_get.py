@@ -1,6 +1,9 @@
+import platform
 from click.testing import CliRunner
 import pytest
 from javaproperties_cli.__main__ import javaproperties
+
+ON_WINDOWS = platform.system() == "Windows"
 
 INPUT = (
     b"foo: bar\n"
@@ -83,15 +86,17 @@ INPUT = (
             1,
             b"javaproperties get: x\\u00f0: key not found\n",
         ),
-        (
+        pytest.param(
             ["get", "-", b"e\xc3\xb0"],
             0,
             b"escaped\n",
+            marks=pytest.mark.skipif(ON_WINDOWS, reason="argv is not UTF-8 on Windows"),
         ),
-        (
+        pytest.param(
             ["get", "-", b"x\xc3\xb0"],
             1,
             b"javaproperties get: x\xc3\xb0: key not found\n",
+            marks=pytest.mark.skipif(ON_WINDOWS, reason="argv is not UTF-8 on Windows"),
         ),
         (
             ["get", "-", "latin-1"],

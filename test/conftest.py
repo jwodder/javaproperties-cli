@@ -13,5 +13,5 @@ def defaults_file():
     runner = CliRunner()
     with runner.isolated_filesystem():
         with open("defaults.properties", "wb") as fp:
-            fp.write(b"key = lock\n" b"lost = found\n")
+            fp.write(b"key = lock\nlost = found\n")
         yield

@@ -1,6 +1,9 @@
+import platform
 from click.testing import CliRunner
 import pytest
 from javaproperties_cli.__main__ import javaproperties
+
+ON_WINDOWS = platform.system() == "Windows"
 
 INPUT = (
     b"foo: bar\n"
@@ -192,7 +195,7 @@ INPUT = (
             b"bad-surrogate = \\uDC10\\uD83D\n"
             b"x\\\\u00F0=\\\\u00A1new\\!\n",
         ),
-        (
+        pytest.param(
             ["set", "--preserve-timestamp", "-", b"e\xc3\xb0", b"\xc2\xa1new!"],
             0,
             b"foo: bar\n"
@@ -204,8 +207,9 @@ INPUT = (
             b"bmp = \\u2603\n"
             b"astral = \\uD83D\\uDC10\n"
             b"bad-surrogate = \\uDC10\\uD83D\n",
+            marks=pytest.mark.skipif(ON_WINDOWS, reason="argv is not UTF-8 on Windows"),
         ),
-        (
+        pytest.param(
             ["set", "--preserve-timestamp", "-", b"x\xc3\xb0", b"\xc2\xa1new!"],
             0,
             b"foo: bar\n"
@@ -218,6 +222,7 @@ INPUT = (
             b"astral = \\uD83D\\uDC10\n"
             b"bad-surrogate = \\uDC10\\uD83D\n"
             b"x\\u00f0=\\u00a1new\\!\n",
+            marks=pytest.mark.skipif(ON_WINDOWS, reason="argv is not UTF-8 on Windows"),
         ),
         (
             [
@@ -286,7 +291,7 @@ def test_cmd_set_repeated():
     )
     assert r.exit_code == 0, r.stdout_bytes
     assert r.stdout_bytes.replace(b"\r\n", b"\n") == (
-        b"foo: bar\n" b"repeated=nth\n" b"key = value\n" b"zebra apple\n"
+        b"foo: bar\nrepeated=nth\nkey = value\nzebra apple\n"
     )
 
 
@@ -296,26 +301,26 @@ def test_cmd_set_repeated():
         (
             ["set", "-T", "-", "key", "lock"],
             0,
-            b"foo: bar\n" b"key=lock\n" b"zebra apple\n",
+            b"foo: bar\nkey=lock\nzebra apple\n",
         ),
         (
             ["set", "-T", "-", "zebra", "quagga"],
             0,
-            b"foo: bar\n" b"key = value\n" b"zebra=quagga\n",
+            b"foo: bar\nkey = value\nzebra=quagga\n",
         ),
         (
             ["set", "-T", "-", "nonexistent", "mu"],
             0,
-            b"foo: bar\n" b"key = value\n" b"zebra apple\n" b"nonexistent=mu\n",
+            b"foo: bar\nkey = value\nzebra apple\nnonexistent=mu\n",
         ),
     ],
 )
 @pytest.mark.parametrize(
     "inp",
     [
-        b"foo: bar\n" b"key = value\n" b"zebra apple\\\n",
-        b"foo: bar\n" b"key = value\n" b"zebra apple\\",
-        b"foo: bar\n" b"key = value\n" b"zebra apple",
+        b"foo: bar\nkey = value\nzebra apple\\\n",
+        b"foo: bar\nkey = value\nzebra apple\\",
+        b"foo: bar\nkey = value\nzebra apple",
     ],
 )
 def test_cmd_set_fix_final_eol(args, rc, inp, output):
@@ -381,26 +386,28 @@ def test_cmd_set_with_timestamp(args, rc, output):
 @pytest.mark.parametrize(
     "args,rc,output",
     [
-        (
+        pytest.param(
             ["set", "-T", "-", b"k\xc3\xaby", "lock"],
             0,
-            b"foo: bar\n" b"k\\u00eby=lock\n" b"zebra apple\n",
+            b"foo: bar\nk\\u00eby=lock\nzebra apple\n",
+            marks=pytest.mark.skipif(ON_WINDOWS, reason="argv is not UTF-8 on Windows"),
         ),
-        (
+        pytest.param(
             ["set", "-T", "--unicode", "-", b"k\xc3\xaby", "lock"],
             0,
-            b"foo: bar\n" b"k\xeby=lock\n" b"zebra apple\n",
+            b"foo: bar\nk\xeby=lock\nzebra apple\n",
+            marks=pytest.mark.skipif(ON_WINDOWS, reason="argv is not UTF-8 on Windows"),
         ),
         (
             ["set", "-T", "--escaped", "-", "k\\u00EBy", "lock"],
             0,
-            b"foo: bar\n" b"k\\u00eby=lock\n" b"zebra apple\n",
+            b"foo: bar\nk\\u00eby=lock\nzebra apple\n",
         ),
     ],
 )
 def test_cmd_set_raw_latin1_key(args, rc, output):
     r = CliRunner().invoke(
-        javaproperties, args, input=(b"foo: bar\n" b"k\xeby = value\n" b"zebra apple\n")
+        javaproperties, args, input=(b"foo: bar\nk\xeby = value\nzebra apple\n")
     )
     assert r.exit_code == rc, r.stdout_bytes
     assert r.stdout_bytes.replace(b"\r\n", b"\n") == output
@@ -409,35 +416,39 @@ def test_cmd_set_raw_latin1_key(args, rc, output):
 @pytest.mark.parametrize(
     "args,rc,output",
     [
-        (
+        pytest.param(
             ["set", "-T", "-", b"k\xc3\xaby", "lock"],
             0,
-            b"foo: bar\n" b"k\xc3\xaby = value\n" b"zebra apple\n" b"k\\u00eby=lock\n",
+            b"foo: bar\nk\xc3\xaby = value\nzebra apple\nk\\u00eby=lock\n",
+            marks=pytest.mark.skipif(ON_WINDOWS, reason="argv is not UTF-8 on Windows"),
         ),
-        (
+        pytest.param(
             ["set", "-T", "--unicode", "-", b"k\xc3\xaby", "lock"],
             0,
-            b"foo: bar\n" b"k\xc3\xaby = value\n" b"zebra apple\n" b"k\xeby=lock\n",
+            b"foo: bar\nk\xc3\xaby = value\nzebra apple\nk\xeby=lock\n",
+            marks=pytest.mark.skipif(ON_WINDOWS, reason="argv is not UTF-8 on Windows"),
         ),
         (
             ["set", "-T", "--escaped", "-", "k\\u00EBy", "lock"],
             0,
-            b"foo: bar\n" b"k\xc3\xaby = value\n" b"zebra apple\n" b"k\\u00eby=lock\n",
+            b"foo: bar\nk\xc3\xaby = value\nzebra apple\nk\\u00eby=lock\n",
         ),
-        (
+        pytest.param(
             ["set", "-T", "--encoding", "utf-8", "-", b"k\xc3\xaby", "lock"],
             0,
-            b"foo: bar\n" b"k\\u00eby=lock\n" b"zebra apple\n",
+            b"foo: bar\nk\\u00eby=lock\nzebra apple\n",
+            marks=pytest.mark.skipif(ON_WINDOWS, reason="argv is not UTF-8 on Windows"),
         ),
-        (
+        pytest.param(
             ["set", "-TU", "--encoding", "utf-8", "-", b"k\xc3\xaby", "lock"],
             0,
-            b"foo: bar\n" b"k\xc3\xaby=lock\n" b"zebra apple\n",
+            b"foo: bar\nk\xc3\xaby=lock\nzebra apple\n",
+            marks=pytest.mark.skipif(ON_WINDOWS, reason="argv is not UTF-8 on Windows"),
         ),
         (
             ["set", "-T", "-E", "utf-8", "--escaped", "-", "k\\u00EBy", "lock"],
             0,
-            b"foo: bar\n" b"k\\u00eby=lock\n" b"zebra apple\n",
+            b"foo: bar\nk\\u00eby=lock\nzebra apple\n",
         ),
     ],
 )
@@ -445,7 +456,7 @@ def test_cmd_set_raw_utf8_key(args, rc, output):
     r = CliRunner().invoke(
         javaproperties,
         args,
-        input=(b"foo: bar\n" b"k\xc3\xaby = value\n" b"zebra apple\n"),
+        input=(b"foo: bar\nk\xc3\xaby = value\nzebra apple\n"),
     )
     assert r.exit_code == rc, r.stdout_bytes
     assert r.stdout_bytes.replace(b"\r\n", b"\n") == output
