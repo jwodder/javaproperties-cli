@@ -12,11 +12,11 @@ SYNOPSIS
 
 .. code-block:: shell
 
-    javaproperties get    [<OPTIONS>] <file> <key> ...
-    javaproperties select [<OPTIONS>] <file> <key> ...
-    javaproperties set    [<OPTIONS>] <file> <key> <value>
-    javaproperties delete [<OPTIONS>] <file> <key> ...
-    javaproperties format [<OPTIONS>] [<file>]
+    javaproperties get    [<options>] <file> <key> ...
+    javaproperties select [<options>] <file> <key> ...
+    javaproperties set    [<options>] <file> <key> <value>
+    javaproperties delete [<options>] <file> <key> ...
+    javaproperties format [<options>] [<file>]
 
 
 :command:`get`
@@ -24,7 +24,7 @@ SYNOPSIS
 
 .. code-block:: shell
 
-    javaproperties get [<OPTIONS>] <file> <key> ...
+    javaproperties get [<options>] <file> <key> ...
 
 Print out the values of the given keys in the given ``.properties`` file.  Each
 value is printed out on a separate line with escape sequences interpolated.
@@ -36,7 +36,7 @@ Options
 
 .. program:: javaproperties get
 
-.. option:: -d <value>, --default-value <value>
+.. option:: -d VALUE, --default-value VALUE
 
     Default value for undefined keys.  If this option is not specified, keys
     requested on the command line that are not defined in either the main
@@ -44,7 +44,7 @@ Options
     :option:`--quiet` option is given) cause a warning to be printed to stderr
     and the command to exit with a failure status.
 
-.. option:: -D <file>, --defaults <file>
+.. option:: -D FILE, --defaults FILE
 
     ``.properties`` file of default values.  If this option is specified, keys
     requested on the command line that are not defined in the main
@@ -56,7 +56,7 @@ Options
     ``.properties``-style escape sequences (specifically, those supported by
     `javaproperties.unescape`)
 
-.. option:: -E <encoding>, --encoding <encoding>
+.. option:: -E ENCODING, --encoding ENCODING
 
     Specifies the encoding of the input file(s); default value: ``iso-8859-1``
     (a.k.a. Latin-1).  Output always uses the locale's encoding.
@@ -75,7 +75,7 @@ Options
 
 .. code-block:: shell
 
-    javaproperties select [<OPTIONS>] <file> <key> ...
+    javaproperties select [<options>] <file> <key> ...
 
 Print out the key-value entries in the given ``.properties`` file for the given
 keys.  The output is in ``.properties`` format, reformatted as though by
@@ -95,7 +95,7 @@ Options
     sequences.  This overrides :option:`--unicode`.  This is the default
     behavior.
 
-.. option:: -d <value>, --default-value <value>
+.. option:: -d VALUE, --default-value VALUE
 
     Default value for undefined keys.  If this option is not specified, keys
     requested on the command line that are not defined in either the main
@@ -103,7 +103,7 @@ Options
     :option:`--quiet` option is given) cause a warning to be printed to stderr
     and the command to exit with a failure status.
 
-.. option:: -D <file>, --defaults <file>
+.. option:: -D FILE, --defaults FILE
 
     ``.properties`` file of default values.  If this option is specified, keys
     requested on the command line that are not defined in the main
@@ -115,19 +115,18 @@ Options
     ``.properties``-style escape sequences (specifically, those supported by
     `javaproperties.unescape`)
 
-.. option:: -E <encoding>, --encoding <encoding>
+.. option:: -E ENCODING, --encoding ENCODING
 
     Specifies the encoding of the input and output files; default value:
     ``iso-8859-1`` (a.k.a. Latin-1)
 
-.. option:: -o <file>, --outfile <file>
+.. option:: -o FILE, --outfile FILE
 
     Write output to this file instead of standard output
 
-.. option:: -s <sep>, --separator <sep>
+.. option:: -s SEP, --separator SEP
 
-    Use ``<sep>`` as the key-value separator in the output; default value:
-    ``=``
+    Use ``SEP`` as the key-value separator in the output; default value: ``=``
 
 .. option:: -q, --quiet
 
@@ -149,7 +148,7 @@ Options
 
 .. code-block:: shell
 
-    javaproperties set [<OPTIONS>] <file> <key> <value>
+    javaproperties set [<options>] <file> <key> <value>
 
 Set the value of ``<key>`` in the ``.properties`` file ``<file>`` to
 ``<value>`` and output the results.  The other entries in the file (including
@@ -173,18 +172,18 @@ Options
     Parse ``<key>`` and ``<value>`` for ``.properties``-style escape sequences
     (specifically, those supported by `javaproperties.unescape`)
 
-.. option:: -E <encoding>, --encoding <encoding>
+.. option:: -E ENCODING, --encoding ENCODING
 
     Specifies the encoding of the input and output files; default value:
     ``iso-8859-1`` (a.k.a. Latin-1)
 
-.. option:: -o <file>, --outfile <file>
+.. option:: -o FILE, --outfile FILE
 
     Write output to this file instead of standard output
 
-.. option:: -s <sep>, --separator <sep>
+.. option:: -s SEP, --separator SEP
 
-    Separate ``<key>`` and ``<value>`` in the output with ``<sep>``; default
+    Separate ``<key>`` and ``<value>`` in the output with ``SEP``; default
     value: ``=``
 
 .. option:: -T, --preserve-timestamp
@@ -207,7 +206,7 @@ Options
 
 .. code-block:: shell
 
-    javaproperties delete [<OPTIONS>] <file> <key> ...
+    javaproperties delete [<options>] <file> <key> ...
 
 Remove all entries for the given keys from the given ``.properties`` file and
 output the results.  The other entries in the file (including comments,
@@ -224,12 +223,12 @@ Options
     escape sequences (specifically, those supported by
     `javaproperties.unescape`)
 
-.. option:: -E <encoding>, --encoding <encoding>
+.. option:: -E ENCODING, --encoding ENCODING
 
     Specifies the encoding of the input and output files; default value:
     ``iso-8859-1`` (a.k.a. Latin-1)
 
-.. option:: -o <file>, --outfile <file>
+.. option:: -o FILE, --outfile FILE
 
     Write output to this file instead of standard output
 
@@ -247,7 +246,7 @@ Options
 
 .. code-block:: shell
 
-    javaproperties format [<OPTIONS>] [<file>]
+    javaproperties format [<options>] [<file>]
 
 Normalize the formatting of the given ``.properties`` file (or standard input
 if no file is given) and output the results.  All comments, excess whitespace,
@@ -267,16 +266,16 @@ Options
     sequences.  This overrides :option:`--unicode`.  This is the default
     behavior.
 
-.. option:: -E <encoding>, --encoding <encoding>
+.. option:: -E ENCODING, --encoding ENCODING
 
     Specifies the encoding of the input and output files; default value:
     ``iso-8859-1`` (a.k.a. Latin-1)
 
-.. option:: -o <file>, --outfile <file>
+.. option:: -o FILE, --outfile FILE
 
     Write output to this file instead of standard output
 
-.. option:: -s <sep>, --separator <sep>
+.. option:: -s SEP, --separator SEP
 
     Use ``<sep>`` as the key-value separator in the output; default value:
     ``=``

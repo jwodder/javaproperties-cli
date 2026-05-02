@@ -15,7 +15,7 @@ SYNOPSIS
 
 .. code-block:: shell
 
-    json2properties [<OPTIONS>] [<infile> [<outfile>]]
+    json2properties [<options>] [<infile> [<outfile>]]
 
 DESCRIPTION
 ^^^^^^^^^^^
@@ -62,18 +62,18 @@ OPTIONS
     sequences.  This overrides :option:`--unicode`.  This is the default
     behavior.
 
-.. option:: -c <comment>, --comment <comment>
+.. option:: -c COMMENT, --comment COMMENT
 
     .. versionadded:: 0.5.0
 
     Show the given string as a comment at the top of the output
 
-.. option:: -E <encoding>, --encoding <encoding>
+.. option:: -E ENCODING, --encoding ENCODING
 
-    Use ``<encoding>`` as the output encoding; default value: ``iso-8859-1``
+    Use ``ENCODING`` as the output encoding; default value: ``iso-8859-1``
     (a.k.a. Latin-1)
 
-.. option:: -s <sep>, --separator <sep>
+.. option:: -s SEP, --separator SEP
 
     Use ``<sep>`` as the key-value separator in the output; default value:
     ``=``

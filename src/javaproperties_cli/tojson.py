@@ -14,7 +14,7 @@ SYNOPSIS
 
 .. code-block:: shell
 
-    properties2json [<OPTIONS>] [<infile> [<outfile>]]
+    properties2json [<options>] [<infile> [<outfile>]]
 
 DESCRIPTION
 ^^^^^^^^^^^
@@ -42,7 +42,7 @@ OPTIONS
     sequences.  This overrides :option:`--unicode`.  This is the default
     behavior.
 
-.. option:: -E <encoding>, --encoding <encoding>
+.. option:: -E ENCODING, --encoding ENCODING
 
     Specifies the encoding of the input file; default value: ``iso-8859-1``
     (a.k.a. Latin-1)
