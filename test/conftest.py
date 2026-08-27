@@ -1,5 +1,5 @@
+from pathlib import Path
 import time
-from click.testing import CliRunner
 import pytest
 
 
@@ -9,9 +9,7 @@ def use_fixed_time(mocker):
 
 
 @pytest.fixture
-def defaults_file():
-    runner = CliRunner()
-    with runner.isolated_filesystem():
-        with open("defaults.properties", "wb") as fp:
-            fp.write(b"key = lock\nlost = found\n")
-        yield
+def defaults_file(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> None:
+    monkeypatch.chdir(tmp_path)
+    with open("defaults.properties", "wb") as fp:
+        fp.write(b"key = lock\nlost = found\n")
