@@ -1,3 +1,4 @@
+from pathlib import Path
 import platform
 from click.testing import CliRunner
 import pytest
@@ -167,14 +168,14 @@ def test_cmd_format(args, output):
     assert r.stdout_bytes.replace(b"\r\n", b"\n") == output
 
 
-def test_cmd_format_file():
+def test_cmd_format_file(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> None:
     runner = CliRunner()
-    with runner.isolated_filesystem():
-        with open("test.properties", "wb") as fp:
-            fp.write(INPUT)
-        r = runner.invoke(javaproperties, ["format", "test.properties"])
-        assert r.exit_code == 0
-        assert r.stdout_bytes.replace(b"\r\n", b"\n") == OUTPUT
+    monkeypatch.chdir(tmp_path)
+    with open("test.properties", "wb") as fp:
+        fp.write(INPUT)
+    r = runner.invoke(javaproperties, ["format", "test.properties"])
+    assert r.exit_code == 0
+    assert r.stdout_bytes.replace(b"\r\n", b"\n") == OUTPUT
 
 
 # --outfile
